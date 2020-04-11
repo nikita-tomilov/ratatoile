@@ -1,0 +1,8 @@
+.SignInForm {
+    flex-basis: 30vh;
+}
+
+.error {
+    color: red;
+    padding: 20px;
+}
