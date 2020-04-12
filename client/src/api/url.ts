@@ -1,1 +1,2 @@
-export const route = window.location;
+export const route = window.location.origin;
+console.log(route);
