@@ -16,6 +16,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             "/swagger-resources/**",
             "/configuration/**",
             "/swagger-ui.html",
-            "/webjars/**");
+            "/webjars/**",
+            "/freeapi/**");
   }
 }
