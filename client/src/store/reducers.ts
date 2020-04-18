@@ -1,28 +1,26 @@
-import { StateChangeActions, StateChangeActionType } from './actions'
+import {StateChangeActions, StateChangeActionType} from './actions'
+import {AppState, initialState} from "./store";
 
-export type AppState = {
-    userToken: string | null;
-    authFailMessage: string | null;
-}
-
-const initialState: AppState = {
-    userToken: null,
-    authFailMessage: null
-};
 
 function rootReducer(state: AppState = initialState, action: StateChangeActions): AppState {
     switch (action.type) {
 
         case StateChangeActionType.SET_TOKEN: {
             return {
-                ...initialState,
+                ...state,
                 userToken: action.payload
             }
         }
         case StateChangeActionType.SET_AUTH_FAIL: {
             return {
-                ...initialState,
+                ...state,
                 authFailMessage: action.payload
+            }
+        }
+        case StateChangeActionType.SET_CURRENT_MENU_ITEM: {
+            return {
+                ...state,
+                currentMenuItem: action.payload
             }
         }
     }

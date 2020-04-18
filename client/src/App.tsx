@@ -1,23 +1,19 @@
-import React  from 'react'
-import './App.css'
-import SignIn from './components/SignIn'
-import { Workspace } from './components/Workspace'
-import { connect } from 'react-redux'
-import { AppState } from './store/reducers'
+import React from "react";
+import "./App.css";
+import SignIn from "./components/SignIn";
+import Workspace from "./components/Workspace";
+import { connect } from "react-redux";
+import { AppState } from "./store/store";
 
-function App(props: any) {
-    return (
-        <div className="App">
-            {props.token ? <Workspace/> : <SignIn/>}
-        </div>
-    )
+function App(props: { token: string | null }) {
+  console.warn(props.token);
+  return <div className="App">{props.token ? <Workspace /> : <SignIn />}</div>;
 }
-
 
 const mapStateToProps = (store: AppState) => {
-    return {
-        token: store.userToken
-    }
-}
+  return {
+    token: store.userToken,
+  };
+};
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(App);

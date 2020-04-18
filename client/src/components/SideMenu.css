@@ -1,0 +1,26 @@
+.menu {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.menuItem {
+    flex: 1;
+
+    border-right: 1px solid blue;
+    border-bottom: 1px solid blue;
+    border-radius: 0 0 4px 0;
+
+    padding: 30px 20px;
+
+    cursor: pointer;
+    background: white;
+
+    color: black;
+}
+
+.menuItem:hover {
+    background: blue;
+    opacity: 0.2;
+}

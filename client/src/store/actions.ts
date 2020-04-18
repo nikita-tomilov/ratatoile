@@ -1,7 +1,9 @@
+import {SideMenuType} from "../components/SideMenu";
 
 export enum StateChangeActionType {
     SET_TOKEN= 'SET_TOKEN',
-    SET_AUTH_FAIL = 'SET_AUTH_FAIL'
+    SET_AUTH_FAIL = 'SET_AUTH_FAIL',
+    SET_CURRENT_MENU_ITEM='SET_CURRENT_MENU_ITEM'
 }
 
 type SetToken = {
@@ -14,4 +16,9 @@ type SetAuthFail = {
     payload: string | null;
 }
 
-export type StateChangeActions = SetToken | SetAuthFail;
+type SetCurrentMenuItem = {
+    type: StateChangeActionType.SET_CURRENT_MENU_ITEM,
+    payload: SideMenuType;
+}
+
+export type StateChangeActions = SetToken | SetAuthFail | SetCurrentMenuItem;

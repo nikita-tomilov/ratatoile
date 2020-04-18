@@ -3,8 +3,8 @@ import './SignIn.css'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { getAuthService } from '../services/authService'
-import { AppState } from '../store/reducers'
 import { connect } from 'react-redux'
+import {AppState} from "../store/store";
 
 const authService = getAuthService()
 
