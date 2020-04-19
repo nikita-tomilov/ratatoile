@@ -1,32 +1,26 @@
 package com.ifmo.ratatoile.service
 
-import com.ifmo.ratatoile.dao.EatingTable
 import com.ifmo.ratatoile.dao.Reservation
+import com.ifmo.ratatoile.dao.toDto
+import com.ifmo.ratatoile.dto.TableReservationDto
 import com.ifmo.ratatoile.dto.TableReservationRequest
 import com.ifmo.ratatoile.dto.TableReservationResponse
-import com.ifmo.ratatoile.dto.TableReservationTableType
+import com.ifmo.ratatoile.dto.TableReservationsDto
 import com.ifmo.ratatoile.exception.BadRequestException
-import com.ifmo.ratatoile.repository.EatingTableRepository
+import com.ifmo.ratatoile.exception.NotFoundException
 import com.ifmo.ratatoile.repository.ReservationRepository
 import mu.KLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.Instant
-import javax.annotation.PostConstruct
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 @Service
-class TablesService(
-  private val tableRepository: EatingTableRepository,
+class ReservationsService(
+  private val tableService: EatingTableService,
   private val reservationRepository: ReservationRepository
 ) {
-
-  @PostConstruct
-  fun postConstruct() {
-    if (tableRepository.findAll().isEmpty()) {
-      logger.warn { "Tables table is empty; generating mock eating tables..." }
-      val tables = TableLayoutService.createArrangedTables()
-      tables.forEach { tableRepository.saveAndFlush(it) }
-    }
-  }
 
   private val reservationMutex = object {}
 
@@ -39,7 +33,7 @@ class TablesService(
       val reservationsWithinRange =
           reservationRepository.findAllWithinTimeRange(reservationFrom, reservationTo)
       val busyTableIds = reservationsWithinRange.map { it.table.id!! }.toSet()
-      val availableTables = filterAvailableTables(busyTableIds, request)
+      val availableTables = tableService.filterAvailableTables(busyTableIds, request)
       if (availableTables.isEmpty()) {
         throw BadRequestException("No tables match")
       }
@@ -60,22 +54,28 @@ class TablesService(
     }
   }
 
-  private fun filterAvailableTables(
-    busyTableIds: Set<Int>,
-    request: TableReservationRequest
-  ): List<EatingTable> {
-    return tableRepository.findAll()
-        .asSequence()
-        .filter { !busyTableIds.contains(it.id!!) }
-        .filter { it.maxSeats >= request.seats }
-        .filter {
-          when (request.type) {
-            TableReservationTableType.NORMAL -> true
-            TableReservationTableType.NEAR_WINDOW -> it.isNearWindow()
-            TableReservationTableType.NEAR_BAR -> it.isNearBar()
-          }
-        }
-        .toList()
+  fun getReservations(): TableReservationsDto {
+    return TableReservationsDto(reservationRepository.findAll().sortedBy { it.reservedFrom }.map { it.toDto() })
+  }
+
+  fun getReservation(id: Int): TableReservationDto {
+    return reservationRepository.findByIdOrNull(id)?.toDto()
+      ?: throw NotFoundException("no reservation for id $id")
+  }
+
+  fun deleteReservation(id: Int): TableReservationDto {
+    val res = reservationRepository.findByIdOrNull(id)
+      ?: throw NotFoundException("no reservation for id $id")
+    reservationRepository.delete(res)
+    return res.toDto()
+  }
+
+  fun getReservationsForToday(): TableReservationsDto {
+    //working hours: 12.00 of current day - 03.00 of next day
+    return TableReservationsDto(reservationRepository.findAllWithinTimeRange(
+        LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC),
+        LocalDate.now().atStartOfDay().plusDays(1).plusHours(3).toInstant(ZoneOffset.UTC)
+    ).sortedBy { it.reservedFrom }.map { it.toDto() })
   }
 
   companion object : KLogging()

@@ -5,6 +5,7 @@ import com.ifmo.ratatoile.dao.Reservation
 import com.ifmo.ratatoile.dto.TableReservationRequest
 import com.ifmo.ratatoile.dto.TableReservationTableType
 import com.ifmo.ratatoile.exception.BadRequestException
+import com.ifmo.ratatoile.repository.EatingTableRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -18,12 +19,13 @@ class TablesServiceTest() {
   fun `reservations seems to work OK`() {
     //given
     val knownReservations = ArrayList<Reservation>()
-    val service = TablesService(
-        mockk {
-          every { findAll() } returns (0 until 2).map {
-            EatingTable(it, 0.0f, 0.0f, 0.0f, 0.0f, 2, "")
-          }
-        },
+    val tableJpaMock = mockk<EatingTableRepository> {
+      io.mockk.every { findAll() } returns (0 until 2).map {
+        com.ifmo.ratatoile.dao.EatingTable(it, 0.0f, 0.0f, 0.0f, 0.0f, 2, "")
+      }
+    }
+    val service = ReservationsService(
+        EatingTableService(tableJpaMock),
         mockk {
           every { findAllWithinTimeRange(any(), any()) } answers {
             val from = (it.invocation.args[0] as Instant).toEpochMilli()
