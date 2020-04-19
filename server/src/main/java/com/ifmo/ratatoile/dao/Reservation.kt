@@ -22,5 +22,11 @@ data class Reservation(
   val reservedTo: Instant,
 
   @Column(nullable = false)
-  val comment: String
+  val comment: String,
+
+  @Column(nullable = false)
+  val personName: String,
+
+  @Column(nullable = false)
+  val personPhone: String
 )

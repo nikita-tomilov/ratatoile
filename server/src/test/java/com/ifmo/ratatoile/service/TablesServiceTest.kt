@@ -46,8 +46,8 @@ class TablesServiceTest() {
         }
     )
     //when
-    val rq1 = TableReservationRequest(0, 100, 1, TableReservationTableType.NORMAL, "")
-    val rq2 = TableReservationRequest(5, 65, 1, TableReservationTableType.NORMAL, "")
+    val rq1 = TableReservationRequest(0, 100, 1, TableReservationTableType.NORMAL, "", "", "")
+    val rq2 = TableReservationRequest(5, 65, 1, TableReservationTableType.NORMAL, "", "", "")
     service.createReservation(rq1)
     service.createReservation(rq2)
     //then
@@ -56,8 +56,8 @@ class TablesServiceTest() {
     val r2 = knownReservations[1]
     assertThat(r1.table.id).isNotEqualTo(r2.table.id)
     //when
-    val rq3 = TableReservationRequest(0, 100, 1, TableReservationTableType.NORMAL, "")
-    val rq4 = TableReservationRequest(101, 202, 1, TableReservationTableType.NORMAL, "")
+    val rq3 = TableReservationRequest(0, 100, 1, TableReservationTableType.NORMAL, "", "", "")
+    val rq4 = TableReservationRequest(101, 202, 1, TableReservationTableType.NORMAL, "", "", "")
     assertThrows<BadRequestException> { service.createReservation(rq3) }
     service.createReservation(rq4)
     //then

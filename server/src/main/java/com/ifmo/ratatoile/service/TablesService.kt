@@ -48,10 +48,15 @@ class TablesService(
           table = table,
           reservedFrom = reservationFrom,
           reservedTo = reservationTo,
-          comment = request.comment
+          comment = request.comment,
+          personName = request.personName,
+          personPhone = request.personPhone
       )
       val savedReservation = reservationRepository.saveAndFlush(reservation)
-      return TableReservationResponse("ok; reservation id = ${savedReservation.id!!}")
+      return TableReservationResponse(
+          request.personName,
+          request.personPhone,
+          "ok; reservation id = ${savedReservation.id!!}")
     }
   }
 

@@ -9,5 +9,7 @@ data class TableReservationRequest(
   val to: Long,
   val seats: Int,
   val type: TableReservationTableType,
-  val comment: String
+  val comment: String,
+  val personName: String,
+  val personPhone: String
 )
