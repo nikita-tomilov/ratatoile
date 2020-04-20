@@ -17,6 +17,9 @@ class EatingTableService(
   @Autowired
   lateinit var reservationsService: ReservationsService
 
+  @Autowired
+  lateinit var guestsService: GuestService
+
   @PostConstruct
   fun postConstruct() {
     if (tableRepository.findAll().isEmpty()) {
@@ -28,10 +31,29 @@ class EatingTableService(
 
   fun getTables(): TablesDto = TablesDto(tableRepository.findAll().map { it.toDto() })
 
-  private fun getTablesWithReservations(reservations: TableReservationsDto): TablesWithClosestReservationsDto {
+  fun getTableAsEntity(id: Int) = tableRepository.findById(id).get()
+
+  private fun getTablesWithReservations(reservations: TableReservationsDto): TablesWithStateDto {
     val reservationsGrouped = reservations.reservations.groupBy { it.assignedTableId }
-    return TablesWithClosestReservationsDto(getTables().tables.map {
-      TableWithClosestReservationsDto(
+    val tablesCurrentlyBusy = guestsService.currentBusyTables()
+    val guestsUnderMyControl = guestsService.currentGuestsForCurrentUser()
+    return TablesWithStateDto(getTables().tables.map {
+      val reservationsForTable = reservationsGrouped[it.id] ?: emptyList()
+      val reservedNow = reservationsForTable
+          .firstOrNull {
+            (it.from <= System.currentTimeMillis()) &&
+                (it.to >= System.currentTimeMillis())
+          } != null
+      val tableCurrentlyBusy = tablesCurrentlyBusy.contains(it.id)
+      val guestsForTable = guestsUnderMyControl[it.id] ?: GuestsDto(emptyList())
+      val state = when {
+        tableCurrentlyBusy && guestsForTable.guests.isNotEmpty() -> TableWithStateDtoState.BUSY_BY_YOU
+        tableCurrentlyBusy && guestsForTable.guests.isEmpty() -> TableWithStateDtoState.BUSY
+        reservedNow -> TableWithStateDtoState.SUPPOSED_TO_BE_BUSY
+        reservationsForTable.isNotEmpty() -> TableWithStateDtoState.FREE_BUT_BOOKED
+        else -> TableWithStateDtoState.FREE
+      }
+      TableWithStateDto(
           it.id,
           it.guiX,
           it.guiY,
@@ -39,16 +61,19 @@ class EatingTableService(
           it.guiH,
           it.maxSeats,
           it.type,
-          reservationsGrouped[it.id] ?: emptyList())
+          reservationsForTable,
+          tableCurrentlyBusy,
+          guestsForTable,
+          state)
     })
   }
 
-  fun getTablesWithReservations(): TablesWithClosestReservationsDto {
+  fun getTablesWithReservations(): TablesWithStateDto {
     val allReservations = reservationsService.getReservations()
     return getTablesWithReservations(allReservations)
   }
 
-  fun getTablesWithReservationsForToday(): TablesWithClosestReservationsDto {
+  fun getTablesWithReservationsForToday(): TablesWithStateDto {
     val reservationsForToday = reservationsService.getReservationsForToday()
     return getTablesWithReservations(reservationsForToday)
   }

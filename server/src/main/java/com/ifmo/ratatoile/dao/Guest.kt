@@ -11,7 +11,6 @@ data class Guest(
   @Column(nullable = false)
   var id: Int? = null,
 
-
   @Column(nullable = false)
   val enteredAt: Instant,
 

@@ -33,4 +33,17 @@ class UserService(
     val user = SecurityContextUtils.getUserFromContext()
     return UserDto(user.username, user.authorities.map { it.authority })
   }
+
+  fun meAsEntity(): User {
+    val user = SecurityContextUtils.getUserFromContext()
+    return userRepository.findByUsername(user.username)!!
+  }
+
+  fun myId(): Long {
+    return meAsEntity().id!!
+  }
+
+  fun IAmAdmin(): Boolean {
+    return me().roles.filter { it.contains("ADMIN") }.isNotEmpty()
+  }
 }
