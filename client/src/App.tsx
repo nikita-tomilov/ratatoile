@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import SignIn from "./components/SignIn";
+import SignIn from "./components/auth/SignIn";
 import Workspace from "./components/Workspace";
 import { connect } from "react-redux";
 import { AppState } from "./store/store";

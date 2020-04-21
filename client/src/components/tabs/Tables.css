@@ -1,0 +1,8 @@
+.tablesWrapper {
+  flex: 1;
+  position: relative;
+}
+
+.singleTable {
+  position: absolute;
+}

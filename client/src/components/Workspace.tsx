@@ -1,12 +1,11 @@
 import React from "react";
 import "./Workspace.css";
-import Button from "@material-ui/core/Button";
-import { getAuthService } from "../services/authService";
 import { SideMenu, SideMenuType } from "./SideMenu";
 import { connect } from "react-redux";
 import store, { AppState } from "../store/store";
 import { StateChangeActionType } from "../store/actions";
-const authService = getAuthService();
+import { Logout } from "./auth/Logout";
+import Tables from "./tabs/Tables";
 
 type Props = {
   currentMenuItem: SideMenuType;
@@ -20,19 +19,12 @@ export class Workspace extends React.PureComponent<Props> {
       <div className="wrapper">
         <SideMenu onSelect={setCurrentMenuItem} selected={currentMenuItem} />
         <div className="container">
-          {currentMenuItem === SideMenuType.FIRST ? (
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={authService.logout}
-            >
-              Logout
-            </Button>
-          ) : currentMenuItem === SideMenuType.SECOND ? (
-            "2"
+          {currentMenuItem === SideMenuType.TABLES ? (
+            <Tables />
+          ) : currentMenuItem === SideMenuType.LOGOUT ? (
+            <Logout />
           ) : (
-            "3"
+            "extra"
           )}
         </div>
       </div>
@@ -48,12 +40,11 @@ const mapStateToProps = (store: AppState) => {
 
 const mapDispatchToProps = () => {
   return {
-    setCurrentMenuItem: (nextMenuItem: SideMenuType) =>
-    {
-        store.dispatch({
-            type: StateChangeActionType.SET_CURRENT_MENU_ITEM,
-            payload: nextMenuItem,
-        })
+    setCurrentMenuItem: (nextMenuItem: SideMenuType) => {
+      store.dispatch({
+        type: StateChangeActionType.SET_CURRENT_MENU_ITEM,
+        payload: nextMenuItem,
+      });
     },
   };
 };

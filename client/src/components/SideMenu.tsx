@@ -4,9 +4,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
 export enum SideMenuType {
-  FIRST = "FIRST",
+  TABLES = "TABLES",
   SECOND = "SECOND",
-  THIRD = "THIRD",
+  LOGOUT = "LOGOUT",
 }
 
 export const SideMenu = (props: {
@@ -30,12 +30,10 @@ export const SideMenu = (props: {
         value={selected}
         onChange={onMenuItemSelect}
       >
-        {Object.values(SideMenuType).map((type, index) => {
-          return <Tab key={type} label={type.toUpperCase()} value={type} />
+        {Object.values(SideMenuType).map((type) => {
+          return <Tab key={type} label={type.toUpperCase()} value={type} />;
         })}
       </Tabs>
-
-
     </div>
   );
 };
