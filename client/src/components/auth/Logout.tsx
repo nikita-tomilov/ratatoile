@@ -5,13 +5,15 @@ const authService = getAuthService();
 
 export const Logout = (): JSX.Element => {
   return (
-    <Button
-      type="submit"
-      variant="contained"
-      color="primary"
-      onClick={authService.logout}
-    >
-      Logout
-    </Button>
+    <div style={{ height: 30 }}>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={authService.logout}
+      >
+        Logout
+      </Button>
+    </div>
   );
 };

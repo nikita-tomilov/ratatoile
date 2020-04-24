@@ -1,0 +1,65 @@
+.boxWrapper {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  top: 15%;
+  left: 15%;
+  background: white;
+  border: 1px solid #000;
+  border-radius: 4px;
+  opacity: 0.8;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.content {
+  flex: 10;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  max-height: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.info,
+.controls {
+  flex: 2;
+  padding: 10px 0;
+}
+
+.btnWrapper,
+.info,
+.title {
+  flex: 1;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.itemTitle {
+  flex: 1;
+  font-weight: bold;
+  justify-self: flex-start;
+  align-self: flex-start;
+  padding-right: 10px;
+}
+
+.itemBody {
+  flex: 4;
+}

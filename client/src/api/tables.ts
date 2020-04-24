@@ -1,4 +1,4 @@
-import { getUrl, mainPrefix, route } from "./url";
+import { getUrl } from "./url";
 import { Method } from "../services/types";
 import { customFetch } from "./customFetch";
 

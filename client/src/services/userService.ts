@@ -6,7 +6,8 @@ class UserServiceClass {
   public hasAdminRole = (): Promise<boolean> => {
     return !this.isAdmin
       ? this.getUserRoles().then((roles) => {
-          const isAdmin = roles.find((role) => role === AppRole.ADMIN) !== null;
+          const isAdmin =
+            roles && roles.find((role) => role === AppRole.ADMIN) !== null;
           this.isAdmin = isAdmin;
           return isAdmin;
         })

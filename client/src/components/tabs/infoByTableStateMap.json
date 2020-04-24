@@ -1,0 +1,74 @@
+{
+  "info": {
+    "free": {
+      "infoItems": [
+        {
+          "title": "Статус:",
+          "type": 1,
+          "fields": ["state"]
+        }
+      ],
+      "controls": [
+        {
+          "title": "Посадить гостей"
+        }
+      ]
+    },
+    "free_but_booked": {
+      "infoItems": [
+        {
+          "title": "Статус:",
+          "type": 1,
+          "fields": ["state"]
+        },
+        {
+          "title": "Ближайшая резервация:",
+          "type": 2,
+          "fields": ["closestReservations"]
+        }
+      ]
+    },
+    "supposed_to_be_busy": {
+      "infoItems": [
+        {
+          "title": "Статус:",
+          "type": 1,
+          "fields": ["state"]
+        },
+        {
+          "title": "Ближайшая резервация:",
+          "type": 2,
+          "fields": ["closestReservations"]
+        }
+      ]
+    },
+    "busy": {
+      "infoItems": [
+        {
+          "title": "Статус:",
+          "type": 1,
+          "fields": ["state"]
+        },
+        {
+          "title": "Обслуживается другим сотрудником",
+          "type": 0,
+          "fields": []
+        }
+      ]
+    },
+    "busy_by_you": {
+      "infoItems": [
+        {
+          "title": "Статус:",
+          "type": 1,
+          "fields": ["state"]
+        },
+        {
+          "title": "Обслуживается вами",
+          "type": 0,
+          "fields": []
+        }
+      ]
+    }
+  }
+}

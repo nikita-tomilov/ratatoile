@@ -1,8 +1,26 @@
-.tablesWrapper {
+.tablesWrapper,
+.outer {
   flex: 1;
   position: relative;
 }
 
-.singleTable {
+.singleTable,
+.tooltipWrapper {
   position: absolute;
+}
+
+.singleTable {
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.singleTable:hover {
+  transform: scale(1.1);
+}
+
+.tooltipWrapper {
+  z-index: 2;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background: #fff;
 }
