@@ -20,3 +20,13 @@ interface DishRepository : JpaRepository<Dish, Int>
 interface GuestOrderItemRepository : JpaRepository<GuestOrderItem, Int> {
   fun findAllByGuestId(guestId: Int): List<GuestOrderItem>
 }
+
+interface IngredientRepository : JpaRepository<Ingredient, Int>
+
+interface DishIngredientRepository : JpaRepository<DishIngredient, Int> {
+  fun findByDishId(dishId: Int): List<DishIngredient>
+}
+
+
+interface DishPhotoRepository : JpaRepository<DishPhoto, Int>
+interface MenuEntryRepository : JpaRepository<MenuEntry, Int>

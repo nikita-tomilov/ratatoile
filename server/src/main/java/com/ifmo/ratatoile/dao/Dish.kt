@@ -18,5 +18,9 @@ data class Dish(
   val description: String,
 
   @Column(nullable = false)
-  val price: BigDecimal //yes in postgre it is numeric w/out float point stuff
+  val price: BigDecimal, //yes in postgre it is numeric w/out float point stuff
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "photo_id", nullable = true)
+  val photo: DishPhoto? = null
 )

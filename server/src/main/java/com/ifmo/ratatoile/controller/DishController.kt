@@ -13,5 +13,5 @@ class DishController(
 ) {
 
   @GetMapping("/all")
-  fun menu() = dishService.getAll()
+  fun allDishes() = dishService.getAll()
 }

@@ -1,9 +1,6 @@
 package com.ifmo.ratatoile.dao
 
-import com.ifmo.ratatoile.dto.DishDto
-import com.ifmo.ratatoile.dto.GuestDto
-import com.ifmo.ratatoile.dto.TableDto
-import com.ifmo.ratatoile.dto.TableReservationDto
+import com.ifmo.ratatoile.dto.*
 
 fun Reservation.toDto() = TableReservationDto(
     id!!,
