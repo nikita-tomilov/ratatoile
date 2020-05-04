@@ -75,7 +75,7 @@ class GuestService(
 
   private fun List<GuestOrderItem>.toReceiptPerGuestDto(): ReceiptPerGuestDto {
     val dishes =
-        this.map { it.dishId }.toSet().map { it to dishService.getEntityById(it) }.toMap()
+        this.map { it.dishId }.toSet().map { it to dishService.getDishAsEntity(it) }.toMap()
     val positionsGroupedByDish = this.groupBy { it.dishId }
     val positions = positionsGroupedByDish.map {
       val dishId = it.key

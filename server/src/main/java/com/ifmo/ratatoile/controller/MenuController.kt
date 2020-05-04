@@ -21,8 +21,19 @@ class MenuController(
       value = ["/dishphoto/{id}"],
       produces = [MediaType.IMAGE_JPEG_VALUE]
   )
-  fun createReservation(@PathVariable("id") id: Int): ByteArray = dishPhotoService.getImage(id)
+  fun getDishPhoto(@PathVariable("id") id: Int): ByteArray = dishPhotoService.getImage(id)
 
   @GetMapping("/get")
   fun menu() = menuService.getCurrentMenu()
+
+  //4th step of creating menu item - Add dish to menu
+  @GetMapping("/add/{dishid}/{position}")
+  fun addEntry(
+    @PathVariable("dishid") dishId: Int,
+    @PathVariable("position") position: Int
+  ) = menuService.addEntryToMenu(dishId, position)
+
+  @GetMapping("/delete/{id}")
+  fun deleteEntry(id: Int) = menuService.deleteEntryFromMenu(id)
+
 }
