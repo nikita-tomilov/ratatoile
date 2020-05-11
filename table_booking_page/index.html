@@ -76,8 +76,7 @@
   </div>
 
 </section>
-<!-- END slider -->
-
+<!-- END preview slider -->
 
 <section class="section bg-light element-animate">
   <div class="container">
@@ -105,6 +104,7 @@
     </div>
   </div>
 </section>
+<!-- END features description -->
 
 <section class="section element-animate">
 
@@ -112,117 +112,27 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 text-center heading-wrap">
-          <h2>Произведения искусства</h2>
+          <h2>Полное меню</h2>
           <span class="back-text">Вкуснятинка</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="owl-carousel centernonloop">
-    <a href="#" class="item-dishes">
-      <div class="text">
-        <p class="dishes-price">9999.99р</p>
-        <h2 class="dishes-heading">Органическая паста с брокколи</h2>
-      </div>
-      <img src="img/dishes_1.jpg" alt="" class="img-fluid">
-    </a>
-    <a href="#" class="item-dishes">
-      <div class="text">
-        <p class="dishes-price">9999.99р</p>
-        <h2 class="dishes-heading">Изысканный рис с фирменным соусом</h2>
-      </div>
-      <img src="img/dishes_2.jpg" alt="" class="img-fluid">
-    </a>
-    <a href="#" class="item-dishes">
-      <div class="text">
-        <p class="dishes-price">9999.99р</p>
-        <h2 class="dishes-heading">Паста карбонара с коричневой шнягой</h2>
-      </div>
-      <img src="img/dishes_3.jpg" alt="" class="img-fluid">
-    </a>
-    <a href="#" class="item-dishes">
-      <div class="text">
-        <p class="dishes-price">9999.99р</p>
-        <h2 class="dishes-heading">Мяско с овощами</h2>
-      </div>
-      <img src="img/dishes_4.jpg" alt="" class="img-fluid">
-    </a>
+  <div id="menuCarousel" class="owl-carousel centernonloop">
   </div>
-</section> <!-- .section -->
+</section>
 
-<section class="section bg-light element-animate">
-
-  <div class="clearfix mb-5 pb-5">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 text-center heading-wrap">
-          <h2>Полное меню будет позже</h2>
-          <span class="back-text-dark">Надо потерпеть</span>
-        </div>
-      </div>
+<template id="menuItem">
+    <div class="text">
+      <p class="dishes-price"></p>
+      <h2 class="dishes-heading"></h2>
     </div>
-  </div>
+    <img src="" alt="" class="img-fluid">
+</template>
+<!-- END menu description -->
 
-  <!--div class="container">
-
-    <div class="row no-gutters">
-      <div class="col-md-6">
-        <div class="sched d-block d-lg-flex">
-          <div class="bg-image order-2" style="background-image: url('img/dishes_4.jpg');"></div>
-          <div class="text order-1">
-            <h3>Grilled Caesar salad, shaved reggiano</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto illo delectus...</p>
-            <p class="text-primary h3">$12.00</p>
-          </div>
-
-        </div>
-
-        <div class="sched d-block d-lg-flex">
-          <div class="bg-image" style="background-image: url('img/dishes_1.jpg');"></div>
-          <div class="text">
-            <h3>Spicy Calamari and beans</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto illo delectus...</p>
-            <p class="text-primary h3">$12.00</p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="col-md-6">
-        <div class="sched d-block d-lg-flex">
-          <div class="bg-image order-2" style="background-image: url('img/dishes_2.jpg');"></div>
-          <div class="text order-1">
-            <h3>Bacon wrapped wild gulf prawns</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto illo delectus...</p>
-            <p class="text-primary h3">$18.00</p>
-
-          </div>
-
-        </div>
-
-        <div class="sched d-block d-lg-flex">
-          <div class="bg-image" style="background-image: url('img/dishes_3.jpg');"></div>
-          <div class="text">
-            <h3>Seared ahi tuna fillet*, honey-ginger sauce</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto illo delectus...</p>
-            <p class="text-primary h3">$16.00</p>
-
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-
-
-  </div-->
-</section> <!-- .section -->
-
-
-    <section class="section element-animate">
+<section class="section element-animate">
 
       <div class="clearfix mb-5 pb-5">
         <div class="container-fluid">
@@ -347,7 +257,23 @@
 <script src="js/jquery.magnific-popup.min.js"></script>
 <script src="js/magnific-popup-options.js"></script>
 
-
 <script src="js/main.js"></script>
+
+<script id="menuTemplate" type="text/x-jquery-tmpl">
+    <div class="movie-bag">
+        <img src="Content/Thumbnails/${thumbnail}" class="thumbnail" />
+        <div class="base-info">
+            <h2>
+                ${title}
+            </h2>
+            <p>
+                Режиссер: ${director}<br />
+                В ролях: ${actors}<br />
+                Год: ${year}
+            </p>
+        </div>
+    </div>
+</script>
+
 </body>
 </html>

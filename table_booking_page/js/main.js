@@ -1,9 +1,59 @@
-(function ($) {
+
+const mapDataToTemplate = (data) => {
+    const newEl = document.createElement("a");
+    newEl.className = "item-dishes";
+    newEl.href="#";
+
+    let clone = document.importNode(
+        document.getElementById("menuItem").content,
+        true
+    );
+    newEl.appendChild(clone);
+    newEl.children[0].children[0].innerText = data.price;
+    newEl.children[0].children[1].innerText = data.name;
+    newEl.children[1].src = data.img;
+
+    return newEl;
+}
+
+const applyMenuData = (receivedData) => {
+    const menuItems = receivedData.menu.map(el => el.dish);
+    const menuCarousel = document.getElementById("menuCarousel");
+
+    menuItems.forEach(el => {
+        const img = getImg(el.photoId);
+        const newEl = mapDataToTemplate({ ...el, img });
+        menuCarousel.appendChild(newEl);
+    });
+
+    return Promise.resolve();
+}
+
+const getImg = (photoId) => {
+    if(photoId === null) {
+        return "img/filler.png";
+    } else{
+        return window.location.origin + "/freeapi/1.0/menu/dishphoto/"+photoId;
+    }
+};
+
+const getMenuData = () => {
+    const url = window.location.origin + "/freeapi/1.0/menu/get"
+    // applyMenuData({"menu":[{"id":1,"addedAt":0,"menuPosition":1,"dish":{"id":1,"name":"Паста карбонара с коричневой шнягой","description":"Паста карбонара с коричневой шнягой","price":9999.0,"photoId":0,"ingredients":[]}},{"id":2,"addedAt":0,"menuPosition":2,"dish":{"id":2,"name":"Мяско с овощами","description":"Мяско с овощами","price":9999.0,"photoId":null,"ingredients":[{"entryId":15,"ingredientId":2,"name":"мясо","amount":500.0}]}},{"id":3,"addedAt":0,"menuPosition":3,"dish":{"id":3,"name":"Руссиано","description":"Лучший напиток в истории человечества","price":999.0,"photoId":null,"ingredients":[]}}]});
+    return $.ajax({
+        url,
+        method: "GET"
+    }).then((data, status) => {
+        if(status === "success"){
+            return applyMenuData(data);
+        }
+        return Promise.resolve();
+    } );
+}
+
+getMenuData().then(() => (function ($) {
 
     'use strict';
-
-    // bootstrap dropdown hover
-
     // loader
     var loader = function () {
         setTimeout(function () {
@@ -203,4 +253,5 @@
         allowTimes:['12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
     });
 
-})(jQuery);
+
+})(jQuery));
