@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service
 class DishIngredientService(
   private val ingredientService: IngredientService,
   private val dishService: DishService,
-  private val dishIngredientRepository: DishIngredientRepository
+  private val dishIngredientRepository: DishIngredientRepository,
+  private val dishPhotoService: DishPhotoService
 ) {
 
   fun findIngredientsForDish(dishId: Int): List<DishIngredientDto> {
@@ -35,7 +36,7 @@ class DishIngredientService(
         d.name,
         d.description,
         d.price.toDouble(),
-        d.photo?.id,
+        dishPhotoService.getImageId(d.id!!),
         ingredients)
   }
 

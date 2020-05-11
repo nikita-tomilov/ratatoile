@@ -4,8 +4,7 @@ data class DishDto(
   val id: Int,
   val name: String,
   val description: String,
-  val price: Double,
-  val photoId: Int?
+  val price: Double
 )
 
 data class DishesDto(

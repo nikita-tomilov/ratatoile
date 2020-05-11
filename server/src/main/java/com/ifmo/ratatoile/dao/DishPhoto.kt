@@ -5,11 +5,29 @@ import javax.persistence.*
 @Entity
 @Table(name = "dish_photo")
 data class DishPhoto(
+
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
-  var id: Int? = null,
+  val dishId: Long,
 
   @Column(nullable = false)
-  val path: String
-)
+  val image: ByteArray
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as DishPhoto
+
+    if (dishId != other.dishId) return false
+    if (!image.contentEquals(other.image)) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = dishId
+    result = 31 * result + image.contentHashCode()
+    return result.toInt()
+  }
+}

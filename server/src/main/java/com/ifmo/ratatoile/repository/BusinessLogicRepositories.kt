@@ -28,5 +28,5 @@ interface DishIngredientRepository : JpaRepository<DishIngredient, Int> {
 }
 
 
-interface DishPhotoRepository : JpaRepository<DishPhoto, Int>
+interface DishPhotoRepository : JpaRepository<DishPhoto, Long>
 interface MenuEntryRepository : JpaRepository<MenuEntry, Int>

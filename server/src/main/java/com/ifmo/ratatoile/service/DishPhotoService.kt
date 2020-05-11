@@ -1,24 +1,37 @@
 package com.ifmo.ratatoile.service
 
-import com.google.common.io.Files
+import com.ifmo.ratatoile.dao.DishPhoto
 import com.ifmo.ratatoile.exception.NotFoundException
 import com.ifmo.ratatoile.repository.DishPhotoRepository
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.io.File
 
 @Service
 class DishPhotoService(
-  private val dishPhotoRepository: DishPhotoRepository,
-  @Value("\${dishPhotosDir}")
-  private val parentDir: String
+  private val dishPhotoRepository: DishPhotoRepository
 ) {
 
-  fun getImage(id: Int): ByteArray {
+  fun getImage(dishId: Int): ByteArray {
     val dishPhoto =
-        dishPhotoRepository.findByIdOrNull(id) ?: throw NotFoundException("No img for id $id")
-    val path = File(parentDir, dishPhoto.path)
-    return Files.toByteArray(path)
+        dishPhotoRepository.findByIdOrNull(dishId.toLong())
+          ?: throw NotFoundException("No img for id $dishId")
+    return dishPhoto.image
+  }
+
+  fun saveImage(dishId: Int, data: ByteArray): ImageSavedResponseDto {
+    val new = DishPhoto(dishId.toLong(), data)
+    val saved = dishPhotoRepository.saveAndFlush(new)
+    return ImageSavedResponseDto(saved.dishId, saved.image.size)
+  }
+
+  fun getImageId(dishId: Int): Int? {
+    val dishPhoto =
+        dishPhotoRepository.findByIdOrNull(dishId.toLong())
+    return dishPhoto?.dishId?.toInt()
   }
 }
+
+data class ImageSavedResponseDto(
+  val dishId: Long,
+  val imageSize: Int
+)

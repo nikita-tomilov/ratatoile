@@ -6,7 +6,6 @@ import com.ifmo.ratatoile.dto.DishCreateRequestDto
 import com.ifmo.ratatoile.dto.DishDto
 import com.ifmo.ratatoile.dto.DishesDto
 import com.ifmo.ratatoile.exception.NotFoundException
-import com.ifmo.ratatoile.repository.DishPhotoRepository
 import com.ifmo.ratatoile.repository.DishRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,8 +13,7 @@ import java.math.BigDecimal
 
 @Service
 class DishService(
-  private val dishRepository: DishRepository,
-  private val dishPhotoRepository: DishPhotoRepository
+  private val dishRepository: DishRepository
 ) {
 
   fun getDishAsEntity(id: Int): Dish {
@@ -30,19 +28,13 @@ class DishService(
   }
 
   fun addDish(rq: DishCreateRequestDto): DishDto {
-    val photo = if (rq.photoId != null) {
-      dishPhotoRepository.findByIdOrNull(rq.photoId)
-    } else null
-    val new = Dish(null, rq.name, rq.description, BigDecimal(rq.price), photo)
+    val new = Dish(null, rq.name, rq.description, BigDecimal(rq.price))
     val saved = dishRepository.saveAndFlush(new)
     return saved.toDto()
   }
 
   fun changeDish(rq: DishDto): DishDto {
-    val photo = if (rq.photoId != null) {
-      dishPhotoRepository.findByIdOrNull(rq.photoId)
-    } else null
-    val new = Dish(rq.id, rq.name, rq.description, BigDecimal(rq.price), photo)
+    val new = Dish(rq.id, rq.name, rq.description, BigDecimal(rq.price))
     val saved = dishRepository.saveAndFlush(new)
     return saved.toDto()
   }

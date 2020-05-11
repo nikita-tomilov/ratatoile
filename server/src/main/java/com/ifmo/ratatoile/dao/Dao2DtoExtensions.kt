@@ -23,6 +23,6 @@ fun Guest.toDto() = GuestDto(
     table.id!!,
     waiter.id!!)
 
-fun Dish.toDto() = DishDto(id!!, name, description, price.toDouble(), photo?.id)
+fun Dish.toDto() = DishDto(id!!, name, description, price.toDouble())
 
 fun Ingredient.toDto() = IngredientDto(id!!, name)

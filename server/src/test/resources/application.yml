@@ -15,5 +15,3 @@ spring:
     baselineOnMigrate: true
 server:
   port: 8081
-
-dishPhotosDir: /home/hotaro/ratatoile_dish_photos
