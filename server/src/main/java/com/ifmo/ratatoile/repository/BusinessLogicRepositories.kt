@@ -12,6 +12,8 @@ interface ReservationRepository : JpaRepository<Reservation, Int> {
   fun findAllWithinTimeRange(from: Instant, to: Instant): List<Reservation>
 }
 
+interface ReservationRequestRepository : JpaRepository<ReservationRequest, Int>
+
 interface GuestRepository : JpaRepository<Guest, Int> {
   fun findAllByLeavedAtIsNull(): List<Guest>
 }

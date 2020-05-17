@@ -19,6 +19,6 @@ class UnprotectedReservationController(
 
   @PostMapping("/create")
   fun createReservation(@RequestBody request: TableReservationRequest): TableReservationResponse =
-      tablesService.createReservation(request)
+      tablesService.createReservationRequest(request)
 
 }

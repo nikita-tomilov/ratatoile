@@ -76,7 +76,7 @@ function ok(data) {
         form.style.display = 'none';
         const status = document.getElementById('reservation-status');
         const name = data.personName;
-        status.innerHTML = "<h2>Спасибо " + name + ", ваш столик заказан!</h2><a href=\"index.html\">На главную</a>"
+        status.innerHTML = "<h2>Спасибо " + name + ", ваш запрос сохранен.<br>Ожидайте звонка с подтверждением.</h2><a href=\"index.html\">На главную</a>"
     });
 }
 

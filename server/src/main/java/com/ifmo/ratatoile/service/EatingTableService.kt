@@ -1,6 +1,7 @@
 package com.ifmo.ratatoile.service
 
 import com.ifmo.ratatoile.dao.EatingTable
+import com.ifmo.ratatoile.dao.ReservationRequest
 import com.ifmo.ratatoile.dao.toDto
 import com.ifmo.ratatoile.dto.*
 import com.ifmo.ratatoile.repository.EatingTableRepository
@@ -80,14 +81,14 @@ class EatingTableService(
 
   fun filterAvailableTables(
     busyTableIds: Set<Int>,
-    request: TableReservationRequest
+    request: ReservationRequest
   ): List<EatingTable> {
     return tableRepository.findAll()
         .asSequence()
         .filter { !busyTableIds.contains(it.id!!) }
         .filter { it.maxSeats >= request.seats }
         .filter {
-          when (request.type) {
+          when (request.getTypeEnum()) {
             TableReservationTableType.NORMAL -> true
             TableReservationTableType.NEAR_WINDOW -> it.isNearWindow()
             TableReservationTableType.NEAR_BAR -> it.isNearBar()
