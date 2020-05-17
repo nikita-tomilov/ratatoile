@@ -19,6 +19,9 @@ const mapDataToTemplate = (data) => {
 const applyMenuData = (receivedData) => {
     const menuItems = receivedData.menu.map(el => el.dish);
     const menuCarousel = document.getElementById("menuCarousel");
+    if (menuCarousel == null) {
+        return Promise.resolve();
+    }
 
     menuItems.forEach(el => {
         const img = getImg(el.photoId);
@@ -39,16 +42,34 @@ const getImg = (photoId) => {
 
 const getMenuData = () => {
     const url = window.location.origin + "/freeapi/1.0/menu/get"
+    const menuNotAvailable = {
+        "menu": [{
+            "id": 0,
+            "addedAt": 0,
+            "menuPosition": 1,
+            "dish": {
+                "id": 0,
+                "name": "Меню пока недоступно",
+                "description": "Меню пока недоступно",
+                "price": 9999.0,
+                "photoId": null,
+                "ingredients": []
+            }
+        }]
+    }
     // applyMenuData({"menu":[{"id":1,"addedAt":0,"menuPosition":1,"dish":{"id":1,"name":"Паста карбонара с коричневой шнягой","description":"Паста карбонара с коричневой шнягой","price":9999.0,"photoId":0,"ingredients":[]}},{"id":2,"addedAt":0,"menuPosition":2,"dish":{"id":2,"name":"Мяско с овощами","description":"Мяско с овощами","price":9999.0,"photoId":null,"ingredients":[{"entryId":15,"ingredientId":2,"name":"мясо","amount":500.0}]}},{"id":3,"addedAt":0,"menuPosition":3,"dish":{"id":3,"name":"Руссиано","description":"Лучший напиток в истории человечества","price":999.0,"photoId":null,"ingredients":[]}}]});
     return $.ajax({
         url,
         method: "GET"
     }).then((data, status) => {
-        if(status === "success"){
+        if (status === "success") {
             return applyMenuData(data);
         }
-        return Promise.resolve();
-    } );
+        return applyMenuData(menuNotAvailable);
+    }).catch((reason) => {
+        console.log(reason);
+        return applyMenuData(menuNotAvailable);
+    });
 }
 
 getMenuData().then(() => (function ($) {
