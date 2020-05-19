@@ -1,0 +1,102 @@
+.boxWrapper {
+  position: absolute;
+  background: white;
+  border: 1px solid #000;
+  border-radius: 4px;
+  opacity: 0.8;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+
+  width: 512px;
+  box-sizing: border-box;
+}
+
+.title {
+  max-height: 20px;
+  padding-bottom: 10px;
+
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+
+  color: #000000;
+
+  align-self: flex-start;
+}
+
+.info,
+.title {
+  flex: 1;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.itemTitle {
+  flex: 1;
+  font-weight: bold;
+  justify-self: flex-start;
+  align-self: flex-start;
+  padding-right: 10px;
+}
+
+.itemBody {
+  flex: 4;
+}
+
+.controlsVertical,
+.controlsHorizontal {
+  flex: 2;
+  padding: 10px 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.controlsVertical {
+  flex-direction: column;
+}
+
+.controlsHorizontal {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.btnWrapper {
+  margin-left: 20px;
+  max-height: 36px;
+}
+
+.tableWithReservationsWrapper,
+.reservation {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 5px 0;
+}
+
+.reservation {
+  flex-direction: row;
+  max-height: 40px;
+}
+
+.smallTitle {
+  font-size: medium;
+  align-self: flex-start;
+  font-weight: bold;
+}

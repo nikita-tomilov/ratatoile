@@ -3,8 +3,8 @@ import { getUrl } from "./url";
 import { Method } from "../services/types";
 
 export enum AppRole {
-  ADMIN,
-  USER,
+  ADMIN = "ADMIN",
+  USER = "USER",
 }
 
 type UserRoleResponse = {

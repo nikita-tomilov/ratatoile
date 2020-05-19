@@ -2,8 +2,10 @@ import { getToken } from "../api/auth";
 import { IAuthService } from "./types";
 import store from "../store/store";
 import { StateChangeActionType } from "../store/actions";
+import {getUserService} from "./userService";
 
 export const tokenStorageName = "token";
+const userService = getUserService();
 
 class AuthServiceClass implements IAuthService {
   constructor() {
@@ -15,6 +17,7 @@ class AuthServiceClass implements IAuthService {
   };
 
   public logout = (): void => {
+    userService.cleanData();
     this.removeUserToken();
     this.updateTokenValueInStore(null);
   };

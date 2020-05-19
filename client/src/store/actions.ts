@@ -1,11 +1,13 @@
 import { SideMenuType } from "../components/SideMenu";
-import {TableData} from "../api/tables";
+import { TableData } from "../api/types";
 
 export enum StateChangeActionType {
   SET_TOKEN = "SET_TOKEN",
   SET_AUTH_FAIL = "SET_AUTH_FAIL",
   SET_CURRENT_MENU_ITEM = "SET_CURRENT_MENU_ITEM",
   SET_TABLES_DATA = "SET_TABLES_DATA",
+  SET_LAST_SELECTED_TABLE_ID = "SET_LAST_SELECTED_TABLE_ID",
+  SET_ADMIN_ROLE = "SET_ADMIN_ROLE",
 }
 
 type SetToken = {
@@ -28,8 +30,20 @@ type SetTablesData = {
   payload: TableData[];
 };
 
+type SetLastSelectedTableId = {
+  type: StateChangeActionType.SET_LAST_SELECTED_TABLE_ID;
+  payload: number | null;
+};
+
+type SetAdminRole = {
+  type: StateChangeActionType.SET_ADMIN_ROLE;
+  payload: boolean | null;
+};
+
 export type StateChangeActions =
   | SetToken
   | SetAuthFail
   | SetCurrentMenuItem
-  | SetTablesData;
+  | SetTablesData
+  | SetLastSelectedTableId
+  | SetAdminRole;

@@ -1,0 +1,38 @@
+{
+  "info": {
+    "free": [
+      {
+        "title": "Статус:",
+        "fields": ["state"]
+      }
+    ],
+    "free_but_booked": [
+      {
+        "title": "Статус:",
+        "fields": ["state"]
+      }
+    ],
+    "supposed_to_be_busy": [
+      {
+        "title": "Статус:",
+        "fields": ["state"]
+      }
+    ],
+    "busy": [
+      {
+        "title": "Статус:",
+        "fields": ["state"]
+      },
+      {
+        "title": "Начало обслуживания",
+        "fields": ["state"]
+      }
+    ],
+    "busy_by_you": [
+      {
+        "title": "Статус:",
+        "fields": ["state"]
+      }
+    ]
+  }
+}

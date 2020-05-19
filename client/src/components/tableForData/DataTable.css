@@ -1,0 +1,27 @@
+.dataTableWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dataTableRow,
+.headerRow {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.headerRow {
+  border-bottom: 1px solid #000;
+}
+
+.dataTableCell,
+.headerCell {
+  flex: 1;
+  padding: 10px;
+}
+
+.headerCell {
+  font-weight: bold;
+  font-size: 20px;
+}

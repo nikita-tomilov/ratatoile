@@ -30,6 +30,18 @@ function rootReducer(
         tables: action.payload,
       };
     }
+    case StateChangeActionType.SET_LAST_SELECTED_TABLE_ID: {
+      return {
+        ...state,
+        lastSelectedTableId: action.payload,
+      };
+    }
+    case StateChangeActionType.SET_ADMIN_ROLE: {
+      return {
+        ...state,
+        isAdmin: action.payload,
+      };
+    }
   }
   return state;
 }
