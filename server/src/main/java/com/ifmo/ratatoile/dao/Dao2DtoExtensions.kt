@@ -26,3 +26,8 @@ fun Guest.toDto() = GuestDto(
 fun Dish.toDto() = DishDto(id!!, name, description, price.toDouble())
 
 fun Ingredient.toDto() = IngredientDto(id!!, name)
+
+fun CriticDonation.toDto() =
+    CriticDonationDto(id!!, amount, criticName, reason, date.toEpochMilli())
+
+fun InspectorDonation.toDto() = InspectorDonationDto(id!!, amount, reason, date.toEpochMilli())
