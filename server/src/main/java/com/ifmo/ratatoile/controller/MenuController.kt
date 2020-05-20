@@ -31,6 +31,6 @@ class MenuController(
   ) = menuService.addEntryToMenu(dishId, position)
 
   @DeleteMapping("/delete/{id}")
-  fun deleteEntry(id: Int) = menuService.deleteEntryFromMenu(id)
+  fun deleteEntry(@PathVariable("id") id: Int) = menuService.deleteEntryFromMenu(id)
 
 }
