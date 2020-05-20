@@ -29,7 +29,7 @@ class DishController(
   @PostMapping("/update")
   fun updateDish(@RequestBody rq: DishDto) = dishService.changeDish(rq)
 
-  @GetMapping("/delete/{id}")
+  @DeleteMapping("/delete/{id}")
   fun deleteDish(@PathVariable("id") id: Int) = dishService.deleteDish(id)
 
   @PostMapping("/setimage/{id}")

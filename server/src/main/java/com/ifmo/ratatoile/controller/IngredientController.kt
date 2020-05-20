@@ -26,6 +26,6 @@ class IngredientController(
   @PostMapping("/update")
   fun updateIngredient(@RequestBody rq: IngredientDto) = ingredientService.changeIngredient(rq)
 
-  @GetMapping("/delete/{id}")
+  @DeleteMapping("/delete/{id}")
   fun deleteIngredient(@PathVariable("id") id: Int) = ingredientService.deleteIngredient(id)
 }

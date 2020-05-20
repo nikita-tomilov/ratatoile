@@ -24,7 +24,7 @@ class DonationController(
   fun createCriticDonation(@RequestBody rq: CriticDonationRequestDto) =
       donationService.createCriticDonation(rq)
 
-  @GetMapping("/critic/delete/{id}")
+  @DeleteMapping("/critic/delete/{id}")
   fun deleteCriticDonation(@PathVariable("id") id: Int) = donationService.deleteCriticDonation(id)
 
   @GetMapping("/inspector/all")
@@ -37,7 +37,7 @@ class DonationController(
   fun createInspectorDonation(@RequestBody rq: InspectorDonationRequestDto) =
       donationService.createInspectorDonation(rq)
 
-  @GetMapping("/inspector/delete/{id}")
+  @DeleteMapping("/inspector/delete/{id}")
   fun deleteInspectorDonation(@PathVariable("id") id: Int) =
       donationService.deleteInspectorDonation(id)
 }

@@ -3,10 +3,7 @@ package com.ifmo.ratatoile.controller
 import com.ifmo.ratatoile.service.DishPhotoService
 import com.ifmo.ratatoile.service.MenuService
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(
@@ -33,7 +30,7 @@ class MenuController(
     @PathVariable("position") position: Int
   ) = menuService.addEntryToMenu(dishId, position)
 
-  @GetMapping("/delete/{id}")
+  @DeleteMapping("/delete/{id}")
   fun deleteEntry(id: Int) = menuService.deleteEntryFromMenu(id)
 
 }
