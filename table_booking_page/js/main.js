@@ -1,3 +1,6 @@
+function cap(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const mapDataToTemplate = (data) => {
     const newEl = document.createElement("a");
@@ -8,10 +11,22 @@ const mapDataToTemplate = (data) => {
         document.getElementById("menuItem").content,
         true
     );
+
+    let ings = "";
+    data.ingredients.forEach(ingredient => ings = ings + "\r\n - " + cap(ingredient.name));
+
+    const hoverText = data.description + ings;
+
     newEl.appendChild(clone);
     newEl.children[0].children[0].innerText = data.price;
+    newEl.children[0].children[0].title = hoverText;
     newEl.children[0].children[1].innerText = data.name;
+    newEl.children[0].children[1].title = hoverText;
+    newEl.children[0].children[2].innerText = hoverText;
+    newEl.children[0].children[2].style = "color: #FFFFFF; font-size: 20px;";
     newEl.children[1].src = data.img;
+    newEl.children[1].title = hoverText;
+    newEl.children[1].style = "height: 400px; width: auto; margin-left: auto; margin-right: auto;";
 
     return newEl;
 }
