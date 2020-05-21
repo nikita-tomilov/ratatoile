@@ -15,7 +15,7 @@ export const TableWithReservations = (props: {
   const { tableData, isAdmin, onClose } = props;
   const onDelete = useCallback(
     (event) => deleteReservation(event.currentTarget.value).then(onClose),
-    [tableData.closestReservations]
+    [onClose]
   );
   const onStart = useCallback(
     (guestCount: number) => {

@@ -14,6 +14,7 @@ const SignIn = (props: {
   authFailMessage: string | null;
   setCurrentMenuItem: (nextMenuItem: SideMenuType) => void;
 }): JSX.Element => {
+  const { setCurrentMenuItem, authFailMessage } = props;
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,8 +30,8 @@ const SignIn = (props: {
 
   const onSignIn = useCallback(() => {
     authService.login(name, password);
-    props.setCurrentMenuItem(SideMenuType.COMMON);
-  }, [name, password]);
+    setCurrentMenuItem(SideMenuType.COMMON);
+  }, [name, password, setCurrentMenuItem]);
 
   const onKeyPress = useCallback(
     (e: React.KeyboardEvent) => {
@@ -71,9 +72,7 @@ const SignIn = (props: {
         onChange={onPasswordChange}
         onKeyDown={onKeyPress}
       />
-      {props.authFailMessage && (
-        <div className="error">{props.authFailMessage}</div>
-      )}
+      {authFailMessage && <div className="error">{authFailMessage}</div>}
       <Button
         type="submit"
         fullWidth

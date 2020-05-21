@@ -22,7 +22,7 @@ export const DataTable = (props: DataTableProps): JSX.Element | null => {
       <>
         {data.map((singleData, index) => {
           return (
-            <div className="dataTableRow">
+            <div className="dataTableRow" key={"dataRow" + index}>
               {Object.entries(scheme).map((field) => {
                 const d = singleData[field[0]];
                 return (

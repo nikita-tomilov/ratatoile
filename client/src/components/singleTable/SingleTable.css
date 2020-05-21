@@ -12,6 +12,10 @@
   max-height: 100px;
   align-self: flex-start;
   justify-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .body {

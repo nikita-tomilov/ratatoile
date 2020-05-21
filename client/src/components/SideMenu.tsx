@@ -7,7 +7,12 @@ export enum SideMenuType {
   COMMON = "COMMON",
   TABLE = "TABLE",
   RESERVATIONS = "RESERVATIONS",
+  WAREHOUSE = "WAREHOUSE",
+  DISH_LIST = "DISH_LIST",
   LOGOUT = "LOGOUT",
+  DONATIONS_CRITIC = "DONATIONS_CRITIC",
+  DONATIONS_INSPECTOR = "DONATIONS_INSPECTOR",
+  MENU = "MENU",
 }
 
 export const sideMenuMapForUser = {
@@ -18,6 +23,11 @@ export const sideMenuMapForUser = {
 
 export const sideMenuMapForAdmin = {
   [SideMenuType.RESERVATIONS]: "Бронирования",
+  [SideMenuType.WAREHOUSE]: "Склад",
+  [SideMenuType.DISH_LIST]: "Список блюд",
+  [SideMenuType.MENU]: "Меню",
+  [SideMenuType.DONATIONS_CRITIC]: "Пожертвования Критик",
+  [SideMenuType.DONATIONS_INSPECTOR]: "Пожертвования СЭС",
   ...sideMenuMapForUser,
 };
 

@@ -1,0 +1,91 @@
+.dishListWrapper,
+.dishEditWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+
+  position: relative;
+}
+
+.addDishWrapper {
+  height: 30%;
+}
+
+.headerControls,
+.headerWrapper,
+.editFields {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.headerWrapper,
+.editFields {
+  flex: 1;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.editFields {
+  box-sizing: border-box;
+}
+
+.headerWrapper {
+  max-height: 40px;
+}
+
+.part,
+.photoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-end;
+  align-items: flex-end;
+}
+
+.photoArea {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.photo {
+  min-width: 200px;
+  min-height: 200px;
+  margin: 0 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.large {
+  flex: 4;
+}
+
+.addIngredient {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  margin: 0 10px;
+}
+
+.margin {
+  margin-bottom: 8px;
+}
+
+.button {
+  max-width: 120px;
+}
