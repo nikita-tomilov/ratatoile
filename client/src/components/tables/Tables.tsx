@@ -5,25 +5,15 @@ import { connect } from "react-redux";
 import store, { AppState } from "../../store/store";
 import { StateChangeActionType } from "../../store/actions";
 import { Table } from "./Table";
-import { getUserService } from "../../services/userService";
 import { InfoBox } from "../infoBox/InfoBox";
 import { ITablesProps } from "../infoBox/types";
 import { TableData, TableState } from "../../api/types";
 
-const userService = getUserService();
-
 export const Tables = (props: ITablesProps): JSX.Element => {
-  const { setTablesData, setLastSelectedTable, tables } = props;
-  const [isAdmin, setIsAdmin] = useState(null as boolean | null);
+  const { setTablesData, setLastSelectedTable, tables, isAdmin } = props;
   const [selectedTableData, setSelectedTableData] = useState(
     null as TableData | null
   );
-
-  useEffect(() => {
-    userService.hasAdminRole().then((data) => {
-      setIsAdmin(data)
-    });
-  }, []);
 
   useEffect(() => {
     getAllTablesWithReservations().then((data) => {
@@ -78,6 +68,7 @@ const mapStateToProps = (store: AppState) => {
   return {
     tables: store.tables,
     selectedId: store.lastSelectedTableId,
+    isAdmin: store.isAdmin,
   };
 };
 

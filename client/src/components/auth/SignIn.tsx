@@ -3,7 +3,7 @@ import "./SignIn.css";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { connect } from "react-redux";
-import { getAuthService } from "../../services/authService";
+import { getAuthService } from "./authService";
 import store, { AppState } from "../../store/store";
 import { SideMenuType } from "../SideMenu";
 import { StateChangeActionType } from "../../store/actions";

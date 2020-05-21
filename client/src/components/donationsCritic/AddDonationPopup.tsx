@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button } from "@material-ui/core";
 import { getAllDishesRequest } from "../../api/dishes";
+import { checkIsNumber } from "../infoBox/AddGuests";
 
 const mentionLabels = [
   "Нетрадиционный персонал",
@@ -17,14 +18,16 @@ export const AddDonationPopup = (props: {
   title: string;
   isInspector: boolean;
 }): JSX.Element => {
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState<number>(0);
   const [name, setName] = useState("");
   const [mention, setMention] = useState("");
   const [dish, setDish] = useState("");
   const [dishLabels, setDishLabels] = useState<string[]>([]);
   const priceChangeHandler = useCallback(
-    (ev) => setPrice(ev.currentTarget.value),
-    []
+    (event) =>
+      checkIsNumber(event.currentTarget.value) &&
+      setPrice(Number(event.currentTarget.value)),
+    [price]
   );
   const nameChangeHandler = useCallback(
     (ev) => setName(ev.currentTarget.value),
@@ -61,11 +64,12 @@ export const AddDonationPopup = (props: {
         />
         {props.isInspector ? (
           <Autocomplete
-            value={mention}
-            onChange={mentionChangeHandler}
+            inputValue={mention}
+            onInputChange={mentionChangeHandler}
             id="controllable-states-demo"
             options={mentionLabels}
             style={{ width: 300 }}
+            freeSolo={true}
             renderInput={(params: any) => (
               <TextField
                 {...params}
@@ -90,10 +94,11 @@ export const AddDonationPopup = (props: {
               onChange={nameChangeHandler}
             />
             <Autocomplete
-              value={dish}
-              onChange={dishChangeHandler}
+              inputValue={dish}
+              onInputChange={dishChangeHandler}
               id="controllable-states-demo"
               options={dishLabels}
+              freeSolo={true}
               style={{ width: 300, marginTop: 16 }}
               renderInput={(params: any) => (
                 <TextField

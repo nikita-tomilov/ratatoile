@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
@@ -31,19 +30,6 @@ export const sideMenuMapForAdmin = {
   ...sideMenuMapForUser,
 };
 
-const StyledTabs = withStyles({
-  root: {
-    width: "100%",
-  },
-  indicator: {
-    backgroundColor: "#1890ff",
-  },
-})(Tabs);
-
-const StyledTab = withStyles({
-  root: { flex: 1 },
-})(Tab);
-
 export const SideMenu = (props: {
   onSelect: (selected: SideMenuType) => void;
   selected: SideMenuType;
@@ -62,13 +48,21 @@ export const SideMenu = (props: {
     return Object.entries(
       isAdmin ? sideMenuMapForAdmin : sideMenuMapForUser
     ).map((entry) => {
-      return <StyledTab key={entry[0]} label={entry[1]} value={entry[0]} />;
+      return <Tab key={entry[0]} label={entry[1]} value={entry[0]} />;
     });
   }, [isAdmin]);
 
   return (
-    <StyledTabs value={selected} onChange={onMenuItemSelect}>
+    <Tabs
+      value={selected}
+      onChange={onMenuItemSelect}
+      indicatorColor="primary"
+      variant="scrollable"
+      scrollButtons="auto"
+      textColor="primary"
+      style={{ maxWidth: '100%' }}
+    >
       {menuItems}
-    </StyledTabs>
+    </Tabs>
   );
 };

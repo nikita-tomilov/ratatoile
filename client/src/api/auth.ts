@@ -1,6 +1,6 @@
 import { route } from './url'
-import { Method } from '../services/types'
-import { getAuthService } from '../services/authService'
+import { Method } from '../components/auth/types'
+import { getAuthService } from '../components/auth/authService'
 
 const request = require('request')
 

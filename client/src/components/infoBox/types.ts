@@ -10,6 +10,7 @@ export interface ITableProps {
 export interface ITablesProps {
   tables: TableData[];
   selectedId: number | null;
+  isAdmin: boolean | null;
   setTablesData: (tables: TableData[]) => void;
   setLastSelectedTable: (id: number | null) => void;
 }

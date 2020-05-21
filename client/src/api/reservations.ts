@@ -1,6 +1,6 @@
 import { customFetch } from "./customFetch";
 import { getUrl } from "./url";
-import { Method } from "../services/types";
+import { Method } from "../components/auth/types";
 import { RowData } from "../components/tableForData/types";
 
 const reservationPrefix = "/reservationrequests/";

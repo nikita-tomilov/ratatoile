@@ -3,6 +3,7 @@ import "./DishList.css";
 import { Button } from "@material-ui/core";
 import { addDishRequest } from "../../api/dishes";
 import { DishForm } from "./DishForm";
+import { checkIsNumber } from "../infoBox/AddGuests";
 
 export const AddDishPopup = (props: {
   onDishAdded: () => void;
@@ -11,22 +12,21 @@ export const AddDishPopup = (props: {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
-  const onNameChange = useCallback((ev) => setName(ev.currentTarget.value), []);
   const addDishHandler = useCallback(
     () =>
       addDishRequest({ name, description, price, photoId: 0 }).then(
         props.onDishAdded
       ),
-    [name, props.onDishAdded]
+    [name, description, price, props.onDishAdded]
   );
-  const onDescriptionChange = useCallback(
-    (ev) => setDescription(ev.currentTarget.value),
-    []
-  );
-  const onPriceChange = useCallback(
-    (ev) => setPrice(Number(ev.currentTarget.value) || 0),
-    []
-  );
+  const onNameChange = useCallback((ev) => setName(ev.currentTarget.value), []);
+  const onDescriptionChange = useCallback((ev) => {
+    setDescription(ev.currentTarget.value);
+  }, []);
+  const onPriceChange = useCallback((event) => {
+    checkIsNumber(event.currentTarget.value) &&
+      setPrice(Number(event.currentTarget.value));
+  }, []);
   return (
     <div className="addIngredientWrapper addDishWrapper">
       <div className="popupTitle">Добавить новый ингредиент</div>

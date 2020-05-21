@@ -1,7 +1,7 @@
 import { RowData } from "../components/tableForData/types";
 import { customFetch } from "./customFetch";
 import { getUrl } from "./url";
-import { Method } from "../services/types";
+import { Method } from "../components/auth/types";
 
 const menuPrefix = "/menu/";
 

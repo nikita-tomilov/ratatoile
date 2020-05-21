@@ -1,7 +1,7 @@
 import React from "react";
 import "./Logout.css";
 import Button from "@material-ui/core/Button";
-import { getAuthService } from "../../services/authService";
+import { getAuthService } from "./authService";
 const authService = getAuthService();
 
 export const Logout = (props: {

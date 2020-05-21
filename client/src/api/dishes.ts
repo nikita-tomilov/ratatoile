@@ -1,7 +1,7 @@
 import { RowData } from "../components/tableForData/types";
 import {customFetch, customFetchForImages} from "./customFetch";
 import {getUnprotectedUrl, getUrl} from "./url";
-import { Method } from "../services/types";
+import { Method } from "../components/auth/types";
 import {ErrorResponse} from "./types";
 
 const dishPrefix = "/dish/";

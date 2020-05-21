@@ -8,27 +8,30 @@ import { Logout } from "./auth/Logout";
 import Tables from "./tables/Tables";
 import SingleTable from "./singleTable/SingleTable";
 import Reservations from "./reservation/Reservations";
-import { getUserService } from "../services/userService";
 import { Warehouse } from "./warehouse/Warehouse";
 import { DishList } from "./dishes/DishList";
 import DonationsCritic from "./donationsCritic/DonationsCritic";
 import DonationsInspector from "./donationsInspector/DonationsInspector";
 import { Menu } from "./menu/Menu";
 import { Button } from "@material-ui/core";
+import { AppRole, getUserData } from "../api/user";
 
 type Props = {
   currentMenuItem: SideMenuType;
   isAdmin: boolean | null;
+  username: string | null;
   setCurrentMenuItem: (nextMenuItem: SideMenuType) => void;
-  setAdmin: (isAdmin: boolean) => void;
+  setUserData: (isAdmin: boolean, userName: string) => void;
 };
-const userService = getUserService();
 
 export class Workspace extends React.PureComponent<Props> {
   message: string | null = null;
 
   componentDidMount() {
-    userService.hasAdminRole().then((isAdmin) => this.props.setAdmin(isAdmin));
+    getUserData().then((data) => {
+      const isAdmin = data.roles.includes(AppRole.ADMIN);
+      this.props.setUserData(isAdmin, data.username);
+    });
   }
 
   showNotification = (message: string): void => {
@@ -42,7 +45,12 @@ export class Workspace extends React.PureComponent<Props> {
   };
 
   render(): React.ReactNode {
-    const { currentMenuItem, setCurrentMenuItem, isAdmin } = this.props;
+    const {
+      currentMenuItem,
+      setCurrentMenuItem,
+      isAdmin,
+      username,
+    } = this.props;
     return (
       <div className="wrapper">
         <SideMenu
@@ -54,10 +62,7 @@ export class Workspace extends React.PureComponent<Props> {
           {currentMenuItem === SideMenuType.COMMON ? <Tables /> : null}
           {currentMenuItem === SideMenuType.TABLE ? <SingleTable /> : null}
           {currentMenuItem === SideMenuType.LOGOUT ? (
-            <Logout
-              isAdmin={isAdmin || false}
-              userName={userService.username || ""}
-            />
+            <Logout isAdmin={isAdmin || false} userName={username || ""} />
           ) : null}
 
           {currentMenuItem === SideMenuType.RESERVATIONS && isAdmin ? (
@@ -100,6 +105,7 @@ const mapStateToProps = (store: AppState) => {
   return {
     currentMenuItem: store.currentMenuItem,
     isAdmin: store.isAdmin,
+    username: store.username,
   };
 };
 
@@ -111,10 +117,13 @@ const mapDispatchToProps = () => {
         payload: nextMenuItem,
       });
     },
-    setAdmin: (isAdmin: boolean) => {
+    setUserData: (isAdmin: boolean, userName: string) => {
       store.dispatch({
         type: StateChangeActionType.SET_ADMIN_ROLE,
-        payload: isAdmin,
+        payload: {
+          isAdmin,
+          userName,
+        },
       });
     },
   };

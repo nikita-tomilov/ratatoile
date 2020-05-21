@@ -1,5 +1,5 @@
-import { Method } from "../services/types";
-import { getAuthService } from "../services/authService";
+import { Method } from "../components/auth/types";
+import { getAuthService } from "../components/auth/authService";
 
 export const customFetch = <ReqT, ResT>(
   url: string,

@@ -39,7 +39,8 @@ function rootReducer(
     case StateChangeActionType.SET_ADMIN_ROLE: {
       return {
         ...state,
-        isAdmin: action.payload,
+        isAdmin: action.payload.isAdmin,
+        username: action.payload.userName,
       };
     }
   }

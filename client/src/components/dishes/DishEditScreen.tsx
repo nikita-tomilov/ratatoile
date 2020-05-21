@@ -5,9 +5,11 @@ import { DataTable } from "../tableForData/DataTable";
 import { getDishIngredientsScheme } from "./igridientsListConfig";
 import { RowData } from "../tableForData/types";
 import {
-  getDishInfoRequest, getImageUrl,
+  getDishInfoRequest,
+  getImageUrl,
   removeIngredientFromDishRequest,
-  updateDishRequest, uploadImage,
+  updateDishRequest,
+  uploadImage,
 } from "../../api/dishes";
 import { DishForm } from "./DishForm";
 import { AddIngredientToDish } from "./AddIngredientToDish";
@@ -60,9 +62,9 @@ export const DishEditScreen = (props: {
 
   let image = <div className="photo">Фото не задано {photoId}</div>;
   if (photoId != null) {
-    const url = getImageUrl(photoId) + "?dummy=" + (new Date())
-    console.log(url)
-    image = <img className="photo" src={url} />;
+    const url = getImageUrl(photoId) + "?dummy=" + new Date();
+    console.log(url);
+    image = <img className="photo" src={url} alt="some pic"/>;
   }
   const onPhotoFileChange = useCallback(
     (e) => {
@@ -74,25 +76,23 @@ export const DishEditScreen = (props: {
       reader.onloadend = () => {
         setPhotoFileData({
           file: file,
-          imagePreviewUrl: reader.result
+          imagePreviewUrl: reader.result,
         });
-        console.log("set file", file)
-        console.log("set imagePreviewUrl", reader.result)
-      }
+        console.log("set file", file);
+        console.log("set imagePreviewUrl", reader.result);
+      };
 
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(file);
     },
     [photoFileData]
   );
   const onPhotoFileSubmit = useCallback(
     (ev) => {
       console.log(ev);
-      console.log(photoFileData)
-      const data = new FormData()
-      data.append('file', photoFileData.file)
-      uploadImage(props.dishId, data).then(() =>
-        setData(null)
-      );
+      console.log(photoFileData);
+      const data = new FormData();
+      data.append("file", photoFileData.file);
+      uploadImage(props.dishId, data).then(() => setData(null));
     },
     [photoFileData]
   );
@@ -116,12 +116,22 @@ export const DishEditScreen = (props: {
       <div className="editFields">
         <div className="photoArea">
           {image}
-          <input className="fileInput"
-                 type="file"
-                 onChange={onPhotoFileChange} />
-          <button className="submitButton"
-                  type="submit"
-                  onClick={onPhotoFileSubmit}>Загрузить</button>
+          <div className="imageLoad">
+            <input
+              className="fileInput"
+              type="file"
+              onChange={onPhotoFileChange}
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={onPhotoFileSubmit}
+              disabled={photoFileData === null}
+              style={{ width: 220, marginTop: 150 }}
+            >
+              Загрузить
+            </Button>
+          </div>
         </div>
         <div className="part">
           <DishForm

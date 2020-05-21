@@ -45,7 +45,6 @@ const DonationsCritic = (): JSX.Element => {
 
   const onSubmit = useCallback((ev) => {
     const data = JSON.parse(ev.currentTarget.value);
-    debugger;
     createCriticDonationRequest({
       amount: data.price,
       criticName: data.name,

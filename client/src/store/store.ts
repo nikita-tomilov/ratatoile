@@ -10,6 +10,7 @@ export type AppState = {
   tables: TableData[];
   lastSelectedTableId: number | null;
   isAdmin: boolean | null;
+  username: string | null;
 };
 
 export const initialState: AppState = {
@@ -19,6 +20,7 @@ export const initialState: AppState = {
   tables: [],
   lastSelectedTableId: null,
   isAdmin: null,
+  username: null
 };
 
 const store = createStore(rootReducer);

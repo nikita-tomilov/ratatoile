@@ -1,5 +1,5 @@
 import { getUrl } from "./url";
-import { Method } from "../services/types";
+import { Method } from "../components/auth/types";
 import { customFetch } from "./customFetch";
 import { GetAllTablesResponse } from "./types";
 import { TableEstimateResponse } from "../components/singleTable/types";

@@ -37,7 +37,10 @@ type SetLastSelectedTableId = {
 
 type SetAdminRole = {
   type: StateChangeActionType.SET_ADMIN_ROLE;
-  payload: boolean | null;
+  payload: {
+    isAdmin: boolean | null;
+    userName: string | null;
+  };
 };
 
 export type StateChangeActions =
