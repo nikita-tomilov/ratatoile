@@ -7,13 +7,13 @@ function reserveTable() {
     }
 
     const personName = document.getElementById('person_name').value.toString();
-    if (personName === "") {
+    if ((personName === "") || !(/\S/.test(personName))) {
         alert("Не задано имя")
         return
     }
 
     const personPhone = document.getElementById('person_phone').value.toString();
-    if (personPhone === "") {
+    if ((personPhone === "") || !(/\S/.test(personPhone))) {
         alert("Не задан номер телефона")
         return
     }
