@@ -1,0 +1,31 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_TOP_DOWN
+
+Person_Ext(human, "Guest")
+Person(staff, "Restaurant staff")
+
+Boundary(chromeUser, "Web Browser") {
+    Container(webPage, "Restaurant website", "HTML, CSS, JS", "Allows guests to book tables")
+}
+
+Boundary(chromeRestaurant, "Chrome on a restaurant device") {
+    Container(react, "Ratatoile client SPA", "ReactJS, TypeScript, CSS", "Allows staff to access system")
+}
+
+System_Boundary(helios, "Helios") {
+    Container(apache, "Apache", "C", "Proxy/Web server")
+    Container(spring, "Ratatoile Server Application", "Kotlin, Spring", "Back-end application")
+    ContainerDb(postgre, "Database", "PostgreSQL 10.x", "Stores everything")
+}
+
+Rel(human, webPage, "Uses", "")
+Rel(webPage, apache, "Gets HTML files, access to REST API", "HTTP/JSON")
+Rel(apache, spring, "Proxies REST API calls", "HTTP/JSON")
+Rel(spring, postgre, "Access the data", "SQL")
+
+Rel(staff, react, "Uses", "")
+Rel(react, apache, "Gets SPA, access to REST API", "HTTP/JSON")
+
+@enduml
