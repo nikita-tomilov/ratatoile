@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ifmo.ratatoile.servicefordiagram</OriginalElement>
+  <nodes>
+    <node x="1085.0" y="431.0">com.ifmo.ratatoile.servicefordiagram.DishService</node>
+    <node x="0.0" y="431.0">com.ifmo.ratatoile.servicefordiagram.EatingTableService</node>
+    <node x="532.0" y="431.0">com.ifmo.ratatoile.servicefordiagram.DonationService</node>
+    <node x="516.0" y="1118.0">com.ifmo.ratatoile.servicefordiagram.UserService</node>
+    <node x="0.0" y="819.0">com.ifmo.ratatoile.servicefordiagram.DishIngredientService</node>
+    <node x="839.0" y="1118.0">com.ifmo.ratatoile.servicefordiagram.DishPhotoService</node>
+    <node x="0.0" y="0.0">com.ifmo.ratatoile.servicefordiagram.GuestService</node>
+    <node x="844.0" y="0.0">com.ifmo.ratatoile.servicefordiagram.ReservationsService</node>
+    <node x="681.0" y="819.0">com.ifmo.ratatoile.servicefordiagram.IngredientService</node>
+    <node x="0.0" y="1118.0">com.ifmo.ratatoile.servicefordiagram.MenuService</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.40000000000000013" x="995.0833333333326" y="541.083333333333" />
+  <SelectedNodes>
+    <node>com.ifmo.ratatoile.servicefordiagram.ReservationsService</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
