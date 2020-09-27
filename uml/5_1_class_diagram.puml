@@ -1,0 +1,56 @@
+@startuml
+
+package "com.ifmo.ratatoile" {
+  package "controller" {
+    class UnprotectedMenuController {
+     - {field} dishPhotoService: DishPhotoService
+     - {field} menuService: MenuService
+     + {method} menu(): MenuDto
+     + {method} getImage(): ByteArray
+    }
+  }
+  package "service" {
+    class MenuService {
+     - {field} dishService: DishService
+     - {field} dishIngredientService: DishIngredientService
+     - {field} menuEntryRepository: MenuEntryRepository
+     + {method} getCurrentMenu(): MenuDto
+     + {method} addEntryToMenu(dishId: Int, position: Int): MenuEntryDto
+     + {method} deleteEntryFromMenu(id: Int): MenuEntryDto
+    }
+  }
+  package "repository" {
+    interface JpaRepository
+    class MenuEntryRepository
+  }
+  package "dto" {
+    class MenuDto {
+      + {field} menu: List<MenuEntryDto>
+    }
+    class MenuEntryDto {
+      + {field} id: Int,
+      + {field} addedAt: Long,
+      + {field} menuPosition: Int,
+      + {field} dish: DishWithIngredientsDto
+    }
+    MenuDto "0..1" o-- "0..*" MenuEntryDto
+  }
+  package "dao" {
+    class MenuEntry {
+      + {field} id: Int
+      + {field} dishId: Int
+      + {field} addedAt: Long
+      + {field} menuPosition: Int
+    }
+  }
+
+  UnprotectedMenuController --> MenuService : <<use>>
+  MenuService --> MenuEntryRepository : <<use>>
+  MenuService --> MenuDto : <<create>>
+  MenuService --> MenuEntryDto : <<create>>
+  MenuService --> MenuEntry : <<create>>
+  MenuEntryRepository --|> JpaRepository : <<implement>>
+  MenuEntryRepository --* MenuEntry : <<contains>>
+}
+
+@enduml
