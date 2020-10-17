@@ -34,3 +34,5 @@ interface MenuEntryRepository : JpaRepository<MenuEntry, Int>
 
 interface CriticDonationRepository : JpaRepository<CriticDonation, Int>
 interface InspectorDonationRepository : JpaRepository<InspectorDonation, Int>
+
+interface GuestCardRepository: JpaRepository<GuestCard, Int>
