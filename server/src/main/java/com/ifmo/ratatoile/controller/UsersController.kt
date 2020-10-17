@@ -2,6 +2,7 @@ package com.ifmo.ratatoile.controller
 
 import com.ifmo.ratatoile.dto.UserDto
 import com.ifmo.ratatoile.service.UserService
+import feign.RequestLine
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,4 +21,12 @@ class UsersController(
   @GetMapping("/meAsAdmin")
   @PreAuthorize("hasAuthority('ADMIN')")
   fun meAsAdmin(): UserDto = userService.me()
+}
+
+interface UsersApi {
+  @RequestLine("GET /me")
+  fun me(): UserDto
+
+  @RequestLine("GET /meAsAdmin")
+  fun meAsAdmin(): UserDto
 }
