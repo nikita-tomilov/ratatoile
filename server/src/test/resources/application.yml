@@ -9,6 +9,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate # changes to db schema are handled by flyway
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
   flyway:
     locations: classpath:db/migrations
     enabled: true
