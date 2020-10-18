@@ -7,6 +7,16 @@ export const getWarehouseScheme = (props: any): Scheme => {
         name: {
             label: "Название ингридиента",
         },
+        amount: {
+            label: "Количество на складе" ,
+            renderer: (value: RowData) => {
+                return (
+                    <div className="dataTableCell">
+                        {value.warehouseAmount} {value.uom}
+                    </div>
+                );
+            }
+        },
         controls: {
             label: "Управление",
             renderer: (value: RowData) => {
