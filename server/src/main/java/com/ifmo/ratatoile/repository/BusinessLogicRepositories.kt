@@ -27,6 +27,7 @@ interface IngredientRepository : JpaRepository<Ingredient, Int>
 
 interface DishIngredientRepository : JpaRepository<DishIngredient, Int> {
   fun findByDishId(dishId: Int): List<DishIngredient>
+  fun findByIngredientId(ingredientId: Int): List<DishIngredient>
 }
 
 interface DishPhotoRepository : JpaRepository<DishPhoto, Long>

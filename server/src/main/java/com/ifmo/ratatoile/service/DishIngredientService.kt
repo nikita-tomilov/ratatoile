@@ -2,16 +2,18 @@ package com.ifmo.ratatoile.service
 
 import com.ifmo.ratatoile.dao.Dish
 import com.ifmo.ratatoile.dao.DishIngredient
+import com.ifmo.ratatoile.dao.Ingredient
 import com.ifmo.ratatoile.dto.DishIngredientDto
 import com.ifmo.ratatoile.dto.DishWithIngredientsDto
 import com.ifmo.ratatoile.exception.BadRequestException
 import com.ifmo.ratatoile.repository.DishIngredientRepository
+import com.ifmo.ratatoile.repository.IngredientRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class DishIngredientService(
-  private val ingredientService: IngredientService,
+  private val ingredientRepository: IngredientRepository,
   private val dishService: DishService,
   private val dishIngredientRepository: DishIngredientRepository,
   private val dishPhotoService: DishPhotoService
@@ -19,7 +21,7 @@ class DishIngredientService(
 
   fun findIngredientsForDish(dishId: Int): List<DishIngredientDto> {
     return dishIngredientRepository.findByDishId(dishId).map {
-      val ingredient = ingredientService.getIngredientAsEntity(it.ingredientId)
+      val ingredient = getIngredientAsEntity(it.ingredientId)
       DishIngredientDto(it.id!!, ingredient.id!!, ingredient.name, it.amount.toDouble())
     }
   }
@@ -42,7 +44,7 @@ class DishIngredientService(
 
   fun addIngredientToDish(dishId: Int, ingredientId: Int, amount: Double): DishWithIngredientsDto {
     val dish = dishService.getDishAsEntity(dishId)
-    val ingredient = ingredientService.getIngredientAsEntity(ingredientId)
+    val ingredient = getIngredientAsEntity(ingredientId)
     val new = DishIngredient(null, dish.id!!, ingredient.id!!, amount.toFloat())
     dishIngredientRepository.saveAndFlush(new)
     return getDishWithIngredients(dish)
@@ -54,5 +56,15 @@ class DishIngredientService(
     dishIngredientRepository.deleteById(id)
     val dish = dishService.getDishAsEntity(entry.dishId)
     return getDishWithIngredients(dish)
+  }
+
+  fun getDishesForIngredient(ingredientId: Int): List<DishWithIngredientsDto> {
+    val dishIngredients = dishIngredientRepository.findByIngredientId(ingredientId)
+    return dishIngredients.map { getDishWithIngredients(it.dishId) }
+  }
+
+  private fun getIngredientAsEntity(id: Int): Ingredient {
+    return ingredientRepository.findByIdOrNull(id)
+      ?: throw BadRequestException("No ingredient for id $id")
   }
 }

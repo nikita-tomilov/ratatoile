@@ -5,7 +5,9 @@ import com.ifmo.ratatoile.dao.toDto
 import com.ifmo.ratatoile.dto.IngredientCreateRequestDto
 import com.ifmo.ratatoile.dto.IngredientDto
 import com.ifmo.ratatoile.dto.IngredientsDto
+import com.ifmo.ratatoile.exception.BadRequestException
 import com.ifmo.ratatoile.exception.NotFoundException
+import com.ifmo.ratatoile.repository.DishIngredientRepository
 import com.ifmo.ratatoile.repository.IngredientRepository
 import mu.KLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class IngredientService(
-  private val ingredientRepository: IngredientRepository
+  private val ingredientRepository: IngredientRepository,
+  private val dishIngredientService: DishIngredientService
 ) {
 
   fun getIngredients(): IngredientsDto =
@@ -55,6 +58,10 @@ class IngredientService(
 
   fun deleteIngredient(id: Int): IngredientDto {
     val i = getIngredientAsEntity(id)
+    val dishes = dishIngredientService.getDishesForIngredient(i.id!!)
+    if (dishes.isNotEmpty()) {
+      throw BadRequestException("This dish is used in ${dishes.joinToString { it.name }}")
+    }
     ingredientRepository.deleteById(id)
     return i.toDto()
   }
