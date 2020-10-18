@@ -31,6 +31,16 @@ class GuestsController(
     @PathVariable("dish_id") dishId: Int
   ) = guestService.addDishToGuest(guestId, dishId)
 
+  @GetMapping("/remove/order/entry/{order_entry_id}")
+  fun rmDishFromGuest(
+    @PathVariable("order_entry_id") orderEntryId: Int
+  ) = guestService.rmDishFromGuest(orderEntryId)
+
+  @GetMapping("/status/{table_id}")
+  fun status(
+    @PathVariable("table_id") tableId: Int
+  ) = guestService.tableStatus(tableId)
+
   @GetMapping("/checkout/{table_id}")
   fun checkout(
     @PathVariable("table_id") tableId: Int

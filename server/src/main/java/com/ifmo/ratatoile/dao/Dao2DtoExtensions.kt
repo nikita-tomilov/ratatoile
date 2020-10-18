@@ -33,3 +33,5 @@ fun CriticDonation.toDto() =
 fun InspectorDonation.toDto() = InspectorDonationDto(id!!, amount, reason, date.toEpochMilli())
 
 fun GuestCard.toDto() = GuestCardDto(id!!, fullName, phone, birthday.toEpochMilli())
+
+fun GuestOrderItem.toDto() = GuestOrderItemDto(id!!, guestId, dishId)

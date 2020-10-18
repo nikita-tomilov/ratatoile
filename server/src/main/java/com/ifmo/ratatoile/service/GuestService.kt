@@ -7,6 +7,7 @@ import com.ifmo.ratatoile.dto.*
 import com.ifmo.ratatoile.exception.BadRequestException
 import com.ifmo.ratatoile.repository.GuestOrderItemRepository
 import com.ifmo.ratatoile.repository.GuestRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.Instant
@@ -48,44 +49,78 @@ class GuestService(
     })
   }
 
-  fun addDishToGuest(guestId: Int, dishId: Int): ReceiptPerGuestDto {
+  fun addDishToGuest(guestId: Int, dishId: Int): GuestOrderItemsDto {
     val orderItem = GuestOrderItem(null, guestId, dishId)
     orderItemRepository.saveAndFlush(orderItem)
 
     val orderItemsPerGuest = orderItemRepository.findAllByGuestId(guestId)
-    return orderItemsPerGuest.toReceiptPerGuestDto()
+    return GuestOrderItemsDto(orderItemsPerGuest.map { it.toDto() })
+  }
+
+  fun rmDishFromGuest(orderEntryId: Int): GuestOrderItemsDto {
+    val orderItem = orderItemRepository.findByIdOrNull(orderEntryId)
+      ?: throw BadRequestException("No order entry id $orderEntryId")
+    orderItemRepository.delete(orderItem)
+
+    val orderItemsPerGuest = orderItemRepository.findAllByGuestId(orderItem.guestId)
+    return GuestOrderItemsDto(orderItemsPerGuest.map { it.toDto() })
+  }
+
+  fun tableStatus(tableId: Int): ReceiptWOrderItemDto {
+    val guestsForTable = currentGuestsAsEntities().filter { it.table.id!! == tableId }
+    if (guestsForTable.isEmpty()) throw BadRequestException("This table $tableId has no guests")
+
+    val receiptsPerGuest = guestsForTable.map {
+      val orderItemsPerGuest = orderItemRepository.findAllByGuestId(it.id!!)
+      orderItemsPerGuest.toReceiptPerGuestDto(it.id ?: error("should-never-happen"))
+    }
+
+    return ReceiptWOrderItemDto(receiptsPerGuest.map { it.sumPerGuest }.sum(), receiptsPerGuest)
   }
 
   fun checkoutTable(tableId: Int): ReceiptDto {
     val guestsForTable = currentGuestsAsEntities().filter { it.table.id!! == tableId }
     if (guestsForTable.isEmpty()) throw BadRequestException("This table $tableId has no guests")
 
-    val receiptsPerGuest = guestsForTable.map {
-      val orderItemsPerGuest = orderItemRepository.findAllByGuestId(it.id!!)
-      orderItemsPerGuest.toReceiptPerGuestDto()
-    }
-
     guestsForTable.forEach {
       it.leavedAt = Instant.now()
       guestRepository.saveAndFlush(it)
     }
 
+    val receiptsPerGuest = guestsForTable.map {
+      val orderItemsPerGuest = orderItemRepository.findAllByGuestId(it.id!!)
+      orderItemsPerGuest.toReceiptPerGuestDtoWithGrouping(it.id ?: error("should-never-happen"))
+    }
+
     return ReceiptDto(receiptsPerGuest.map { it.sumPerGuest }.sum(), receiptsPerGuest)
   }
 
-  private fun List<GuestOrderItem>.toReceiptPerGuestDto(): ReceiptPerGuestDto {
+  private fun List<GuestOrderItem>.toReceiptPerGuestDto(guestId: Int): ReceiptPerGuestWOrderItemDto {
+    val dishes =
+        this.map { it.dishId }.toSet().map { it to dishService.getDishAsEntity(it) }.toMap()
+    val positions = this.map {
+      val dishId = it.dishId
+      val dish = dishes[dishId] ?: error("should-never-happen")
+      ReceiptPerGuestPosWOrderItemDto(
+          it.toDto(),
+          dish.name, dish.price.toDouble())
+    }
+    return ReceiptPerGuestWOrderItemDto(guestId, positions, positions.map { it.price }.sum())
+  }
+
+  private fun List<GuestOrderItem>.toReceiptPerGuestDtoWithGrouping(guestId: Int): ReceiptPerGuestDto {
     val dishes =
         this.map { it.dishId }.toSet().map { it to dishService.getDishAsEntity(it) }.toMap()
     val positionsGroupedByDish = this.groupBy { it.dishId }
     val positions = positionsGroupedByDish.map {
       val dishId = it.key
       val items = it.value
-      val dish = dishes[dishId]!!
+      val dish = dishes[dishId] ?: error("should-never-happen")
       ReceiptPerGuestPositionDto(
           dish.name, items.size, dish.price.toDouble(), dish.price.multiply(
           BigDecimal(items.size)).toDouble())
     }
-    return ReceiptPerGuestDto(positions, positions.map { it.total }.sum())
+    return ReceiptPerGuestDto(guestId, positions, positions.map { it.total }.sum())
   }
 
   private fun currentGuestsAsEntities() = guestRepository.findAllByLeavedAtIsNull()
