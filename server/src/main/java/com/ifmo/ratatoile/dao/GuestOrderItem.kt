@@ -1,5 +1,6 @@
 package com.ifmo.ratatoile.dao
 
+import com.ifmo.ratatoile.dto.GuestOrderItemStatus
 import javax.persistence.*
 
 @Entity
@@ -14,5 +15,10 @@ data class GuestOrderItem(
   val guestId: Int,
 
   @Column(nullable = false)
-  val dishId: Int
-)
+  val dishId: Int,
+
+  @Column(nullable = false)
+  var status: String
+) {
+  fun getStatusEnum() = GuestOrderItemStatus.valueOf(status)
+}

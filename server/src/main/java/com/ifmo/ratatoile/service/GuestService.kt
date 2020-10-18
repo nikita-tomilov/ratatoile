@@ -50,7 +50,8 @@ class GuestService(
   }
 
   fun addDishToGuest(guestId: Int, dishId: Int): GuestOrderItemsDto {
-    val orderItem = GuestOrderItem(null, guestId, dishId)
+    val orderItem =
+        GuestOrderItem(null, guestId, dishId, GuestOrderItemStatus.getInitialStatus().name)
     orderItemRepository.saveAndFlush(orderItem)
 
     val orderItemsPerGuest = orderItemRepository.findAllByGuestId(guestId)
@@ -75,7 +76,7 @@ class GuestService(
       orderItemsPerGuest.toReceiptPerGuestDto(it.id ?: error("should-never-happen"))
     }
 
-    return ReceiptWOrderItemDto(receiptsPerGuest.map { it.sumPerGuest }.sum(), receiptsPerGuest)
+    return ReceiptWOrderItemDto(receiptsPerGuest.map { it.sumPerGuest }.sum(), receiptsPerGuest.sortedBy { it.guestId })
   }
 
   fun checkoutTable(tableId: Int): ReceiptDto {
@@ -87,12 +88,18 @@ class GuestService(
       guestRepository.saveAndFlush(it)
     }
 
+    guestsForTable.forEach { guest ->
+      val orderItemsPerGuest = orderItemRepository.findAllByGuestId(guest.id!!)
+      orderItemsPerGuest.forEach { it.status = GuestOrderItemStatus.getFinalStatus().name }
+      orderItemRepository.saveAll(orderItemsPerGuest)
+    }
+
     val receiptsPerGuest = guestsForTable.map {
       val orderItemsPerGuest = orderItemRepository.findAllByGuestId(it.id!!)
       orderItemsPerGuest.toReceiptPerGuestDtoWithGrouping(it.id ?: error("should-never-happen"))
     }
 
-    return ReceiptDto(receiptsPerGuest.map { it.sumPerGuest }.sum(), receiptsPerGuest)
+    return ReceiptDto(receiptsPerGuest.map { it.sumPerGuest }.sum(), receiptsPerGuest.sortedBy { it.guestId })
   }
 
   private fun List<GuestOrderItem>.toReceiptPerGuestDto(guestId: Int): ReceiptPerGuestWOrderItemDto {
