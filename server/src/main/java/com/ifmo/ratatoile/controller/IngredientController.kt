@@ -28,4 +28,10 @@ class IngredientController(
 
   @DeleteMapping("/delete/{id}")
   fun deleteIngredient(@PathVariable("id") id: Int) = ingredientService.deleteIngredient(id)
+
+  @GetMapping("/warehouse/{id}/{amount}")
+  fun setIngredientAmount(
+    @PathVariable("id") id: Int,
+    @PathVariable("amount") amount: Double
+  ) = ingredientService.setAmount(id, amount)
 }

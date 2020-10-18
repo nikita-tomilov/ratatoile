@@ -30,15 +30,27 @@ class IngredientService(
   }
 
   fun addIngredient(rq: IngredientCreateRequestDto): IngredientDto {
-    val new = Ingredient(null, rq.name)
+    val new = Ingredient(null, rq.name, 0.0f, rq.uom)
     val saved = ingredientRepository.saveAndFlush(new)
     return saved.toDto()
   }
 
   fun changeIngredient(rq: IngredientDto): IngredientDto {
-    val new = Ingredient(rq.id, rq.name)
+    val new = Ingredient(rq.id, rq.name, rq.warehouseAmount.toFloat(), rq.uom)
     val saved = ingredientRepository.saveAndFlush(new)
     return saved.toDto()
+  }
+
+  fun setAmount(id: Int, amount: Double): IngredientDto {
+    val existing = getIngredientAsEntity(id)
+    existing.warehouseAmount = amount.toFloat()
+    ingredientRepository.save(existing)
+    return existing.toDto()
+  }
+
+  fun decreaseAmount(id: Int, amount: Double): IngredientDto {
+    val existing = getIngredientAsEntity(id)
+    return setAmount(id, existing.warehouseAmount - amount)
   }
 
   fun deleteIngredient(id: Int): IngredientDto {

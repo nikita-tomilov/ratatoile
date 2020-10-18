@@ -11,5 +11,11 @@ data class Ingredient(
   var id: Int? = null,
 
   @Column(nullable = false)
-  val name: String
+  val name: String,
+
+  @Column(nullable = false)
+  var warehouseAmount: Float,
+
+  @Column(nullable = false)
+  val uom: String
 )
