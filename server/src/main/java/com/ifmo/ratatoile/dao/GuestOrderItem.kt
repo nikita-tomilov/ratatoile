@@ -21,4 +21,7 @@ data class GuestOrderItem(
   var status: String
 ) {
   fun getStatusEnum() = GuestOrderItemStatus.valueOf(status)
+  fun setStatusEnum(status: GuestOrderItemStatus) {
+    this.status = status.name
+  }
 }

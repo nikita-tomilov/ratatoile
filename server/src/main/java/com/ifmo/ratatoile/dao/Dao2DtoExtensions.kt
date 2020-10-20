@@ -35,3 +35,4 @@ fun InspectorDonation.toDto() = InspectorDonationDto(id!!, amount, reason, date.
 fun GuestCard.toDto() = GuestCardDto(id!!, fullName, phone, birthday.toEpochMilli())
 
 fun GuestOrderItem.toDto() = GuestOrderItemDto(id!!, guestId, dishId, this.getStatusEnum())
+fun List<GuestOrderItem>.toDto() = GuestOrderItemsDto(this.map { it.toDto() })

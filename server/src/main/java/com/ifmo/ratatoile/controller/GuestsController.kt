@@ -25,17 +25,6 @@ class GuestsController(
     @PathVariable("guests_count") guestsCount: Int
   ) = guestService.addGuestsForTable(tableId, guestsCount)
 
-  @GetMapping("/add/dish/{guest_id}/{dish_id}")
-  fun addDishToGuest(
-    @PathVariable("guest_id") guestId: Int,
-    @PathVariable("dish_id") dishId: Int
-  ) = guestService.addDishToGuest(guestId, dishId)
-
-  @GetMapping("/remove/order/entry/{order_entry_id}")
-  fun rmDishFromGuest(
-    @PathVariable("order_entry_id") orderEntryId: Int
-  ) = guestService.rmDishFromGuest(orderEntryId)
-
   @GetMapping("/status/{table_id}")
   fun status(
     @PathVariable("table_id") tableId: Int
