@@ -2,7 +2,8 @@ function cap(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const mapDataToTemplate = (data) => {
+const mapDataToTemplate = (menuEntry, imgUrl) => {
+    const dishData = menuEntry.dish;
     const newEl = document.createElement("a");
     newEl.className = "item-dishes";
     newEl.href="#";
@@ -13,34 +14,53 @@ const mapDataToTemplate = (data) => {
     );
 
     let ings = "";
-    data.ingredients.forEach(ingredient => ings = ings + "\r\n - " + cap(ingredient.name));
+    dishData.ingredients.forEach(ingredient => ings = ings + "\r\n - " + cap(ingredient.name));
 
-    const hoverText = data.description + ings;
+    const isAvailable = menuEntry.available === true
+
+    let nameText = dishData.name;
+    let fullDescrText = dishData.description + ings;
+    let shortDescrText = dishData.description + "\r\n" + dishData.ingredients.length + " уникальных ингредиентов";
+    let hoverText = fullDescrText
+
+    if (!isAvailable) {
+        nameText = "Скоро:\r\n" + nameText
+    }
+
+    let descrText = fullDescrText
+    if (descrText.length > 80) {
+        descrText = shortDescrText
+    }
 
     newEl.appendChild(clone);
-    newEl.children[0].children[0].innerText = data.price;
+    newEl.children[0].children[0].innerText = dishData.price;
     newEl.children[0].children[0].title = hoverText;
-    newEl.children[0].children[1].innerText = data.name;
+    newEl.children[0].children[1].innerText = nameText;
     newEl.children[0].children[1].title = hoverText;
-    newEl.children[0].children[2].innerText = hoverText;
+    newEl.children[0].children[2].innerText = descrText;
     newEl.children[0].children[2].style = "color: #FFFFFF; font-size: 20px;";
-    newEl.children[1].src = data.img;
+    newEl.children[1].src = imgUrl;
     newEl.children[1].title = hoverText;
     newEl.children[1].style = "height: 400px; width: auto; margin-left: auto; margin-right: auto;";
+
+    if (!isAvailable) {
+        newEl.children[0].children[0].style = "background-color: #800000;"
+        newEl.children[1].style.opacity = "0.25";
+    }
 
     return newEl;
 }
 
 const applyMenuData = (receivedData) => {
-    const menuItems = receivedData.menu.map(el => el.dish);
+    const menuItems = receivedData.menu
     const menuCarousel = document.getElementById("menuCarousel");
     if (menuCarousel == null) {
         return Promise.resolve();
     }
 
     menuItems.forEach(el => {
-        const img = getImg(el.photoId);
-        const newEl = mapDataToTemplate({ ...el, img });
+        const img = getImg(el.dish.photoId);
+        const newEl = mapDataToTemplate(el, img);
         menuCarousel.appendChild(newEl);
     });
 
@@ -69,7 +89,8 @@ const getMenuData = () => {
                 "price": 9999.0,
                 "photoId": null,
                 "ingredients": []
-            }
+            },
+            "available": false
         }]
     }
     // applyMenuData({"menu":[{"id":1,"addedAt":0,"menuPosition":1,"dish":{"id":1,"name":"Паста карбонара с коричневой шнягой","description":"Паста карбонара с коричневой шнягой","price":9999.0,"photoId":0,"ingredients":[]}},{"id":2,"addedAt":0,"menuPosition":2,"dish":{"id":2,"name":"Мяско с овощами","description":"Мяско с овощами","price":9999.0,"photoId":null,"ingredients":[{"entryId":15,"ingredientId":2,"name":"мясо","amount":500.0}]}},{"id":3,"addedAt":0,"menuPosition":3,"dish":{"id":3,"name":"Руссиано","description":"Лучший напиток в истории человечества","price":999.0,"photoId":null,"ingredients":[]}}]});

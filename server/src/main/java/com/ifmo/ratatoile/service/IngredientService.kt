@@ -19,7 +19,7 @@ class IngredientService(
 ) {
 
   fun getIngredients(): IngredientsDto =
-      IngredientsDto(ingredientRepository.findAll().map { it.toDto() })
+      IngredientsDto(ingredientRepository.findAll().map { it.toDto() }.sortedBy { it.id })
 
   fun getIngredient(id: Int): IngredientDto {
     val i = getIngredientAsEntity(id)
