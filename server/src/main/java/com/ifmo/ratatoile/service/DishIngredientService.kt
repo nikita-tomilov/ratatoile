@@ -27,8 +27,14 @@ class DishIngredientService(
   }
 
   fun findDishIngredients(dishId: Int): List<DishIngredientWithEntity> {
+    val dishEntity = dishService.getDishAsEntity(dishId)
     return dishIngredientRepository.findByDishId(dishId)
-        .map { DishIngredientWithEntity(getIngredientAsEntity(it.ingredientId), it.amount) }
+        .map {
+          DishIngredientWithEntity(
+              dishEntity,
+              getIngredientAsEntity(it.ingredientId),
+              it.amount)
+        }
   }
 
   fun getDishWithIngredients(dishId: Int): DishWithIngredientsDto {
@@ -75,6 +81,7 @@ class DishIngredientService(
 }
 
 data class DishIngredientWithEntity(
+  val dish: Dish,
   val ingredient: Ingredient,
   val amount: Float
 )

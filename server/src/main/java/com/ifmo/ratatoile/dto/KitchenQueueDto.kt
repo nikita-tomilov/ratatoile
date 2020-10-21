@@ -6,5 +6,6 @@ data class KitchenQueueDto(
 
 data class KitchenQueueEntryDto(
   val entry: GuestOrderItemDto,
-  val tableId: Int = -1
+  val tableId: Int = -1,
+  var ingredientsMissingList: String = ""
 )

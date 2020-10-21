@@ -14,21 +14,30 @@ import java.time.Instant
 class MenuService(
   private val dishService: DishService,
   private val dishIngredientService: DishIngredientService,
-  private val menuEntryRepository: MenuEntryRepository
+  private val menuEntryRepository: MenuEntryRepository,
+  private val kitchenQueueService: KitchenQueueService
 ) {
 
   fun getCurrentMenu(): MenuDto {
+    val warehouseStatus = kitchenQueueService.getWarehouseStatus()
     val dishes = menuEntryRepository.findAll()
         .sortedBy { it.menuPosition }
         .map {
           it to dishService.getDishAsEntity(it.dishId)
         }
         .map {
+          val menuEntry = it.first
+          val dish = it.second
+          val missingIngredients =
+              kitchenQueueService.findMissingIngredientsForDish(
+                  warehouseStatus,
+                  dish.id ?: error(""))
           MenuEntryDto(
-              it.first.id!!,
-              it.first.addedAt,
-              it.first.menuPosition,
-              dishIngredientService.getDishWithIngredients(it.second))
+              menuEntry.id ?: error(""),
+              menuEntry.addedAt,
+              menuEntry.menuPosition,
+              dishIngredientService.getDishWithIngredients(dish),
+              missingIngredients.isEmpty())
         }
     return MenuDto(dishes)
   }
@@ -41,7 +50,8 @@ class MenuService(
         saved.id!!,
         saved.addedAt,
         saved.menuPosition,
-        dishIngredientService.getDishWithIngredients(dish))
+        dishIngredientService.getDishWithIngredients(dish),
+        kitchenQueueService.findMissingIngredientsForDish(dishId).isEmpty())
   }
 
   fun deleteEntryFromMenu(id: Int): MenuEntryDto {
@@ -53,7 +63,8 @@ class MenuService(
         entry.id!!,
         entry.addedAt,
         entry.menuPosition,
-        dishIngredientService.getDishWithIngredients(dish))
+        dishIngredientService.getDishWithIngredients(dish),
+        kitchenQueueService.findMissingIngredientsForDish(dish.id ?: error("")).isEmpty())
   }
 
   companion object : KLogging()

@@ -33,6 +33,8 @@ class IngredientService(
       ?: throw NotFoundException("no ingredient for idd $id")
   }
 
+  fun getIngredientsAsEntities(): List<Ingredient> = ingredientRepository.findAll()
+
   fun addIngredient(rq: IngredientCreateRequestDto): IngredientDto {
     val new = Ingredient(null, rq.name, rq.warehouseAmount.toFloat(), rq.uom)
     val saved = ingredientRepository.saveAndFlush(new)
