@@ -19,11 +19,16 @@ class DishIngredientService(
   private val dishPhotoService: DishPhotoService
 ) {
 
-  fun findIngredientsForDish(dishId: Int): List<DishIngredientDto> {
+  fun findDishIngredientsForDish(dishId: Int): List<DishIngredientDto> {
     return dishIngredientRepository.findByDishId(dishId).map {
       val ingredient = getIngredientAsEntity(it.ingredientId)
       DishIngredientDto(it.id!!, ingredient.id!!, ingredient.name, it.amount.toDouble())
     }
+  }
+
+  fun findDishIngredients(dishId: Int): List<DishIngredientWithEntity> {
+    return dishIngredientRepository.findByDishId(dishId)
+        .map { DishIngredientWithEntity(getIngredientAsEntity(it.ingredientId), it.amount) }
   }
 
   fun getDishWithIngredients(dishId: Int): DishWithIngredientsDto {
@@ -32,7 +37,7 @@ class DishIngredientService(
   }
 
   fun getDishWithIngredients(d: Dish): DishWithIngredientsDto {
-    val ingredients = findIngredientsForDish(d.id!!)
+    val ingredients = findDishIngredientsForDish(d.id!!)
     return DishWithIngredientsDto(
         d.id!!,
         d.name,
@@ -68,3 +73,8 @@ class DishIngredientService(
       ?: throw BadRequestException("No ingredient for id $id")
   }
 }
+
+data class DishIngredientWithEntity(
+  val ingredient: Ingredient,
+  val amount: Float
+)

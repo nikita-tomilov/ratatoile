@@ -14,7 +14,8 @@ class KitchenQueueService(
   private val guestOrderItemService: GuestOrderItemService,
   private val guestService: GuestService,
   private val kitchenQueueRepository: KitchenQueueRepository,
-  private val userService: UserService
+  private val userService: UserService,
+  private val ingredientService: IngredientService
 ) {
 
   fun getQueue() = KitchenQueueDto(
@@ -43,8 +44,18 @@ class KitchenQueueService(
     return getQueue()
   }
 
+  fun foodIsReady(guestOrderItemId: Int): KitchenQueueDto {
+    val item = guestOrderItemService.findById(guestOrderItemId)
+    guestOrderItemService.updateStatus(item, GuestOrderItemStatus.READY)
+
+    val ingredients = ingredientService.getIngredients(item.dishId)
+    ingredients.forEach {
+      ingredientService.decreaseAmount(it.ingredient, it.amount)
+    }
+    return getQueue()
+  }
+
   fun foodIsServed(guestOrderItemId: Int): KitchenQueueDto {
-    //TODO: charge the ingredients from the warehouse - they were spent on cooking food
     val entries = kitchenQueueRepository.findAll().filter { it.orderItem.id == guestOrderItemId }
     kitchenQueueRepository.deleteAll(entries)
     val item = guestOrderItemService.findById(guestOrderItemId)

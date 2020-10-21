@@ -7,7 +7,6 @@ import com.ifmo.ratatoile.dto.IngredientDto
 import com.ifmo.ratatoile.dto.IngredientsDto
 import com.ifmo.ratatoile.exception.BadRequestException
 import com.ifmo.ratatoile.exception.NotFoundException
-import com.ifmo.ratatoile.repository.DishIngredientRepository
 import com.ifmo.ratatoile.repository.IngredientRepository
 import mu.KLogging
 import org.springframework.data.repository.findByIdOrNull
@@ -27,6 +26,8 @@ class IngredientService(
     return i.toDto()
   }
 
+  fun getIngredients(dishId: Int) = dishIngredientService.findDishIngredients(dishId)
+
   fun getIngredientAsEntity(id: Int): Ingredient {
     return ingredientRepository.findByIdOrNull(id)
       ?: throw NotFoundException("no ingredient for idd $id")
@@ -44,16 +45,19 @@ class IngredientService(
     return saved.toDto()
   }
 
-  fun setAmount(id: Int, amount: Double): IngredientDto {
-    val existing = getIngredientAsEntity(id)
-    existing.warehouseAmount = amount.toFloat()
-    ingredientRepository.save(existing)
-    return existing.toDto()
+  fun setAmount(ingredient: Ingredient, amount: Float): IngredientDto {
+    ingredient.warehouseAmount = amount
+    ingredientRepository.save(ingredient)
+    return ingredient.toDto()
   }
 
-  fun decreaseAmount(id: Int, amount: Double): IngredientDto {
+  fun setAmount(id: Int, amount: Float): IngredientDto {
     val existing = getIngredientAsEntity(id)
-    return setAmount(id, existing.warehouseAmount - amount)
+    return setAmount(existing, amount)
+  }
+
+  fun decreaseAmount(ingredient: Ingredient, amount: Float): IngredientDto {
+    return setAmount(ingredient, ingredient.warehouseAmount - amount)
   }
 
   fun deleteIngredient(id: Int): IngredientDto {

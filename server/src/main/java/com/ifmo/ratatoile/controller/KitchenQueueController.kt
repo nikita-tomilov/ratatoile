@@ -1,9 +1,7 @@
 package com.ifmo.ratatoile.controller
 
-import com.ifmo.ratatoile.dao.toDto
 import com.ifmo.ratatoile.dto.GuestOrderItemStatus
 import com.ifmo.ratatoile.dto.KitchenQueueDto
-import com.ifmo.ratatoile.dto.KitchenQueueEntryDto
 import com.ifmo.ratatoile.service.KitchenQueueService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -44,7 +42,7 @@ class KitchenQueueController(
   @GetMapping("/set/ready/{order_item_id}")
   fun setAsReady(
     @PathVariable("order_item_id") orderItemId: Int
-  ) = kitchenQueueService.updateFoodStatus(orderItemId, GuestOrderItemStatus.READY)
+  ) = kitchenQueueService.foodIsReady(orderItemId)
 
   @GetMapping("/set/served/{order_item_id}")
   fun setAsServed(

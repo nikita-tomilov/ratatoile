@@ -32,6 +32,6 @@ class IngredientController(
   @GetMapping("/warehouse/{id}/{amount}")
   fun setIngredientAmount(
     @PathVariable("id") id: Int,
-    @PathVariable("amount") amount: Double
+    @PathVariable("amount") amount: Float
   ) = ingredientService.setAmount(id, amount)
 }
