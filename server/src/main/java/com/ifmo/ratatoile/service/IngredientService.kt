@@ -33,7 +33,7 @@ class IngredientService(
   }
 
   fun addIngredient(rq: IngredientCreateRequestDto): IngredientDto {
-    val new = Ingredient(null, rq.name, 0.0f, rq.uom)
+    val new = Ingredient(null, rq.name, rq.warehouseAmount.toFloat(), rq.uom)
     val saved = ingredientRepository.saveAndFlush(new)
     return saved.toDto()
   }
