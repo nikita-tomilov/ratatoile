@@ -5,6 +5,7 @@ import com.ifmo.ratatoile.dao.GuestOrderItem
 import com.ifmo.ratatoile.dao.toDto
 import com.ifmo.ratatoile.dto.*
 import com.ifmo.ratatoile.exception.BadRequestException
+import com.ifmo.ratatoile.repository.EatingTableRepository
 import com.ifmo.ratatoile.repository.GuestRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,7 +15,7 @@ import java.time.Instant
 @Service
 class GuestService(
   private val reservationsService: ReservationsService,
-  private val eatingTableService: EatingTableService,
+  private val eatingTableRepository: EatingTableRepository,
   private val userService: UserService,
   private val dishService: DishService,
   private val guestRepository: GuestRepository,
@@ -28,7 +29,7 @@ class GuestService(
       val entity = Guest(
           enteredAt = Instant.now(),
           leavedAt = null,
-          table = eatingTableService.getTableAsEntity(reservation.assignedTableId),
+          table = getTableAsEntity(reservation.assignedTableId),
           waiter = userService.meAsEntity()
       )
       guestRepository.saveAndFlush(entity).toDto()
@@ -41,7 +42,7 @@ class GuestService(
       val entity = Guest(
           enteredAt = Instant.now(),
           leavedAt = null,
-          table = eatingTableService.getTableAsEntity(tableId),
+          table = getTableAsEntity(tableId),
           waiter = userService.meAsEntity()
       )
       guestRepository.saveAndFlush(entity).toDto()
@@ -119,27 +120,12 @@ class GuestService(
 
   private fun currentGuestsAsEntities() = guestRepository.findAllByLeavedAtIsNull()
 
-  private fun currentGuests(): GuestsDto =
-      GuestsDto(guestRepository.findAllByLeavedAtIsNull().map { it.toDto() })
-
-  fun currentBusyTables(): Set<Int> = currentGuests().guests.map { it.tableId }.toSet()
-
-  fun currentGuestsForCurrentUser(): Map<Int, GuestsDto> {
-    val me = userService.myId()
-    val filterPredicate: (GuestDto) -> Boolean = if (userService.IAmAdmin()) {
-      { true }
-    } else {
-      { it.waiterId == me }
-    }
-    return currentGuests().guests
-        .filter(filterPredicate)
-        .groupBy { it.tableId }
-        .mapValues { GuestsDto(it.value) }
-  }
-
   fun tableIdByGuestId(guestId: Int): Int {
     val guest = guestRepository.findByIdOrNull(guestId)
       ?: throw BadRequestException("No guest for id $guestId")
     return guest.table.id!!
   }
+
+  private fun getTableAsEntity(id: Int) =
+      eatingTableRepository.findByIdOrNull(id) ?: throw BadRequestException("no table for id $id")
 }

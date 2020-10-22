@@ -105,10 +105,6 @@ class ReservationsService(
     })
   }
 
-  fun getReservations(): TableReservationsDto {
-    return TableReservationsDto(reservationRepository.findAll().sortedBy { it.reservedFrom }.map { it.toDto() })
-  }
-
   fun getReservation(id: Int): TableReservationDto {
     return reservationRepository.findByIdOrNull(id)?.toDto()
       ?: throw NotFoundException("no reservation for id $id")
@@ -119,14 +115,6 @@ class ReservationsService(
       ?: throw NotFoundException("no reservation for id $id")
     reservationRepository.delete(res)
     return res.toDto()
-  }
-
-  fun getReservationsForToday(): TableReservationsDto {
-    //working hours: 12.00 of current day - 03.00 of next day
-    return TableReservationsDto(reservationRepository.findAllWithinTimeRange(
-        LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC),
-        LocalDate.now().atStartOfDay().plusDays(1).plusHours(3).toInstant(ZoneOffset.UTC)
-    ).sortedBy { it.reservedFrom }.map { it.toDto() })
   }
 
   companion object : KLogging()

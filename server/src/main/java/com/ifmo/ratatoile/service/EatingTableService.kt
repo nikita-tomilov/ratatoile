@@ -6,20 +6,15 @@ import com.ifmo.ratatoile.dao.toDto
 import com.ifmo.ratatoile.dto.*
 import com.ifmo.ratatoile.repository.EatingTableRepository
 import mu.KLogging
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
 
 @Service
 class EatingTableService(
-  private val tableRepository: EatingTableRepository
+  private val tableRepository: EatingTableRepository,
+  private val reservationAccessService: ReservationAccessService,
+  private val currentGuestService: CurrentGuestService
 ) {
-
-  @Autowired
-  lateinit var reservationsService: ReservationsService
-
-  @Autowired
-  lateinit var guestsService: GuestService
 
   @PostConstruct
   fun postConstruct() {
@@ -32,12 +27,10 @@ class EatingTableService(
 
   fun getTables(): TablesDto = TablesDto(tableRepository.findAll().map { it.toDto() })
 
-  fun getTableAsEntity(id: Int) = tableRepository.findById(id).get()
-
   private fun getTablesWithReservations(reservations: TableReservationsDto): TablesWithStateDto {
     val reservationsGrouped = reservations.reservations.groupBy { it.assignedTableId }
-    val tablesCurrentlyBusy = guestsService.currentBusyTables()
-    val guestsUnderMyControl = guestsService.currentGuestsForCurrentUser()
+    val tablesCurrentlyBusy = currentGuestService.currentBusyTables()
+    val guestsUnderMyControl = currentGuestService.currentGuestsForCurrentUser()
     return TablesWithStateDto(getTables().tables.map {
       val reservationsForTable = reservationsGrouped[it.id] ?: emptyList()
       val reservedNow = reservationsForTable
@@ -70,12 +63,12 @@ class EatingTableService(
   }
 
   fun getTablesWithReservations(): TablesWithStateDto {
-    val allReservations = reservationsService.getReservations()
+    val allReservations = reservationAccessService.getReservations()
     return getTablesWithReservations(allReservations)
   }
 
   fun getTablesWithReservationsForToday(): TablesWithStateDto {
-    val reservationsForToday = reservationsService.getReservationsForToday()
+    val reservationsForToday = reservationAccessService.getReservationsForToday()
     return getTablesWithReservations(reservationsForToday)
   }
 
