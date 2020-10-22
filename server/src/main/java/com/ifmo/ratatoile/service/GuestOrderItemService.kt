@@ -20,7 +20,7 @@ class GuestOrderItemService(
   }
 
   fun updateStatus(items: List<GuestOrderItem>, status: GuestOrderItemStatus) {
-    items.forEach { it.status = GuestOrderItemStatus.getFinalStatus().name }
+    items.forEach { it.setStatusEnum(status) }
     guestOrderItemRepository.saveAll(items)
   }
 

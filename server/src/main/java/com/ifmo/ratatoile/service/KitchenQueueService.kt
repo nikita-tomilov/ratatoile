@@ -23,7 +23,8 @@ class KitchenQueueService(
     val queueEntries = kitchenQueueRepository.findAll()
         .unbox()
         .map { KitchenQueueEntryDto(it.toDto()) }
-    return KitchenQueueDto(mutateIfIngredientsMissing(queueEntries))
+    return KitchenQueueDto(mutateIfIngredientsMissing(queueEntries)
+        .filter { kitchenStatuses.contains(it.entry.status) })
   }
 
   //TODO: optimize maybe?
@@ -32,7 +33,8 @@ class KitchenQueueService(
     val queueEntries = kitchenQueueRepository.findAllByOrderItemIn(orderItemsForWaiter)
         .unbox()
         .map { KitchenQueueEntryDto(it.toDto(), guestService.tableIdByGuestId(it.guestId)) }
-    return KitchenQueueDto(mutateIfIngredientsMissing(queueEntries))
+    return KitchenQueueDto(mutateIfIngredientsMissing(queueEntries)
+        .filter { waiterStatuses.contains(it.entry.status) })
   }
 
   fun mutateIfIngredientsMissing(queueEntries: List<KitchenQueueEntryDto>): List<KitchenQueueEntryDto> {
@@ -119,5 +121,17 @@ class KitchenQueueService(
             updateFoodStatus(guestOrderItem.id!!, GuestOrderItemStatus.INGREDIENTS_MISSING)
           }
         }
+  }
+
+  companion object {
+    private val kitchenStatuses = setOf(
+        GuestOrderItemStatus.INGREDIENTS_MISSING,
+        GuestOrderItemStatus.IN_QUEUE,
+        GuestOrderItemStatus.COOKING,
+        GuestOrderItemStatus.READY)
+
+    private val waiterStatuses = kitchenStatuses + setOf(
+        GuestOrderItemStatus.AWAITING_FOR_ACCEPTANCE,
+        GuestOrderItemStatus.SERVED)
   }
 }
