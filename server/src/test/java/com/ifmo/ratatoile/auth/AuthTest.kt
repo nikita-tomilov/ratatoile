@@ -18,7 +18,7 @@ class AuthTest {
   var port: Int = 0
 
   @Test
-  fun `user can get token with correct credentials`() {
+  fun `waiter can get token with correct credentials`() {
     //given
     val client = buildUserApiClient(USER_NAME, USER_CORRECT_PASSWORD)
     //when
@@ -28,7 +28,7 @@ class AuthTest {
   }
 
   @Test
-  fun `user can not get token with incorrect credentials`() {
+  fun `waiter can not get token with incorrect credentials`() {
     val ex = assertThrows(FeignException::class.java) {
       buildUserApiClient(USER_NAME, USER_INCORRECT_PASSWORD)
     }
@@ -36,22 +36,33 @@ class AuthTest {
   }
 
   @Test
-  fun `admin can trigger admin endpoints`() {
+  fun `manager can trigger manager endpoints`() {
     //given
-    val client = buildUserApiClient(ADMIN_NAME, ADMIN_PASSWORD)
+    val client = buildUserApiClient(MANAGER_NAME, MANAGER_PASSWORD)
     //when
-    val me = client.meAsAdmin()
+    val me = client.meAsManager()
     //then
-    assertThat(me.username).isEqualTo(ADMIN_NAME)
+    assertThat(me.username).isEqualTo(MANAGER_NAME)
   }
 
   @Test
-  fun `user can not trigger admin endpoints`() {
+  fun `waiter can not trigger manager endpoints`() {
     val ex = assertThrows(FeignException::class.java) {
       val c = buildUserApiClient(USER_NAME, USER_CORRECT_PASSWORD)
-      c.meAsAdmin()
+      c.meAsManager()
     }
     assertThat(ex.status()).isEqualTo(403)
+  }
+
+  @Test
+  fun `the roles were set up correctly`() {
+    assertThat(getRoles("admin", "admin1234")).isEqualTo(setOf("WAITER", "MANAGER", "COOK", "CHEF"))
+    assertThat(getRoles("user1", "user1password")).isEqualTo(setOf("WAITER"))
+    assertThat(getRoles("user2", "user2password")).isEqualTo(setOf("WAITER"))
+    assertThat(getRoles("cook1", "cook1")).isEqualTo(setOf("COOK"))
+    assertThat(getRoles("cook2", "cook2")).isEqualTo(setOf("COOK"))
+    assertThat(getRoles("manager", "manager")).isEqualTo(setOf("WAITER", "MANAGER"))
+    assertThat(getRoles("chef", "chef")).isEqualTo(setOf("COOK", "CHEF"))
   }
 
   fun buildUserApiClient(username: String, password: String): UsersApi {
@@ -65,11 +76,16 @@ class AuthTest {
     return fr
   }
 
+  fun getRoles(username: String, password: String): Set<String> {
+    val u = buildUserApiClient(username, password)
+    return u.me().roles.toSet()
+  }
+
   companion object {
     private const val USER_NAME = "user1"
     private const val USER_CORRECT_PASSWORD = "user1password"
     private const val USER_INCORRECT_PASSWORD = "whatever"
-    private const val ADMIN_NAME = "admin"
-    private const val ADMIN_PASSWORD = "admin1234"
+    private const val MANAGER_NAME = "manager"
+    private const val MANAGER_PASSWORD = "manager"
   }
 }
