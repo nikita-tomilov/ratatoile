@@ -6,12 +6,14 @@ import com.ifmo.ratatoile.dto.GuestOrderItemStatus
 import com.ifmo.ratatoile.dto.GuestOrderItemsDto
 import com.ifmo.ratatoile.exception.BadRequestException
 import com.ifmo.ratatoile.repository.GuestOrderItemRepository
+import com.ifmo.ratatoile.repository.KitchenQueueRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class GuestOrderItemService(
-  private val guestOrderItemRepository: GuestOrderItemRepository
+  private val guestOrderItemRepository: GuestOrderItemRepository,
+  private val kitchenQueueRepository: KitchenQueueRepository
 ) {
 
   fun updateStatus(item: GuestOrderItem, status: GuestOrderItemStatus) {
@@ -40,8 +42,11 @@ class GuestOrderItemService(
 
   fun rmDishFromGuest(guestOrderItemId: Int): GuestOrderItemsDto {
     val orderItem = findById(guestOrderItemId)
-    guestOrderItemRepository.delete(orderItem)
 
+    val kitchenQueueEntries = kitchenQueueRepository.findAllByOrderItemIn(listOf(orderItem))
+    kitchenQueueEntries.forEach { kitchenQueueRepository.delete(it) }
+
+    guestOrderItemRepository.delete(orderItem)
     val orderItemsPerGuest = guestOrderItemRepository.findAllByGuestId(orderItem.guestId)
     return orderItemsPerGuest.toDto()
   }
