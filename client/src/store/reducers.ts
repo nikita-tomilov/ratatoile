@@ -1,5 +1,7 @@
 import { StateChangeActions, StateChangeActionType } from "./actions";
-import { AppState, initialState } from "./store";
+import { initialState } from "./store";
+import {lastMenuItem} from "../components/auth/authService";
+import {AppState} from "../types";
 
 function rootReducer(
   state: AppState = initialState,
@@ -19,6 +21,7 @@ function rootReducer(
       };
     }
     case StateChangeActionType.SET_CURRENT_MENU_ITEM: {
+      localStorage.setItem(lastMenuItem, action.payload);
       return {
         ...state,
         currentMenuItem: action.payload,
@@ -39,7 +42,7 @@ function rootReducer(
     case StateChangeActionType.SET_ADMIN_ROLE: {
       return {
         ...state,
-        isAdmin: action.payload.isAdmin,
+        roles: action.payload.roles,
         username: action.payload.userName,
       };
     }

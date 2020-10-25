@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { Button } from "@material-ui/core";
-import { SideMenuType } from "../SideMenu";
 import store from "../../store/store";
 import { StateChangeActionType } from "../../store/actions";
 import { connect } from "react-redux";
+import {SideMenuType} from "../../types";
 
 const GetToTable = (props: {
   setCurrentMenuItem: (menuItem: SideMenuType) => void;

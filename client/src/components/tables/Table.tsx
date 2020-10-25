@@ -16,7 +16,7 @@ export const Table = (props: ITableProps): JSX.Element => {
         height: `${tableData.guiH * 100}%`,
         top: `${tableData.guiY * 100}%`,
         left: `${tableData.guiX * 100}%`,
-        background: props.isAdmin
+        background: props.isManager
           ? colorMapAdmin[tableData.state]
           : colorMapUser[tableData.state],
         opacity: selectedTableId && selectedTableId !== tableData.id ? 0.25 : 1,

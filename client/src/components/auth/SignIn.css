@@ -1,5 +1,13 @@
+.signInWrapper {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .SignInForm {
-    flex-basis: 30vh;
+    width: 350px;
 }
 
 .error {

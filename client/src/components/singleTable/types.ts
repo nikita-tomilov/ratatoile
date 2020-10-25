@@ -1,4 +1,4 @@
-import { SideMenuType } from "../SideMenu";
+import {SideMenuType} from "../../types";
 
 export type SingleTableProps = {
   selectedId: number | null;

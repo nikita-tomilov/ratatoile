@@ -1,5 +1,4 @@
 .warehouseWrapper {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -19,7 +18,7 @@
   top: 35%;
   left: 35%;
   width: 30%;
-  height: 20%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

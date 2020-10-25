@@ -12,5 +12,6 @@ export type Scheme = {
     label?: string;
     formatter?: (value: any) => any;
     renderer?: (data: RowData, rowNumber: number) => JSX.Element;
+    width?: number;
   };
 };

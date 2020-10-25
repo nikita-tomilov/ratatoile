@@ -4,9 +4,9 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { connect } from "react-redux";
 import { getAuthService } from "./authService";
-import store, { AppState } from "../../store/store";
-import { SideMenuType } from "../SideMenu";
+import store from "../../store/store";
 import { StateChangeActionType } from "../../store/actions";
+import {AppState, SideMenuType} from "../../types";
 
 const authService = getAuthService();
 
@@ -30,7 +30,6 @@ const SignIn = (props: {
 
   const onSignIn = useCallback(() => {
     authService.login(name, password);
-    setCurrentMenuItem(SideMenuType.COMMON);
   }, [name, password, setCurrentMenuItem]);
 
   const onKeyPress = useCallback(
@@ -43,45 +42,47 @@ const SignIn = (props: {
   );
 
   return (
-    <div className="SignInForm">
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="login"
-        label="Login"
-        name="login"
-        autoComplete="login"
-        autoFocus
-        value={name}
-        onChange={onNameChange}
-        onKeyPress={onKeyPress}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        name="password"
-        label="Password"
-        type="password"
-        id="password"
-        autoComplete="current-password"
-        value={password}
-        onChange={onPasswordChange}
-        onKeyDown={onKeyPress}
-      />
-      {authFailMessage && <div className="error">{authFailMessage}</div>}
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={onSignIn}
-      >
-        Sign In
-      </Button>
+    <div className='signInWrapper'>
+        <div className="SignInForm">
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="login"
+                label="Логин"
+                name="login"
+                autoComplete="login"
+                autoFocus
+                value={name}
+                onChange={onNameChange}
+                onKeyPress={onKeyPress}
+            />
+            <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Пароль"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={onPasswordChange}
+                onKeyDown={onKeyPress}
+            />
+            {authFailMessage && <div className="error">{authFailMessage}</div>}
+            <Button
+                style={{marginTop: 10}}
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={onSignIn}
+            >
+                Войти
+            </Button>
+        </div>
     </div>
   );
 };

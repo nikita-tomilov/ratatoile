@@ -17,18 +17,36 @@ export const getAllIngredientsRequest = (): Promise<{
 export const deleteIngredientRequest = (id: number): Promise<void> => {
   return customFetch<{}, void>(
     `${getUrl()}${ingredientPrefix}delete/${id}`,
-    Method.DELETE
+    Method.DELETE,
+    undefined,
+    true
   );
 };
 
-export type AddIngredientRequestData = {
-  name: string;
+export const editIngredientRequest = (data: IngredientData): Promise<void> => {
+  return customFetch<{}, void>(
+    `${getUrl()}${ingredientPrefix}update`,
+    Method.POST,
+    {
+        id: data.id,
+        name: data.name,
+        uom: data.uom,
+        warehouseAmount: data.warehouseAmount
+    }
+  );
+};
+
+export type IngredientData = {
+    id: string;
+    name: string;
+    uom: string;
+    warehouseAmount: number;
 };
 
 export const addIngredientRequest = (
-  data: AddIngredientRequestData
+  data: IngredientData
 ): Promise<void> => {
-  return customFetch<AddIngredientRequestData, void>(
+  return customFetch<IngredientData, void>(
     `${getUrl()}${ingredientPrefix}create`,
     Method.POST,
     data

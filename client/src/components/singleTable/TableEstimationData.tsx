@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { SideMenuType } from "../SideMenu";
 import { TableEstimationDataProps } from "./types";
 import "./SingleTable.css";
+import {SideMenuType} from "../../types";
 
 export const TableEstimationData = (
   props: TableEstimationDataProps
@@ -45,7 +45,7 @@ export const TableEstimationData = (
       <Button
         variant="contained"
         color="primary"
-        onClick={() => setCurrentMenuItem(SideMenuType.COMMON)}
+        onClick={() => setCurrentMenuItem(SideMenuType.ALL_TABLES)}
       >
         Ок
       </Button>

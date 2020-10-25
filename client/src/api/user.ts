@@ -3,8 +3,10 @@ import { getUrl } from "./url";
 import { Method } from "../components/auth/types";
 
 export enum AppRole {
-  ADMIN = "ADMIN",
-  USER = "USER",
+  MANAGER = "MANAGER",
+  WAITER = "WAITER",
+  COOK = "COOK",
+  CHEF = "CHEF"
 }
 
 type UserDataResponse = {
@@ -13,5 +15,10 @@ type UserDataResponse = {
 };
 
 export const getUserData = (): Promise<UserDataResponse> => {
-  return customFetch<{}, UserDataResponse>(`${getUrl()}/user/me`, Method.GET);
+  return customFetch<{}, UserDataResponse>(
+      `${getUrl()}/user/me`,
+      Method.GET,
+      undefined,
+      true
+  );
 };

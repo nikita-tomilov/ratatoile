@@ -14,7 +14,7 @@ export const getMenuScheme = (props: any): Scheme => {
                     <div className="controls">
                         <div className="btnWrapper">
                             <Button
-                                variant="contained"
+                                variant="outlined"
                                 color="secondary"
                                 onClick={props.onDelete}
                                 value={value.menuItemId}

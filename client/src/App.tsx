@@ -3,10 +3,12 @@ import "./App.css";
 import SignIn from "./components/auth/SignIn";
 import Workspace from "./components/Workspace";
 import { connect } from "react-redux";
-import { AppState } from "./store/store";
+import {AppState} from "./types";
+
+// Here you can change the time between to requests for the data
+export const fetchDataTimer = 3000;
 
 function App(props: { token: string | null }) {
-  console.warn(props.token);
   return <div className="App">{props.token ? <Workspace /> : <SignIn />}</div>;
 }
 

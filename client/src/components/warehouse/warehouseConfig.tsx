@@ -25,6 +25,16 @@ export const getWarehouseScheme = (props: any): Scheme => {
                         <div className="btnWrapper">
                             <Button
                                 variant="contained"
+                                color="primary"
+                                onClick={props.onEdit}
+                                value={value.id}
+                            >
+                                Редактировать
+                            </Button>
+                        </div>
+                        <div className="btnWrapper">
+                            <Button
+                                variant="outlined"
                                 color="secondary"
                                 onClick={props.onDelete}
                                 value={value.id}

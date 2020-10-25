@@ -2,10 +2,11 @@ import React from "react";
 import "./Logout.css";
 import Button from "@material-ui/core/Button";
 import { getAuthService } from "./authService";
+import {AppRole} from "../../api/user";
 const authService = getAuthService();
 
 export const Logout = (props: {
-  isAdmin: boolean;
+  roles: AppRole[];
   userName: string;
 }): JSX.Element => {
   return (
@@ -14,7 +15,7 @@ export const Logout = (props: {
       <div className="infoWrapper">
         <div className="infoItem">Ваш пользователь: {props.userName}</div>
         <div className="infoItem">
-          Уровень полномочий: {props.isAdmin ? "Администратор" : "Пользователь"}
+          Уровень полномочий: {props.roles.join(', ')}
         </div>
       </div>
       <div className="btnWrapper">

@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "./Tables.css";
-import { getAllTablesWithReservations } from "../../api/tables";
-import { connect } from "react-redux";
-import store, { AppState } from "../../store/store";
-import { StateChangeActionType } from "../../store/actions";
-import { Table } from "./Table";
-import { InfoBox } from "../infoBox/InfoBox";
-import { ITablesProps } from "../infoBox/types";
-import { TableData, TableState } from "../../api/types";
+import {getAllTablesWithReservations} from "../../api/tables";
+import {connect} from "react-redux";
+import store from "../../store/store";
+import {StateChangeActionType} from "../../store/actions";
+import {Table} from "./Table";
+import {InfoBox} from "../infoBox/InfoBox";
+import {ITablesProps} from "../infoBox/types";
+import {TableData, TableState} from "../../api/types";
+import {AppState} from "../../types";
+import {AppRole} from "../../api/user";
 
 export const Tables = (props: ITablesProps): JSX.Element => {
-  const { setTablesData, setLastSelectedTable, tables, isAdmin } = props;
+  const { setTablesData, setLastSelectedTable, tables, roles } = props;
   const [selectedTableData, setSelectedTableData] = useState(
     null as TableData | null
   );
@@ -37,38 +39,34 @@ export const Tables = (props: ITablesProps): JSX.Element => {
     setSelectedTableData(null);
   }, []);
 
-  return isAdmin !== null ? (
-    <div className="panelWrapper">
-      <div className="panelTitle">Общий зал</div>
-      <div className="tablesWrapper">
-        {props.tables.map((tableData) => (
+  return <div className="hall">
+    <div className="panelTitle">Общий зал</div>
+    <div className="tablesWrapper">
+      {props.tables.map((tableData) => (
           <Table
-            key={tableData.id}
-            tableData={tableData}
-            isAdmin={isAdmin}
-            onTableSelect={tableSelectHandler}
-            selectedTableId={selectedTableData && selectedTableData.id}
+              key={tableData.id}
+              tableData={tableData}
+              isManager={roles.includes(AppRole.MANAGER)}
+              onTableSelect={tableSelectHandler}
+              selectedTableId={selectedTableData && selectedTableData.id}
           />
-        ))}
-        {selectedTableData && (
+      ))}
+      {selectedTableData && (
           <InfoBox
-            onClose={closeInfoBoxHandler}
-            selected={selectedTableData}
-            isAdmin={isAdmin}
+              onClose={closeInfoBoxHandler}
+              selected={selectedTableData}
+              isManager={roles.includes(AppRole.MANAGER)}
           />
-        )}
-      </div>
+      )}
     </div>
-  ) : (
-    <div>Wait for load</div>
-  );
+  </div>;
 };
 
 const mapStateToProps = (store: AppState) => {
   return {
     tables: store.tables,
     selectedId: store.lastSelectedTableId,
-    isAdmin: store.isAdmin,
+    roles: store.roles,
   };
 };
 

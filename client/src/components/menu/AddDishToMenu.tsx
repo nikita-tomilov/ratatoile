@@ -5,10 +5,12 @@ import { Button } from "@material-ui/core";
 import { RowData } from "../tableForData/types";
 import { getAllDishesRequest } from "../../api/dishes";
 import { addDishToMenuRequest } from "../../api/menu";
+import {addDishToGuest} from "../../api/guests";
 
 export const AddDishToMenu = (props: {
-  onAddFinished: () => void;
-  checkIfExists: (dishId: number) => boolean;
+  onFinished: () => void;
+  checkIfExists?: (dishId: number) => boolean;
+  selectedGuestId?: number;
 }): JSX.Element => {
   useEffect(() => {
     getAllDishesRequest().then(
@@ -22,17 +24,26 @@ export const AddDishToMenu = (props: {
 
   const existAlready = useMemo(() => {
     const id = options.find((el) => el.name === dish);
-    const result = id && props.checkIfExists(Number(id.id));
+    const result = id && props.checkIfExists && props.checkIfExists(Number(id.id));
     return result || false;
   }, [dish]);
 
-  const dishAddHandler = useCallback(() => {
+  const onDishAddToMenu = useCallback(() => {
     if (existAlready) return;
     const id = options.find((el) => el.name === dish);
     id &&
       addDishToMenuRequest(id.id, id.id * 10).then(() => {
         setDish("");
-        props.onAddFinished();
+        props.onFinished();
+      });
+  }, [dish, options, props.checkIfExists]);
+
+  const onDishAddToGuest = useCallback(() => {
+    const id = options.find((el) => el.name === dish);
+    if(id && props.selectedGuestId)
+      addDishToGuest(props.selectedGuestId, id.id).then(() => {
+        setDish("");
+        props.onFinished();
       });
   }, [dish, options, props.checkIfExists]);
 
@@ -54,10 +65,10 @@ export const AddDishToMenu = (props: {
         <Button
           variant="contained"
           color="primary"
-          onClick={dishAddHandler}
+          onClick={props.selectedGuestId ? onDishAddToGuest : onDishAddToMenu}
           disabled={existAlready}
         >
-          Добавить блюдо в меню
+          {props.selectedGuestId ? "Добавить гостю" : 'Добавить блюдо в меню' }
         </Button>
       </div>
     </div>

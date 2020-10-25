@@ -1,0 +1,22 @@
+.dialogOverlay {
+    position: absolute;
+    background: #ffffff;
+    opacity: 0.8;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.dialogBody {
+    position: absolute;
+    background: #ffffff;
+    border: 2px solid black;
+    border-radius: 4px;
+    z-index: 10;
+    padding: 10px;
+    text-align: center;
+
+    align-self: center;
+    justify-self: center;
+}

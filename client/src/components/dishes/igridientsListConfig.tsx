@@ -17,7 +17,7 @@ export const getDishIngredientsScheme = (props: any): Scheme => {
           <div className="controls">
             <div className="btnWrapper">
               <Button
-                variant="contained"
+                variant="outlined"
                 color="secondary"
                 onClick={props.onDelete}
                 value={value.entryId}

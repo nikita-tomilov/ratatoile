@@ -4,7 +4,8 @@ import { getAuthService } from "../components/auth/authService";
 export const customFetch = <ReqT, ResT>(
   url: string,
   method: Method,
-  requestBody?: ReqT
+  requestBody?: ReqT,
+  throwException?: boolean
 ): Promise<ResT> => {
   return fetch(url, {
     method,
@@ -18,7 +19,12 @@ export const customFetch = <ReqT, ResT>(
             Authorization: `Bearer ${getAuthService().getToken()}`,
           },
     body: JSON.stringify(requestBody),
-  }).then((data) => data.json());
+  }).then(async (data) => {
+      const response = await data.json();
+      if(throwException && data.status.toString()[0] == '4')
+          throw Error(response.message ?? response.error);
+      else return response
+  });
 };
 
 export const customFetchForImages = <ReqT, ResT>(

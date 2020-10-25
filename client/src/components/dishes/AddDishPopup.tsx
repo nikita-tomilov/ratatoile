@@ -46,8 +46,8 @@ export const AddDishPopup = (props: {
         </div>
         <div className="btnWrapper">
           <Button
-            variant="contained"
-            color="secondary"
+            variant="outlined"
+            color="primary"
             onClick={props.onCancel}
           >
             Назад

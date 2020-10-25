@@ -1,5 +1,6 @@
-import { SideMenuType } from "../components/SideMenu";
 import { TableData } from "../api/types";
+import {SideMenuType} from "../types";
+import {AppRole} from "../api/user";
 
 export enum StateChangeActionType {
   SET_TOKEN = "SET_TOKEN",
@@ -38,7 +39,7 @@ type SetLastSelectedTableId = {
 type SetAdminRole = {
   type: StateChangeActionType.SET_ADMIN_ROLE;
   payload: {
-    isAdmin: boolean | null;
+    roles: AppRole[];
     userName: string | null;
   };
 };

@@ -16,7 +16,7 @@ export const Menu = (): JSX.Element => {
         (receivedData) =>
           receivedData &&
           setData(
-            receivedData.menu.map((el) => {
+            receivedData?.menu?.map((el) => {
               return { ...el.dish, menuItemId: el.id };
             })
           )
@@ -44,14 +44,16 @@ export const Menu = (): JSX.Element => {
   );
   return (
     <div className="panelWrapper">
-      <div className="panelTitle">Меню</div>
+        <div className="headerWrapper" >
+            <div className="panelTitle">Меню</div>
+            <AddDishToMenu
+                onFinished={addFinishedHandler}
+                checkIfExists={checkIfExists}
+            />
+        </div>
       <div className="tablesWrapper">
         <DataTable scheme={scheme} data={data} />
       </div>
-      <AddDishToMenu
-        onAddFinished={addFinishedHandler}
-        checkIfExists={checkIfExists}
-      />
     </div>
   );
 };

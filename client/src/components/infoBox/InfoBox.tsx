@@ -13,7 +13,7 @@ import { TableWithReservations } from "./TableWithReservations";
 const getControls = (
   tableData: TableData,
   onClose: () => void,
-  isAdmin: boolean
+  isManager: boolean
 ): JSX.Element | null => {
   return tableData.state === TableState.FREE ? (
     <AddGuests
@@ -28,14 +28,14 @@ const getControls = (
   ) : (
     <TableWithReservations
       onClose={onClose}
-      isAdmin={isAdmin}
+      isManager={isManager}
       tableData={tableData}
     />
   );
 };
 
 export const InfoBox = (props: InfoBoxProps): JSX.Element => {
-  const { selected, onClose, isAdmin } = props;
+  const { selected, onClose, isManager } = props;
   const { state, guiY, guiX, guiH, guiW, id } = selected;
   const tableConfig = useMemo(
     () => (config.info as SimpleObjectType)[state.toLowerCase()],
@@ -48,10 +48,10 @@ export const InfoBox = (props: InfoBoxProps): JSX.Element => {
     [tableConfig, selected]
   );
 
-  const controlsItems = useMemo(() => getControls(selected, onClose, isAdmin), [
+  const controlsItems = useMemo(() => getControls(selected, onClose, isManager), [
     selected,
     onClose,
-    isAdmin,
+    isManager,
   ]);
 
   const coords = useMemo(() => {
@@ -82,11 +82,11 @@ export const InfoBox = (props: InfoBoxProps): JSX.Element => {
         <div className="btnWrapper">
           <Button
             type="submit"
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={onClose}
           >
-            OK
+            Назад
           </Button>
         </div>
       </div>

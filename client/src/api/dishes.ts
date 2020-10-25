@@ -1,4 +1,3 @@
-import { RowData } from "../components/tableForData/types";
 import {customFetch, customFetchForImages} from "./customFetch";
 import {getUnprotectedUrl, getUrl} from "./url";
 import { Method } from "../components/auth/types";
@@ -9,7 +8,7 @@ const menuPrefix = "/menu/";
 const dishIngredientPrefix = "/dishingredient/";
 
 type AllDishesResponse = {
-  dishes: RowData[];
+  dishes: UpdateDishRequestData[];
 };
 
 export const getAllDishesRequest = (): Promise<AllDishesResponse | null> => {

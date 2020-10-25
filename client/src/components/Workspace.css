@@ -6,13 +6,15 @@
   flex-direction: column;
   align-items: flex-start;
   position: relative;
+  overflow: hidden;
 }
 
 .container {
+  position: relative;
+  overflow: auto;
+
   width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: row;
+  height: 100%;
 }
 
 .messageBox {

@@ -10,6 +10,7 @@ import {
 } from "../../api/reservations";
 import { RowData, Scheme } from "../tableForData/types";
 import { getScheme } from "./reservationsConfig";
+import {fetchDataTimer} from "../../App";
 
 const Reservations = (): JSX.Element => {
   const [scheme, setScheme] = useState<Scheme | null>(null);
@@ -26,29 +27,34 @@ const Reservations = (): JSX.Element => {
     );
   }, []);
 
+  const updateData = useCallback(() => {
+        getAllReservationRequest().then(
+            (receivedData) =>
+                receivedData &&
+                setData(
+                    receivedData.requests.map((el) => {
+                        return {
+                            ...el,
+                            time: {
+                                from: el.from,
+                                to: el.to,
+                            },
+                        };
+                    })
+                )
+        );
+    }, []);
+
   useEffect(() => {
     setScheme(getScheme({ onDelete, onAccept }));
   }, [onDelete, onAccept]);
 
   useEffect(() => {
-    if (data === null) {
-      getAllReservationRequest().then(
-        (receivedData) =>
-          receivedData &&
-          setData(
-            receivedData.requests.map((el) => {
-              return {
-                ...el,
-                time: {
-                  from: el.from,
-                  to: el.to,
-                },
-              };
-            })
-          )
-      );
-    }
-  }, [data]);
+    updateData();
+    const interval = setInterval(updateData, fetchDataTimer);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="reservationsWrapper">
       <div className="header panelTitle">Бронирования</div>

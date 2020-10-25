@@ -1,10 +1,18 @@
 .App {
-  height: 100%;
-
+  overflow: hidden;
   text-align: center;
-
-  display: flex;
-  flex-direction: row;
+  display: block;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+
+.panelWrapper {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  padding: 10px 5px;
 }

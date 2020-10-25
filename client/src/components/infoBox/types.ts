@@ -1,16 +1,17 @@
 import { TableData } from "../../api/types";
+import {AppRole} from "../../api/user";
 
 export interface ITableProps {
   onTableSelect: (tableId: number) => void;
   tableData: TableData;
-  isAdmin: boolean;
+  isManager: boolean;
   selectedTableId: number | null;
 }
 
 export interface ITablesProps {
   tables: TableData[];
   selectedId: number | null;
-  isAdmin: boolean | null;
+  roles: AppRole[];
   setTablesData: (tables: TableData[]) => void;
   setLastSelectedTable: (id: number | null) => void;
 }
@@ -24,5 +25,5 @@ export type TableConfig = {
 export type InfoBoxProps = {
   onClose: () => void;
   selected: TableData;
-  isAdmin: boolean;
+  isManager: boolean;
 };

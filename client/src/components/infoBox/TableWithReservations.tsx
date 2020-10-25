@@ -6,13 +6,13 @@ import { AddGuests } from "./AddGuests";
 
 export const TableWithReservations = (props: {
   tableData: TableData;
-  isAdmin: boolean;
+  isManager: boolean;
   onClose: () => void;
 }): JSX.Element => {
   const [reservationSelected, setReservationSelected] = useState(
     null as number | null
   );
-  const { tableData, isAdmin, onClose } = props;
+  const { tableData, isManager, onClose } = props;
   const onDelete = useCallback(
     (event) => deleteReservation(event.currentTarget.value).then(onClose),
     [onClose]
@@ -47,9 +47,9 @@ export const TableWithReservations = (props: {
             ).toLocaleString()}`}</div>
             <div className="btnWrapper">
               <Button
-                disabled={!isAdmin}
+                disabled={!isManager}
                 type="submit"
-                variant="contained"
+                variant="outlined"
                 color="secondary"
                 onClick={onDelete}
                 value={reservation.id}

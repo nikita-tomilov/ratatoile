@@ -24,7 +24,7 @@ export const getDishListScheme = (props: any): Scheme => {
             </div>
             <div className="btnWrapper">
               <Button
-                variant="contained"
+                variant="outlined"
                 color="secondary"
                 onClick={props.onDelete}
                 value={value.id}

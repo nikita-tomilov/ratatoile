@@ -1,25 +1,14 @@
-import { createStore } from "redux";
+import {createStore} from "redux";
 import rootReducer from "./reducers";
-import { SideMenuType } from "../components/SideMenu";
-import { TableData } from "../api/types";
-
-export type AppState = {
-  userToken: string | null;
-  authFailMessage: string | null;
-  currentMenuItem: SideMenuType;
-  tables: TableData[];
-  lastSelectedTableId: number | null;
-  isAdmin: boolean | null;
-  username: string | null;
-};
+import {AppState, SideMenuType} from "../types";
 
 export const initialState: AppState = {
   userToken: null,
   authFailMessage: null,
-  currentMenuItem: SideMenuType.COMMON,
+  currentMenuItem: SideMenuType.LOGOUT,
   tables: [],
   lastSelectedTableId: null,
-  isAdmin: null,
+  roles: [],
   username: null
 };
 

@@ -127,8 +127,8 @@ export const AddDonationPopup = (props: {
         </Button>
         <div className="btnWrapper">
           <Button
-            variant="contained"
-            color="secondary"
+            variant="outlined"
+            color="primary"
             onClick={props.onCancel}
           >
             Отмена

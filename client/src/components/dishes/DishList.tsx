@@ -60,14 +60,17 @@ export const DishList = (props: {
   ) : (
     <>
       <div className={`dishListWrapper ${addPopupVisible ? "overlay" : ""}`}>
-        <div className="panelTitle">Список блюд ресторана</div>
+        <div className="headerWrapper">
+          <div className="panelTitle">Список блюд ресторана</div>
+          <div className="btnWrapper">
+            <Button variant="contained" color="primary" onClick={addDishHandler}>
+              Добавить блюдо
+            </Button>
+          </div>
+        </div>
+
         <div className="tableWrapper">
           {scheme && <DataTable scheme={scheme} data={data} />}
-        </div>
-        <div className="btnWrapper">
-          <Button variant="contained" color="primary" onClick={addDishHandler}>
-            Добавить блюдо
-          </Button>
         </div>
       </div>
 

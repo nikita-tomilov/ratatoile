@@ -104,8 +104,8 @@ export const DishEditScreen = (props: {
         <div className="headerControls">
           <div className="btnWrapper">
             <Button
-              variant="contained"
-              color="secondary"
+              variant="outlined"
+              color="primary"
               onClick={props.onCancel}
             >
               Назад
@@ -123,8 +123,8 @@ export const DishEditScreen = (props: {
               onChange={onPhotoFileChange}
             />
             <Button
-              variant="contained"
-              color="secondary"
+              variant="outlined"
+              color="primary"
               onClick={onPhotoFileSubmit}
               disabled={photoFileData === null}
               style={{ width: 220, marginTop: 150 }}

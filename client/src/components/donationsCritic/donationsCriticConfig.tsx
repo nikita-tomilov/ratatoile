@@ -21,12 +21,12 @@ export const getScheme = (props: any): Scheme => {
     },
     controls: {
       label: "Управление",
-      renderer: (value: RowData, index: number) => {
+      renderer: (value: RowData) => {
         return (
           <div className="controls">
             <div className="btnWrapper">
               <Button
-                variant="contained"
+                variant="outlined"
                 color="secondary"
                 onClick={props.onDelete}
                 value={value.id}

@@ -4,6 +4,7 @@ import store from "../../store/store";
 import { StateChangeActionType } from "../../store/actions";
 
 export const tokenStorageName = "token";
+export const lastMenuItem = "lastMenuItem";
 
 class AuthServiceClass implements IAuthService {
   constructor() {
@@ -15,8 +16,10 @@ class AuthServiceClass implements IAuthService {
   };
 
   public logout = (): void => {
-    this.removeUserToken();
-    this.updateTokenValueInStore(null);
+    this.cleanUserSpecificInfo().then((_) => {
+      this.removeUserToken();
+      this.updateTokenValueInStore(null);
+    });
   };
 
   public setUserToken = (token: string): void => {
@@ -35,6 +38,10 @@ class AuthServiceClass implements IAuthService {
 
   private removeUserToken = (): void => {
     localStorage.removeItem(tokenStorageName);
+  };
+
+  private cleanUserSpecificInfo = async (): Promise<void> => {
+    await localStorage.removeItem(lastMenuItem);
   };
 
   private getUserTokenFromStorage = (): void => {
