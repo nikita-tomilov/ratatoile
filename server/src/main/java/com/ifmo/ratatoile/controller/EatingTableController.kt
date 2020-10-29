@@ -1,7 +1,6 @@
 package com.ifmo.ratatoile.controller
 
 import com.ifmo.ratatoile.service.EatingTableService
-import com.ifmo.ratatoile.service.ReservationsService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 

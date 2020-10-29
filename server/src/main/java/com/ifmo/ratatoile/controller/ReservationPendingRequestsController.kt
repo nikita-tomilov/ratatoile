@@ -1,6 +1,6 @@
 package com.ifmo.ratatoile.controller
 
-import com.ifmo.ratatoile.service.ReservationsService
+import com.ifmo.ratatoile.service.ReservationRequestsService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.*
     value = ["/api/1.0/reservationrequests/"],
     produces = [MediaType.APPLICATION_JSON_VALUE])
 class ReservationPendingRequestsController(
-  private val reservationsService: ReservationsService
+  private val reservationRequestsService: ReservationRequestsService
 ) {
 
   @GetMapping("/get")
-  fun getAllReservations() = reservationsService.getReservationRequests()
+  fun getAllReservations() = reservationRequestsService.getReservationRequests()
 
   @GetMapping("/accept/{id}")
   fun getReservation(@PathVariable("id") id: Int) =
-      reservationsService.acceptReservationRequest(id)
+      reservationRequestsService.acceptReservationRequest(id)
 
   @DeleteMapping("/delete/{id}")
   fun deleteReservation(@PathVariable("id") id: Int) =
-      reservationsService.deleteReservationRequest(id)
+      reservationRequestsService.deleteReservationRequest(id)
 }

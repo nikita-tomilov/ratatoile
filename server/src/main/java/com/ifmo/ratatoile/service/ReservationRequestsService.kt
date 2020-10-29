@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 
 @Service
-class ReservationsService(
+class ReservationRequestsService(
   private val tableService: EatingTableService,
   private val reservationRepository: ReservationRepository,
   private val reservationRequestRepository: ReservationRequestRepository
@@ -104,6 +104,8 @@ class ReservationsService(
       )
     })
   }
+
+  fun getReservationRequest(id: Int) = reservationRequestRepository.findByIdOrNull(id)
 
   fun getReservation(id: Int): TableReservationDto {
     return reservationRepository.findByIdOrNull(id)?.toDto()

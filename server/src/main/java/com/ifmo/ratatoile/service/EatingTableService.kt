@@ -12,7 +12,7 @@ import javax.annotation.PostConstruct
 @Service
 class EatingTableService(
   private val tableRepository: EatingTableRepository,
-  private val reservationAccessService: ReservationAccessService,
+  private val reservationAccessService: AcceptedReservationsService,
   private val currentGuestService: CurrentGuestService
 ) {
 

@@ -14,7 +14,7 @@ import java.time.Instant
 
 @Service
 class GuestService(
-  private val reservationsService: ReservationsService,
+  private val reservationRequestsService: ReservationRequestsService,
   private val eatingTableRepository: EatingTableRepository,
   private val userService: UserService,
   private val dishService: DishService,
@@ -24,7 +24,7 @@ class GuestService(
 
   fun advanceReservationToGuests(reservationId: Int, guestsCount: Int): GuestsDto {
     if (guestsCount <= 0) throw BadRequestException("How are you supposed to have $guestsCount guests?")
-    val reservation = reservationsService.getReservation(reservationId)
+    val reservation = reservationRequestsService.getReservation(reservationId)
     return GuestsDto((0 until guestsCount).map {
       val entity = Guest(
           enteredAt = Instant.now(),

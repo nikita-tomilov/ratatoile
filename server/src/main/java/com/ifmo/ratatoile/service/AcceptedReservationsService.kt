@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 
 @Service
-class ReservationAccessService(
+class AcceptedReservationsService(
   private val reservationRepository: ReservationRepository
 ) {
 
