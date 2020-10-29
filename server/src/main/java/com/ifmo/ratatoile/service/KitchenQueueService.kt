@@ -114,6 +114,7 @@ class KitchenQueueService(
     val warehouseStatus = getWarehouseStatus()
     kitchenQueueRepository.findAll()
         .unbox()
+        .filter { statusesToCheckOnMissing.contains(it.getStatusEnum()) }
         .forEach { guestOrderItem ->
           val missingIngredients =
               findMissingIngredientsForDish(warehouseStatus, guestOrderItem.dishId)
@@ -124,6 +125,12 @@ class KitchenQueueService(
   }
 
   companion object {
+    private val statusesToCheckOnMissing = setOf(
+        GuestOrderItemStatus.AWAITING_FOR_ACCEPTANCE,
+        GuestOrderItemStatus.IN_QUEUE,
+        GuestOrderItemStatus.COOKING
+    )
+
     private val kitchenStatuses = setOf(
         GuestOrderItemStatus.INGREDIENTS_MISSING,
         GuestOrderItemStatus.IN_QUEUE,
