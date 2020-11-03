@@ -34,4 +34,16 @@ class GuestsController(
   fun checkout(
     @PathVariable("table_id") tableId: Int
   ) = guestService.checkoutTable(tableId)
+
+  @GetMapping("/status/{table_id}/{guest_card_id}")
+  fun statusWithGuestCard(
+    @PathVariable("table_id") tableId: Int,
+    @PathVariable("guest_card_id") guestCardId: Int
+  ) = guestService.tableStatus(tableId, guestCardId)
+
+  @GetMapping("/checkout/{table_id}/{guest_card_id}")
+  fun checkoutWithGuestCard(
+    @PathVariable("table_id") tableId: Int,
+    @PathVariable("guest_card_id") guestCardId: Int
+  ) = guestService.checkoutTable(tableId, guestCardId)
 }

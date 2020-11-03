@@ -8,11 +8,13 @@ data class GuestCardDto(
   val id: Int,
   val fullName: String,
   val phone: String,
-  val birthday: Long
+  val birthday: Long,
+  val percentage: Int
 )
 
 data class GuestCardRequestDto(
   val fullName: String,
   val phone: String,
-  val birthday: Long
+  val birthday: Long,
+  val percentage: Int
 )

@@ -1,7 +1,7 @@
 package com.ifmo.ratatoile.service
 
 import com.ifmo.ratatoile.dao.GuestCard
-import com.ifmo.ratatoile.dto.*
+import com.ifmo.ratatoile.dto.GuestCardRequestDto
 import com.ifmo.ratatoile.exception.NotFoundException
 import com.ifmo.ratatoile.repository.GuestCardRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ class GuestCardService(
 
   fun createGuestCard(rq: GuestCardRequestDto): GuestCard {
     val new =
-        GuestCard(null, rq.fullName, rq.phone, Instant.ofEpochMilli(rq.birthday))
+        GuestCard(null, rq.fullName, rq.phone, Instant.ofEpochMilli(rq.birthday), rq.percentage)
     return guestCardRepository.saveAndFlush(new)
   }
 
@@ -29,6 +29,7 @@ class GuestCardService(
       ?: throw NotFoundException("no donation for id $id")
   }
 
+  //TODO: make guestCardId == null in PaidOrder
   fun deleteGuestCard(id: Int): GuestCard {
     val d = getGuestCard(id)
     guestCardRepository.deleteById(id)

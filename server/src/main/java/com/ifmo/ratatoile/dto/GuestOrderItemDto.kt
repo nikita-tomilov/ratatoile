@@ -12,7 +12,7 @@ data class GuestOrderItemsDto(
 )
 
 enum class GuestOrderItemStatus {
-  AWAITING_FOR_ACCEPTANCE, IN_QUEUE, COOKING, READY, SERVED, PAID, INGREDIENTS_MISSING;
+  AWAITING_FOR_ACCEPTANCE, IN_QUEUE, COOKING, READY, SERVED, PAID, INGREDIENTS_MISSING, CANCELLED;
 
   companion object {
     fun getInitialStatus(): GuestOrderItemStatus {

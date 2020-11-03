@@ -44,3 +44,5 @@ interface GuestCardRepository: JpaRepository<GuestCard, Int>
 interface KitchenQueueRepository: JpaRepository<KitchenQueueEntry, Int> {
   fun findAllByOrderItemIn(items: List<GuestOrderItem>): List<KitchenQueueEntry>
 }
+
+interface PaidOrderItemRepository: JpaRepository<PaidOrderItem, Int>

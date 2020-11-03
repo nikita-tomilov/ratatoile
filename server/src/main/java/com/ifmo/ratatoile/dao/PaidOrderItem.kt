@@ -1,25 +1,25 @@
 package com.ifmo.ratatoile.dao
 
-import java.time.Instant
+import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity
-@Table(name = "guest_card")
-data class GuestCard(
+@Table(name = "paid_order_item")
+data class PaidOrderItem(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
   var id: Int? = null,
 
   @Column(nullable = false)
-  var fullName: String,
+  val orderItemId: Int,
 
   @Column(nullable = false)
-  var phone: String,
+  val originalPrice: BigDecimal,
 
   @Column(nullable = false)
-  val birthday: Instant,
+  val paidPrice: BigDecimal,
 
   @Column(nullable = false)
-  var percentage: Int
+  var guestCardId: Int? = null
 )
