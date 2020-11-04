@@ -1,6 +1,7 @@
 package com.ifmo.ratatoile.service
 
 import com.ifmo.ratatoile.dao.GuestCard
+import com.ifmo.ratatoile.dto.GuestCardDto
 import com.ifmo.ratatoile.dto.GuestCardRequestDto
 import com.ifmo.ratatoile.exception.NotFoundException
 import com.ifmo.ratatoile.repository.GuestCardRepository
@@ -34,6 +35,12 @@ class GuestCardService(
     val d = getGuestCard(id)
     guestCardRepository.deleteById(id)
     return d
+  }
+
+  fun updateGuestCard(rq: GuestCardDto): GuestCard {
+    val updated =
+        GuestCard(rq.id, rq.fullName, rq.phone, Instant.ofEpochMilli(rq.birthday), rq.percentage)
+    return guestCardRepository.saveAndFlush(updated)
   }
 
 }

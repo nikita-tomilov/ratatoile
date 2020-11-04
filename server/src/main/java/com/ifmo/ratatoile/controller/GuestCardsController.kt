@@ -1,6 +1,7 @@
 package com.ifmo.ratatoile.controller
 
 import com.ifmo.ratatoile.dao.toDto
+import com.ifmo.ratatoile.dto.GuestCardDto
 import com.ifmo.ratatoile.dto.GuestCardDtos
 import com.ifmo.ratatoile.dto.GuestCardRequestDto
 import com.ifmo.ratatoile.service.GuestCardService
@@ -22,6 +23,10 @@ class GuestCardsController(
   @PostMapping("/create")
   fun createGuestCard(@RequestBody rq: GuestCardRequestDto) =
       guestCardService.createGuestCard(rq).toDto()
+
+  @PostMapping("/update")
+  fun updateGuestCard(@RequestBody rq: GuestCardDto) =
+      guestCardService.updateGuestCard(rq).toDto()
 
   @DeleteMapping("/delete/{id}")
   fun deleteGuestCard(@PathVariable("id") id: Int) = guestCardService.deleteGuestCard(id).toDto()
