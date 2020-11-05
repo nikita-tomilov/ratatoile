@@ -20,7 +20,7 @@ class GuestService(
   private val dishService: DishService,
   private val guestRepository: GuestRepository,
   private val guestOrderItemService: GuestOrderItemService,
-  private val paidOrderItemService: PaidOrderItemService,
+  private val paidOrderItemService: PaidOrderItemRegistrationService,
   private val guestCardService: GuestCardService
 ) {
 

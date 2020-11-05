@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-class PaidOrderItemService(
+class PaidOrderItemRegistrationService(
   private val paidOrderItemRepository: PaidOrderItemRepository,
   private val guestOrderItemService: GuestOrderItemService,
   private val dishService: DishService
