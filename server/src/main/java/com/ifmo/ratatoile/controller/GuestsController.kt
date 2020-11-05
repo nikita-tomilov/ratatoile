@@ -30,6 +30,11 @@ class GuestsController(
     @PathVariable("table_id") tableId: Int
   ) = guestService.tableStatus(tableId)
 
+  @GetMapping("/precheckout/{table_id}")
+  fun precheckout(
+    @PathVariable("table_id") tableId: Int
+  ) = guestService.tablePrecheckout(tableId)
+
   @GetMapping("/checkout/{table_id}")
   fun checkout(
     @PathVariable("table_id") tableId: Int
@@ -40,6 +45,12 @@ class GuestsController(
     @PathVariable("table_id") tableId: Int,
     @PathVariable("guest_card_id") guestCardId: Int
   ) = guestService.tableStatus(tableId, guestCardId)
+
+  @GetMapping("/precheckout/{table_id}/{guest_card_id}")
+  fun precheckoutWithGuestCard(
+    @PathVariable("table_id") tableId: Int,
+    @PathVariable("guest_card_id") guestCardId: Int
+  ) = guestService.tablePrecheckout(tableId, guestCardId)
 
   @GetMapping("/checkout/{table_id}/{guest_card_id}")
   fun checkoutWithGuestCard(

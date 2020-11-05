@@ -15,7 +15,7 @@ class ReservationController(
 ) {
 
   @GetMapping("/get/all")
-  fun getAllReservations() = reservationsAccessService.getReservations()
+  fun getAllReservations() = reservationsAccessService.getAllReservations()
 
   @GetMapping("/get/all/for/today")
   fun getAllReservationsForToday() = reservationsAccessService.getReservationsForToday()

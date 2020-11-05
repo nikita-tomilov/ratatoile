@@ -4,6 +4,7 @@ import com.ifmo.ratatoile.dao.toDto
 import com.ifmo.ratatoile.dto.TableReservationsDto
 import com.ifmo.ratatoile.repository.ReservationRepository
 import org.springframework.stereotype.Service
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
@@ -12,10 +13,18 @@ class AcceptedReservationsService(
   private val reservationRepository: ReservationRepository
 ) {
 
-  fun getReservations(): TableReservationsDto {
+  fun getAllReservations(): TableReservationsDto {
     return TableReservationsDto(
         reservationRepository.findAll()
             .sortedBy { it.reservedFrom }
+            .map { it.toDto() })
+  }
+
+  fun getActiveReservations(): TableReservationsDto {
+    return TableReservationsDto(
+        reservationRepository.findAll()
+            .sortedBy { it.reservedFrom }
+            .filter { it.reservedFrom.isAfter(Instant.now()) }
             .map { it.toDto() })
   }
 

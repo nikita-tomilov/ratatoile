@@ -220,6 +220,36 @@ class GuestServiceTest {
     assertThat(receipt.totalSum).isEqualTo(calculatedSum * 0.95)
   }
 
+  @Test
+  fun `precheckout produces valid receipt`() {
+    //given
+    val servedCount = prepareDummyFood()
+    //when
+    val receipt = guestService.tablePrecheckout(table.id ?: error("should-never-happen"))
+    //then
+    val positions = receipt.guests[0].positions
+    val calculatedSum = positions.map { it.price }.sum()
+    assertThat(calculatedSum).isEqualTo(servedCount * 100.0)
+    assertThat(positions).hasSize(servedCount)
+    assertThat(receipt.guests[0].sumPerGuest).isEqualTo(calculatedSum)
+    assertThat(receipt.totalSum).isEqualTo(calculatedSum)
+  }
+
+  @Test
+  fun `precheckout with guest card produces valid receipt`() {
+    //given
+    val servedCount = prepareDummyFood()
+    //when
+    val receipt = guestService.tablePrecheckout(table.id ?: error("should-never-happen"), guestCard.id)
+    //then
+    val positions = receipt.guests[0].positions
+    val calculatedSum = positions.map { it.price }.sum()
+    assertThat(calculatedSum).isEqualTo(servedCount * 100.0)
+    assertThat(positions).hasSize(servedCount )
+    assertThat(receipt.guests[0].sumPerGuest).isEqualTo(calculatedSum * 0.95)
+    assertThat(receipt.totalSum).isEqualTo(calculatedSum * 0.95)
+  }
+
   private fun buildAndSaveDummyGuestOrderItems(): List<GuestOrderItem> {
     return dishes.map {
       val id = it.id ?: error("should-never-happen")

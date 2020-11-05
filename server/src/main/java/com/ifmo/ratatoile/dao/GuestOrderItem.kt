@@ -24,4 +24,7 @@ data class GuestOrderItem(
   fun setStatusEnum(status: GuestOrderItemStatus) {
     this.status = status.name
   }
+
+  fun wasServed() = (this.getStatusEnum() == GuestOrderItemStatus.SERVED)
+  fun wasPaid() = (this.getStatusEnum() == GuestOrderItemStatus.PAID)
 }

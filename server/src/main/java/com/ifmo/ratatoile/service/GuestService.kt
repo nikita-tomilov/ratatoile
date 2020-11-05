@@ -57,17 +57,22 @@ class GuestService(
     return 1.0 - guestCard.percentage.toDouble() / 100
   }
 
-  fun tableStatus(tableId: Int, guestCardId: Int? = null): ReceiptWOrderItemDto {
+  fun tableStatus(
+    tableId: Int,
+    guestCardId: Int? = null,
+    filter: (GuestOrderItem) -> Boolean = { true }
+  ): ReceiptWOrderItemDto {
     val guestsForTable = currentGuestsAsEntities().filter { it.table.id!! == tableId }
     if (guestsForTable.isEmpty()) throw BadRequestException("This table $tableId has no guests")
 
     val discountCoeff = getDiscountCoeff(guestCardId)
 
-    val receiptsPerGuest = guestsForTable.map {
-      val orderItemsPerGuest = guestOrderItemService.findAllByGuestId(it.id!!)
+    val receiptsPerGuest = guestsForTable.map { guest ->
+      val orderItemsPerGuest = guestOrderItemService.findAllByGuestId(guest.id!!)
       orderItemsPerGuest
+          .filter { filter.invoke(it) }
           .toNonFinalReceiptPerGuestDto(
-              it.id ?: error("should-never-happen"),
+              guest.id ?: error("should-never-happen"),
               discountCoeff)
     }
 
@@ -75,6 +80,9 @@ class GuestService(
         receiptsPerGuest.map { it.sumPerGuest }.sum(),
         receiptsPerGuest.sortedBy { it.guestId })
   }
+
+  fun tablePrecheckout(tableId: Int, guestCardId: Int? = null) =
+      tableStatus(tableId, guestCardId) { it.wasServed() }
 
   fun checkoutTable(tableId: Int, guestCardId: Int? = null): ReceiptDto {
     val guestsForTable = currentGuestsAsEntities().filter { it.table.id!! == tableId }
@@ -156,7 +164,4 @@ class GuestService(
 
   private fun getTableAsEntity(id: Int) =
       eatingTableRepository.findByIdOrNull(id) ?: throw BadRequestException("no table for id $id")
-
-  private fun GuestOrderItem.wasServed() = (this.getStatusEnum() == GuestOrderItemStatus.SERVED)
-  private fun GuestOrderItem.wasPaid() = (this.getStatusEnum() == GuestOrderItemStatus.PAID)
 }

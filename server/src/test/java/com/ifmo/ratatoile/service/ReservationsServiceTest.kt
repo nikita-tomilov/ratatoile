@@ -56,7 +56,8 @@ class ReservationsServiceTest() {
   @Test
   fun `can add reservation request`() {
     //given
-    val rq1 = TableReservationRequest(0, 100, 12, TableReservationTableType.NORMAL, "", "", "")
+    val from = System.currentTimeMillis() + Duration.ofDays(1).toMillis()
+    val rq1 = TableReservationRequest(from, from + 100, 12, TableReservationTableType.NORMAL, "", "", "")
     //when
     val rp = reservationRequestsService.createReservationRequest(rq1)
     //then
@@ -66,22 +67,24 @@ class ReservationsServiceTest() {
   @Test
   fun `can advance reservation request to a reservation`() {
     //given
-    val trq = TableReservationRequest(0, 100, 12, TableReservationTableType.NORMAL, "", "", "")
+    val from = System.currentTimeMillis() + Duration.ofDays(1).toMillis()
+    val trq = TableReservationRequest(from, from + 100, 12, TableReservationTableType.NORMAL, "", "", "")
     reservationRequestsService.createReservationRequest(trq)
     val request = reservationRequestsService.getReservationRequests().requests.first()
     //when
     reservationRequestsService.acceptReservationRequest(request.id)
     //then
     assertThat(reservationRequestsService.getReservationRequests().requests).isEmpty()
-    assertThat(acceptedReservationsService.getReservations().reservations).hasSize(1)
+    assertThat(acceptedReservationsService.getActiveReservations().reservations).hasSize(1)
   }
 
   @Test
   fun `can add reservation request if no suitable tables available and the service knows that`() {
     //given
+    val from = System.currentTimeMillis() + Duration.ofDays(1).toMillis()
     makeBigTablesBusy()
     //when
-    val trq = TableReservationRequest(0, 100, 12, TableReservationTableType.NORMAL, "", "", "")
+    val trq = TableReservationRequest(from, from + 100, 12, TableReservationTableType.NORMAL, "", "", "")
     reservationRequestsService.createReservationRequest(trq)
     val request = reservationRequestsService.getReservationRequests().requests.first()
     //then
@@ -108,8 +111,9 @@ class ReservationsServiceTest() {
   fun `can add reservation if no suitable tables available now but available later`() {
     //given
     makeBigTablesBusy()
+    val from = System.currentTimeMillis() + Duration.ofDays(2).toMillis()
     //when
-    val trq = TableReservationRequest(150, 200, 12, TableReservationTableType.NORMAL, "", "", "")
+    val trq = TableReservationRequest(from, from + 100, 12, TableReservationTableType.NORMAL, "", "", "")
     reservationRequestsService.createReservationRequest(trq)
     val request = reservationRequestsService.getReservationRequests().requests.first()
     //then
@@ -119,7 +123,7 @@ class ReservationsServiceTest() {
     reservationRequestsService.acceptReservationRequest(request.id)
     //then
     assertThat(reservationRequestsService.getReservationRequests().requests).hasSize(0)
-    assertThat(acceptedReservationsService.getReservations().reservations).hasSize(3)
+    assertThat(acceptedReservationsService.getActiveReservations().reservations).hasSize(3)
   }
 
   @Test
@@ -133,7 +137,7 @@ class ReservationsServiceTest() {
     )
     //when
     dates.forEach {
-      val trq = TableReservationRequest(it, it + 1, 12, TableReservationTableType.NORMAL, "", "", "")
+      val trq = TableReservationRequest(it, it + 100, 12, TableReservationTableType.NORMAL, "", "", "")
       reservationRequestsService.createReservationRequest(trq)
       val request = reservationRequestsService.getReservationRequests().requests.first()
       reservationRequestsService.acceptReservationRequest(request.id)
@@ -141,13 +145,15 @@ class ReservationsServiceTest() {
 
     //then
     assertThat(reservationRequestsService.getReservationRequests().requests).hasSize(0)
-    assertThat(acceptedReservationsService.getReservations().reservations).hasSize(3)
+    assertThat(acceptedReservationsService.getActiveReservations().reservations).hasSize(1)
+    assertThat(acceptedReservationsService.getAllReservations().reservations).hasSize(3)
     assertThat(acceptedReservationsService.getReservationsForToday().reservations).hasSize(1)
   }
 
   private fun makeBigTablesBusy() {
+    val from = System.currentTimeMillis() + Duration.ofDays(1).toMillis()
     eatingTableRepository.findAll().filter { it.maxSeats == 12 }.forEach { _ ->
-      val trq = TableReservationRequest(0, 100, 12, TableReservationTableType.NORMAL, "", "", "")
+      val trq = TableReservationRequest(from, from + 100, 12, TableReservationTableType.NORMAL, "", "", "")
       reservationRequestsService.createReservationRequest(trq)
       val request =
           reservationRequestsService.getReservationRequests().requests.maxBy { it.id }!!

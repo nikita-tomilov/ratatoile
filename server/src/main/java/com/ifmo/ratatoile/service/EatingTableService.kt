@@ -63,7 +63,7 @@ class EatingTableService(
   }
 
   fun getTablesWithReservations(): TablesWithStateDto {
-    val allReservations = reservationAccessService.getReservations()
+    val allReservations = reservationAccessService.getActiveReservations()
     return getTablesWithReservations(allReservations)
   }
 
