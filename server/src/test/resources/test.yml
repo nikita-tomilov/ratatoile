@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:latest:///
+    url: jdbc:tc:postgresql:9.6.1:///
   jpa:
     hibernate:
       ddl-auto: validate

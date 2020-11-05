@@ -78,6 +78,7 @@ class EatingTableService(
   ): List<EatingTable> {
     return tableRepository.findAll()
         .asSequence()
+        .sortedBy { it.id }
         .filter { !busyTableIds.contains(it.id!!) }
         .filter { it.maxSeats >= request.seats }
         .filter {
