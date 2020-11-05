@@ -19,5 +19,10 @@ spring:
     locations: classpath:db/migrations
     enabled: true
     baselineOnMigrate: true
+  resources:
+    static-locations: /tmp # change it to path where the static is
+    # as example, for this var to be /opt/ratatoile/public
+    # the table booking page has to be at /opt/ratatoile/public/index.html
+    # the app page has to be at /opt/ratatoile/public/system/index.html
 server:
   port: 8081
