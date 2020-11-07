@@ -14,7 +14,10 @@ export const TableWithReservations = (props: {
   );
   const { tableData, isManager, onClose } = props;
   const onDelete = useCallback(
-    (event) => deleteReservation(event.currentTarget.value).then(onClose),
+    (event) => {
+      if(window.confirm("Вы уверены, что хотите удалить резерв со столика?"))
+        deleteReservation(event.currentTarget.value).then(onClose)
+    },
     [onClose]
   );
   const onStart = useCallback(

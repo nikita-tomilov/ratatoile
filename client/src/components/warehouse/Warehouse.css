@@ -15,10 +15,8 @@
 
 .addIngredientWrapper {
   position: absolute;
-  top: 35%;
+  top: 10%;
   left: 35%;
-  width: 30%;
-  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

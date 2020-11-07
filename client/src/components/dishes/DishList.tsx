@@ -21,12 +21,14 @@ export const DishList = (props: {
   const [addPopupVisible, setAddPopupVisible] = useState(false);
   const [data, setData] = useState<RowData[] | null>(null);
   const onDelete = useCallback(
-    (event) =>
-      deleteDishRequest(event.currentTarget.value).then((data) => {
+    (event) => {
+      if(window.confirm("Вы уверены, что хотите удалить блюдо из списка блюд ресторана?"))
+        deleteDishRequest(event.currentTarget.value).then((data) => {
         if ((data as ErrorResponse).error) {
           props.showNotification("Это блюдо использовано в составлении меню!");
         } else setData(null);
-      }),
+      })
+    },
     []
   );
   const onEdit = useCallback((event) => {

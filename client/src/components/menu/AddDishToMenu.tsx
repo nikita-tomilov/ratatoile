@@ -11,12 +11,13 @@ export const AddDishToMenu = (props: {
   onFinished: () => void;
   checkIfExists?: (dishId: number) => boolean;
   selectedGuestId?: number;
+  dishRequest?: () => Promise<any>
 }): JSX.Element => {
   useEffect(() => {
-    getAllDishesRequest().then(
+    (props.dishRequest ? props.dishRequest : getAllDishesRequest)().then(
       (data) => data && data.dishes && setOptions(data.dishes)
     );
-  }, []);
+  }, [props.dishRequest]);
 
   const [options, setOptions] = useState<RowData[]>([]);
   const [dish, setDish] = useState<string>("");

@@ -1,4 +1,4 @@
-.header, .titleWrapper {
+.header, .titleWrapper, .btnHolder {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -42,6 +42,15 @@
   flex-direction: column;
 }
 
+.dishList {
+  padding: 10px;
+  justify-content: flex-start;
+}
+
+.dish {
+  margin: 5px 0;
+}
+
 .receivedData {
   width: 50%;
   height: 50%;
@@ -58,4 +67,26 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.textForHeader {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.textForSmallHeader {
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.text {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-size: 20px;
+}
+
+.oneLine {
+  display: flex;
+  flex-direction: row;
 }

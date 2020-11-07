@@ -18,7 +18,8 @@ const DonationsCritic = (): JSX.Element => {
   const [isAssPanelOpened, setAddPanelOpened] = useState<boolean>(false);
 
   const onDelete = useCallback((event) => {
-    deleteCriticDonationRequest(event.currentTarget.value).then(() =>
+    if(window.confirm("Вы уверены, что хотите удалить запись о пожертвовании?"))
+      deleteCriticDonationRequest(event.currentTarget.value).then(() =>
       setData(null)
     );
   }, []);

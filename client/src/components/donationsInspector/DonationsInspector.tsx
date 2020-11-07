@@ -18,7 +18,8 @@ const DonationsInspector = (): JSX.Element => {
   const [isAssPanelOpened, setAddPanelOpened] = useState<boolean>(false);
 
   const onDelete = useCallback((event) => {
-    deleteInspectorDonationRequest(event.currentTarget.value).then(() =>
+    if(window.confirm("Вы уверены, что хотите удалить запись о пожертвовании?"))
+      deleteInspectorDonationRequest(event.currentTarget.value).then(() =>
       setData(null)
     );
   }, []);

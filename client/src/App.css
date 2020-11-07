@@ -16,3 +16,11 @@
 
   padding: 10px 5px;
 }
+
+.signFormWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

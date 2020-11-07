@@ -7,6 +7,7 @@ import { TableEstimateResponse } from "../components/singleTable/types";
 const tablePrefix = "/table/get/all/";
 const guestCreatePrefix = "/guests/create/";
 const guestCheckoutPrefix = "/guests/checkout/";
+const guestPrecheckoutPrefix = "/guests/precheckout/";
 const reservationPrefix = "/reservation/";
 
 export const getAllTablesWithReservations = (): Promise<GetAllTablesResponse | null> => {
@@ -37,10 +38,21 @@ export const startCatering = (
 };
 
 export const finishCatering = (
-  tableId: number
+  tableId: number,
+  cardID: number | null
 ): Promise<TableEstimateResponse | null> => {
   return customFetch<{}, TableEstimateResponse | null>(
-    `${getUrl()}${guestCheckoutPrefix}${tableId}`,
+    `${getUrl()}${guestCheckoutPrefix}${tableId}${cardID ? '/' + cardID : ''}`,
+    Method.GET
+  );
+};
+
+export const preCheckout = (
+  tableId: number,
+  cardID?: number | null
+): Promise<any | null> => {
+  return customFetch<{}, any | null>(
+    `${getUrl()}${guestPrecheckoutPrefix}${tableId}${cardID ? '/' + cardID : ''}`,
     Method.GET
   );
 };

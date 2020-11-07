@@ -19,13 +19,14 @@
     padding: 7px 0;
 }
 
-.singleDishWrapper, .dishControls {
+.dishControls {
     flex: 1;
     justify-content: space-between;
 }
 
 .singleDishWrapper {
-    margin: 2px 0;
+    justify-content: space-between;
+    margin: 10px 0;
     border-radius: 7px;
 }
 

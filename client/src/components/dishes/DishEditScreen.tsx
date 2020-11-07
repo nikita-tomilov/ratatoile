@@ -11,53 +11,56 @@ import {
   updateDishRequest,
   uploadImage,
 } from "../../api/dishes";
-import { DishForm } from "./DishForm";
 import { AddIngredientToDish } from "./AddIngredientToDish";
+import {
+  emptyValidator,
+  FormWrapper,
+  positiveNumberValidator,
+  SimpleField,
+  someDataNotProvided
+} from "../inputs/SimpleField";
 
 export const DishEditScreen = (props: {
   dishId: number;
   onCancel: () => void;
 }): JSX.Element => {
+  const [dataRequestFinished, setDataRequestIsFinished] = useState<boolean>(false);
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
   const [data, setData] = useState<RowData[] | null>(null);
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
+  const [name, setName] = useState<string | null >(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [price, setPrice] = useState<number| null >(null);
   const [photoId, setPhotoId] = useState<number | null>(null);
   const [photoFileData, setPhotoFileData] = useState<any | null>(null);
   const onDelete = useCallback((event) => {
-    removeIngredientFromDishRequest(event.currentTarget.value).then(() =>
-      setData(null)
-    );
+    if(window.confirm("Вы уверены, что хотите удалить этот ингредиент?"))
+      removeIngredientFromDishRequest(event.currentTarget.value)
+          .then(() => setData(null));
   }, []);
   const scheme = useMemo(() => getDishIngredientsScheme({ onDelete }), []);
 
   useEffect(() => {
     if (data === null)
-      getDishInfoRequest(props.dishId).then((data) => {
-        if (data) {
-          setData(data.ingredients);
-          setName(data.name);
-          setDescription(data.description);
-          setPrice(data.price);
-          setPhotoId(data.photoId);
+      getDishInfoRequest(props.dishId).then((response) => {
+        if (response) {
+          setData(response.ingredients);
+          setName(response.name);
+          setDescription(response.description);
+          setPrice(response.price);
+          setPhotoId(response.photoId);
         }
-      });
+      }).then(()=>setDataRequestIsFinished(true));
   }, [data]);
 
-  const onNameChange = useCallback((ev) => setName(ev.currentTarget.value), []);
-  const onDescriptionChange = useCallback(
-    (ev) => setDescription(ev.currentTarget.value),
-    []
-  );
-  const onPriceChange = useCallback(
-    (ev) => setPrice(Number(ev.currentTarget.value) || 0),
-    []
-  );
-
   const saveHandler = useCallback(() => {
-    updateDishRequest({ description, name, price, id: props.dishId }).then(() =>
-      setData(null)
-    );
+    if(name === null  || description === null || price === null)
+      setShowErrorMessage(true);
+    else {
+      setShowErrorMessage(false);
+      updateDishRequest({ description, name, price, id: props.dishId }).then(() =>
+          setData(null)
+      );
+    }
   }, [description, name, price]);
 
   let image = <div className="photo">Фото не задано {photoId}</div>;
@@ -97,7 +100,48 @@ export const DishEditScreen = (props: {
     [photoFileData]
   );
 
-  return (
+  const elements = useMemo(() => {
+    return [
+      <SimpleField
+          isRequired={true}
+          label="Название блюда"
+          type="text"
+          id="name"
+          onChange={setName}
+          validator={emptyValidator}
+          startValue={name}
+      />,
+      <SimpleField
+          label="Описание блюда"
+          type="text"
+          id="name"
+          onChange={setDescription}
+          startValue={description}
+      />,
+      <SimpleField
+          isRequired={true}
+          label="Цена"
+          type="number"
+          id="name"
+          onChange={setPrice}
+          startValue={price}
+          validator={(value) => emptyValidator(value) && positiveNumberValidator(value)}
+          validationText={'Цена не может быть отрицательной'}
+      />,
+      <>
+        {
+          showErrorMessage
+          && <div className="error">{someDataNotProvided}</div>
+        }
+      </>,
+      <Button variant="contained" color="primary" onClick={saveHandler}>
+        Сохранить
+      </Button>
+    ];
+
+  }, [saveHandler, showErrorMessage, price, description, name]);
+
+  return dataRequestFinished ? (
     <div className="dishEditWrapper">
       <div className="headerWrapper">
         <div className="panelTitle">Редактирование: "{name}"</div>
@@ -134,19 +178,7 @@ export const DishEditScreen = (props: {
           </div>
         </div>
         <div className="part">
-          <DishForm
-            name={name}
-            price={price}
-            description={description}
-            setName={onNameChange}
-            setPrice={onPriceChange}
-            setDescription={onDescriptionChange}
-          />
-          <div className="button">
-            <Button variant="contained" color="primary" onClick={saveHandler}>
-              Сохранить
-            </Button>
-          </div>
+          <FormWrapper inputs={elements} />
         </div>
         <div className="part" />
       </div>
@@ -159,5 +191,5 @@ export const DishEditScreen = (props: {
         onAddFinished={() => setData(null)}
       />
     </div>
-  );
+  ) : <div />;
 };

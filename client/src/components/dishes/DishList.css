@@ -10,10 +10,6 @@
   position: relative;
 }
 
-.addDishWrapper {
-  height: 30%;
-}
-
 .headerControls,
 .headerWrapper,
 .editFields {
@@ -35,7 +31,6 @@
 }
 
 .headerWrapper {
-  max-height: 40px;
   justify-content: space-between;
 }
 

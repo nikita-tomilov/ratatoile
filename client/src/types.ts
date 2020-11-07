@@ -2,6 +2,7 @@ import {TableData} from "./api/types";
 import {AppRole} from "./api/user";
 
 export enum SideMenuType {
+    RESERVATIONS_TO_ACCEPT = "RESERVATIONS_TO_ACCEPT",
     RESERVATIONS = "RESERVATIONS",
     ALL_TABLES = "ALL_TABLES" ,
     TABLE = "TABLE" ,
@@ -13,6 +14,7 @@ export enum SideMenuType {
     CARD="CARD",
     DONATIONS_CRITIC = "DONATIONS_CRITIC",
     DONATIONS_INSPECTOR = "DONATIONS_INSPECTOR",
+    ORDERS = 'ORDERS',
     LOGOUT = "LOGOUT",
 }
 

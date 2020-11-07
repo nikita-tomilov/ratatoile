@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import "./Warehouse.css";
 import { Button } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import {addIngredientRequest, IngredientData, editIngredientRequest} from "../../api/warehouse";
+import {FormWrapper, SimpleField, someDataNotProvided} from "../inputs/SimpleField";
 
 const defaultIngredient = {
     id: '',
@@ -17,81 +17,89 @@ export const IngredientPopup = (props: {
     isNew: boolean,
     selectedItem: IngredientData | null
 }): JSX.Element => {
-  const data = props.selectedItem != null ? props.selectedItem : defaultIngredient;
-  const [name, setName] = useState(data.name);
-  const [uom, setUom] = useState(data.uom);
-  const [warehouseAmount, setWarehouseAmount] = useState(data.warehouseAmount);
-
-  const onNameChange = useCallback((ev) => setName(ev.currentTarget.value), []);
-  const onUomChange = useCallback((ev) => setUom(ev.currentTarget.value), []);
-  const onCountChange = useCallback((ev) => setWarehouseAmount(ev.currentTarget.value), []);
+  const data = useMemo(() => props.selectedItem != null ? props.selectedItem : defaultIngredient, [props.selectedItem]);
+  const [name, setName] = useState<string | null>(data.name);
+  const [uom, setUom] = useState<string | null>(data.uom);
+  const [warehouseAmount, setWarehouseAmount] = useState<number | null>(data.warehouseAmount);
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
 
   const addIngredientHandler = useCallback(
-    () => (props.isNew ? addIngredientRequest : editIngredientRequest)({ id: data.id, name, uom, warehouseAmount}).then(props.onChangeSubmit),
+    () => {
+        if(name == null || uom === null || warehouseAmount === null)
+            setShowErrorMessage(true);
+        else {
+            setShowErrorMessage(false);
+            return (props.isNew ? addIngredientRequest : editIngredientRequest)({
+                id: data.id,
+                name,
+                uom,
+                warehouseAmount
+            })
+                .then(props.onChangeSubmit)
+        }
+},
     [name, uom, warehouseAmount, props.onChangeSubmit, props.isNew]
   );
   return (
     <div className="addIngredientWrapper">
-      <div className="popupTitle">{props.isNew ? 'Добавить новый' : 'Изменить'} ингредиент</div>
-      <div className="input">
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Название ингридиента"
-          type="text"
-          id="name"
-          value={name}
-          onChange={onNameChange}
-        />
-      </div>
-      <div className="input">
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Мера измерения"
-          type="text"
-          id="uom"
-          value={uom}
-          onChange={onUomChange}
-        />
-      </div>
-      <div className="input">
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Количество"
-          type="number"
-          id="warehouseAmount"
-          value={warehouseAmount}
-          onChange={onCountChange}
-        />
-      </div>
-      <div className="controls">
-        <div className="btnWrapper">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={addIngredientHandler}
-          >
-              {props.isNew ? 'Добавить новый продукт' : 'Сохранить изменения'}
-          </Button>
+        <div className="headerWrapper">
+            <div className="popupTitle">{props.isNew ? 'Добавить новый' : 'Изменить'} ингредиент</div>
+            <div className="btnWrapper">
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={props.onCancel}
+                >
+                    Назад
+                </Button>
+            </div>
         </div>
-        <div className="btnWrapper">
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={props.onCancel}
-          >
-            Назад
-          </Button>
-        </div>
-      </div>
+
+        <FormWrapper inputs={
+            [
+                <SimpleField
+                    isRequired={true}
+                    label="Название ингредиента"
+                    id={'name'}
+                    onChange={setName}
+                    type={'text'}
+                    validator={(value => value.length > 0)}
+                    startValue={data.name}
+                />,
+                <SimpleField
+                    isRequired={true}
+                    label="Мера измерения"
+                    id={'uom'}
+                    onChange={setUom}
+                    type={'text'}
+                    validator={(value => value.length > 0)}
+                    startValue={data.uom}
+                />,
+                <SimpleField
+                    isRequired={true}
+                    label="Количество на складе"
+                    id={'warehouseAmount'}
+                    onChange={setWarehouseAmount}
+                    type={'number'}
+                    validator={(value => value.length > 0 && Number.parseInt(value) !== null && Number.parseInt(value) > 0)}
+                    startValue={data.warehouseAmount}
+                    validationText={'Количество ингредиента не может быть отрицательным'}
+                />,
+                <>
+                    {
+                        showErrorMessage
+                        && <div className="error">{someDataNotProvided}</div>
+                    }
+                </>,
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={addIngredientHandler}
+                >
+                    {props.isNew ? 'Добавить новый продукт' : 'Сохранить изменения'}
+                </Button>
+            ]
+        } />
     </div>
   );
 };

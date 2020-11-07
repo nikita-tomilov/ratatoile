@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {DataTable} from "../tableForData/DataTable";
 import {getKitchenScheme} from "./kitchenConfig";
-import { DishStatus} from "../../types";
-import { getKitchenQueue } from "../../api/kitchen";
+import {DishStatus} from "../../types";
+import {getKitchenQueue} from "../../api/kitchen";
 import {AppRole} from "../../api/user";
 import {getAllDishesRequest, UpdateDishRequestData} from "../../api/dishes";
-import {fetchDataTimer} from "../../App";
+import {setUpAnIntervalPollingOfFunction} from "../utils";
 
 export type KitchenData = {
     ingredientsMissingList: string[];
@@ -18,6 +18,7 @@ export type KitchenData = {
 
 export const Kitchen = (props: {selectedRole: AppRole}): JSX.Element => {
     const [data, setData] = useState<KitchenData[] | null>(null);
+    const [dataForWaiter, setDataForWaiter] = useState<KitchenData[] | null>(null);
     const updateKitchenQueueData = useCallback(() => {
         Promise.all([getAllDishesRequest(), getKitchenQueue(props.selectedRole)])
             .then((responses) => {
@@ -33,7 +34,7 @@ export const Kitchen = (props: {selectedRole: AppRole}): JSX.Element => {
                         ingredientsMissingList: el['ingredientsMissingList'],
                     } as KitchenData;
                 });
-                setData(orders);
+                props.selectedRole === AppRole.CHEF ? setData(orders) : setDataForWaiter(orders);
             });
     }, [props.selectedRole]);
 
@@ -42,17 +43,13 @@ export const Kitchen = (props: {selectedRole: AppRole}): JSX.Element => {
         onActionFinished: updateKitchenQueueData
     }), [props.selectedRole]);
 
-    useEffect(() => {
-        updateKitchenQueueData();
-        const interval = setInterval(updateKitchenQueueData, fetchDataTimer);
-        return () => clearInterval(interval);
-    }, [props.selectedRole]);
+    useEffect(() => setUpAnIntervalPollingOfFunction(updateKitchenQueueData), [props.selectedRole]);
 
     return (
         <div className="panelWrapper">
             <div className="panelTitle">Кухня</div>
             <div className="tablesWrapper">
-                <DataTable scheme={scheme} data={data} />
+                <DataTable scheme={scheme} data={props.selectedRole === AppRole.CHEF ? data : dataForWaiter} />
             </div>
         </div>
     );

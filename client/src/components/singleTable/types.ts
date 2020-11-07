@@ -24,6 +24,10 @@ export type TableEstimateResponse = {
 };
 
 export type TableEstimationDataProps = {
-  data: TableEstimateResponse;
   setCurrentMenuItem: (menuType: SideMenuType) => void;
+  onCancel: () => void;
+  onAccept: () => void;
+  onCardDialogOpen: () => void;
+  tableId: number;
+  card: { id: number, percentage: number } | null;
 };

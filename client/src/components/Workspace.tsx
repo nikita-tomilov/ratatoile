@@ -19,6 +19,7 @@ import {getAuthService} from "./auth/authService";
 import {AppState, SideMenuType} from "../types";
 import {Kitchen} from "./kitchen/Kitchen";
 import {GuestCards} from "./guestCards/GuestCards";
+import {Orders} from "./orders/Orders";
 
 type Props = {
   currentMenuItem: SideMenuType;
@@ -80,6 +81,8 @@ export class Workspace extends React.PureComponent<Props> {
         return <DonationsInspector />;
       case SideMenuType.MENU:
         return <Menu />;
+      case SideMenuType.RESERVATIONS_TO_ACCEPT:
+        return <Reservations forAccept={true}/>
       case SideMenuType.RESERVATIONS:
         return <Reservations />
       case SideMenuType.WAREHOUSE:
@@ -90,6 +93,8 @@ export class Workspace extends React.PureComponent<Props> {
         return <Kitchen selectedRole={AppRole.WAITER}/>
       case SideMenuType.CARD:
         return <GuestCards />
+      case SideMenuType.ORDERS:
+        return <Orders />
       default:
         return <Tables />;
     }

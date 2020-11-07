@@ -5,7 +5,7 @@ import React from "react";
 export const getWarehouseScheme = (props: any): Scheme => {
     return {
         name: {
-            label: "Название ингридиента",
+            label: "Название ингредиента",
         },
         amount: {
             label: "Количество на складе" ,

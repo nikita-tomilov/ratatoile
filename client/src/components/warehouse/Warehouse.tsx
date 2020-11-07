@@ -10,7 +10,7 @@ import {
   getAllIngredientsRequest,
 } from "../../api/warehouse";
 import { IngredientPopup } from "./IngredientPopup";
-import {fetchDataTimer} from "../../App";
+import {setUpAnIntervalPollingOfFunction} from "../utils";
 
 export const Warehouse = (): JSX.Element => {
   const [ingredientPopupVisible, setAddPopupVisible] = useState(false);
@@ -18,7 +18,8 @@ export const Warehouse = (): JSX.Element => {
   const [data, setData] = useState<RowData[] | null>(null);
   const [selected, setSelected] = useState<RowData | null>(null);
   const onDelete = useCallback((event) => {
-    deleteIngredientRequest(event.currentTarget.value)
+    if(window.confirm("Вы уверены, что хотите удалить этот продукт со склада?"))
+      deleteIngredientRequest(event.currentTarget.value)
         .catch((e) => {
           alert(e);
         }).then(() =>
@@ -35,7 +36,9 @@ export const Warehouse = (): JSX.Element => {
   }, [data]);
 
   const scheme = useMemo(() => getWarehouseScheme({ onDelete, onEdit }), [onDelete, onEdit]);
+
   const addIngredientHandler = useCallback(() => {
+    setSelected(null);
     setNewIngredientAdded(true);
     setAddPopupVisible(true);
   }, []);
@@ -52,11 +55,7 @@ export const Warehouse = (): JSX.Element => {
     setData(null);
   }, [onClose]);
 
-  useEffect(() => {
-    updateData();
-    const interval = setInterval(updateData, fetchDataTimer);
-    return () => clearInterval(interval);
-  }, []);
+  useEffect(() => setUpAnIntervalPollingOfFunction(updateData), []);
 
   return (
     <>

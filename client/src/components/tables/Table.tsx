@@ -23,6 +23,8 @@ export const Table = (props: ITableProps): JSX.Element => {
       }}
       className={selectedTableId ? "selectedTable" : "singleTable"}
       onMouseDown={onMouseDown}
-    />
+    >
+        {tableData.id}
+    </div>
   );
 };

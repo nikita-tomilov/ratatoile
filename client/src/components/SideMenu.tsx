@@ -18,18 +18,20 @@ export const getSavedLastMenuItem = async (): Promise<SideMenuType> => {
 }
 
 export const order = {
-  [SideMenuType.RESERVATIONS.toString()]: 0,
-  [SideMenuType.ALL_TABLES.toString()]: 1,
-  [SideMenuType.TABLE.toString()]: 2,
-  [SideMenuType.KITCHEN_WAITER.toString()]: 3,
-  [SideMenuType.KITCHEN.toString()]: 4,
-  [SideMenuType.WAREHOUSE.toString()]: 5,
-  [SideMenuType.DISH_LIST.toString()]: 6,
-  [SideMenuType.MENU.toString()]: 7,
-  [SideMenuType.CARD.toString()]: 8,
-  [SideMenuType.DONATIONS_INSPECTOR.toString()]: 9,
-  [SideMenuType.DONATIONS_CRITIC.toString()]: 10,
-  [SideMenuType.LOGOUT.toString()]: 11,
+  [SideMenuType.ORDERS.toString()]: 0,
+  [SideMenuType.RESERVATIONS.toString()]: 1,
+  [SideMenuType.RESERVATIONS_TO_ACCEPT.toString()]: 2,
+  [SideMenuType.ALL_TABLES.toString()]: 3,
+  [SideMenuType.TABLE.toString()]: 4,
+  [SideMenuType.KITCHEN_WAITER.toString()]: 5,
+  [SideMenuType.KITCHEN.toString()]: 6,
+  [SideMenuType.WAREHOUSE.toString()]: 7,
+  [SideMenuType.DISH_LIST.toString()]: 8,
+  [SideMenuType.MENU.toString()]: 9,
+  [SideMenuType.CARD.toString()]: 10,
+  [SideMenuType.DONATIONS_INSPECTOR.toString()]: 11,
+  [SideMenuType.DONATIONS_CRITIC.toString()]: 12,
+  [SideMenuType.LOGOUT.toString()]: 13,
 }
 
 export const sideMenuMapDefault = {
@@ -40,8 +42,8 @@ export const sideMenuMapForWaiter = {
   [SideMenuType.ALL_TABLES]: "Общий зал",
   [SideMenuType.TABLE]: "Столик",
   [SideMenuType.KITCHEN_WAITER]: "Кухня официант",
-  [SideMenuType.RESERVATIONS]: "Бронирования",
-  [SideMenuType.CARD]: "Карта постоянного покупателя",
+  [SideMenuType.RESERVATIONS_TO_ACCEPT]: "Запросы бронирования",
+  [SideMenuType.CARD]: "Карта гостя",
 };
 
 export const sideMenuMapForManager = {
@@ -49,9 +51,11 @@ export const sideMenuMapForManager = {
   [SideMenuType.TABLE]: "Столик",
   [SideMenuType.KITCHEN]: "Кухня",
   [SideMenuType.RESERVATIONS]: "Бронирования",
+  [SideMenuType.RESERVATIONS_TO_ACCEPT]: "Запросы бронирования",
   [SideMenuType.DONATIONS_INSPECTOR]: "Пожертвования СЭС",
   [SideMenuType.MENU]: "Меню",
-  [SideMenuType.CARD]: "Карта постоянного покупателя",
+  [SideMenuType.CARD]: "Карта гостя",
+  [SideMenuType.ORDERS]: "Оплаченные заказы",
 };
 
 export const sideMenuMapForCook = {

@@ -26,9 +26,11 @@ export const Menu = (): JSX.Element => {
 
   const onDelete = useCallback(
     (ev) =>
-      deleteDishFromMenuRequest(Number(ev.currentTarget.value)).then(
-        addFinishedHandler
-      ),
+    {
+        if(window.confirm("Вы уверены, что хотите удалить блюдо из меню?"))
+            deleteDishFromMenuRequest(Number(ev.currentTarget.value))
+                .then(addFinishedHandler);
+    },
     []
   );
   const scheme = useMemo(() => getMenuScheme({ onDelete }), []);
