@@ -28,18 +28,19 @@ const saveNewData = (el: RowData) => {
 const Reservations = (props: {forAccept?: boolean}): JSX.Element => {
   const [scheme, setScheme] = useState<Scheme | null>(null);
   const [data, setData] = useState<RowData[] | null>(null);
+  const [dataForAccept, setDataForAccept] = useState<RowData[] | null>(null);
 
   const onAccept = useCallback((event) => {
     acceptReservationRequest(event.currentTarget.value).then(() =>
-      setData(null)
-    );
+      props.forAccept ? setDataForAccept(null) : setData(null)
+  );
   }, []);
   const onDelete = useCallback((event) => {
       if(window.confirm("Вы уверены, что хотите удалить запрос на бронирование?"))
           deleteReservationRequest(event.currentTarget.value).then(() =>
-      setData(null)
+              props.forAccept ? setDataForAccept(null) : setData(null)
     );
-  }, []);
+  }, [props.forAccept]);
 
   const updateData = useCallback(() => {
       if(props.forAccept) {
@@ -59,7 +60,8 @@ const Reservations = (props: {forAccept?: boolean}): JSX.Element => {
       } else {
           getAllReservations().then(
               (receivedData) =>
-                  receivedData && setData(receivedData.reservations.map(saveNewData))
+                  receivedData &&
+                  (props.forAccept ? setDataForAccept(receivedData.reservations.map(saveNewData)) : setData(receivedData.reservations.map(saveNewData)))
           );
       }
     }, [props.forAccept]);
@@ -72,9 +74,9 @@ const Reservations = (props: {forAccept?: boolean}): JSX.Element => {
 
   return (
     <div className="reservationsWrapper">
-      <div className="header panelTitle">Запросы бронирования</div>
+      <div className="header panelTitle">{props.forAccept ? 'Запросы на бронирование' : 'Бронирования'}</div>
       <div className="tableWrapper">
-        {scheme && <DataTable scheme={scheme} data={data} />}
+        {scheme && <DataTable scheme={scheme} data={props.forAccept ? dataForAccept : data} />}
       </div>
     </div>
   );
