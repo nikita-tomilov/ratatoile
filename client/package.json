@@ -29,7 +29,7 @@
     "prettier": "prettier --write .",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://192.168.0.149:8081",
+  "proxy": "http://78.155.221.138:8137",
   "eslintConfig": {
     "extends": "react-app"
   },

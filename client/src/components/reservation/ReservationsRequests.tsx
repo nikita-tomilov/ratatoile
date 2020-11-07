@@ -16,7 +16,11 @@ const Reservations = (): JSX.Element => {
     const [data, setData] = useState<RowData[] | null>(null);
 
     const onAccept = useCallback((event) => {
-        acceptReservationRequest(event.currentTarget.value).then(() => setData(null));
+        acceptReservationRequest(event.currentTarget.value).then((response) => {
+            if(response.status === 400)
+                window.alert('Вы не можете подтвердить бронирование с неопределеннымм столиком');
+            setData(null)
+        })
     }, []);
     const onDelete = useCallback((event) => {
         if(window.confirm("Вы уверены, что хотите удалить запрос на бронирование?"))

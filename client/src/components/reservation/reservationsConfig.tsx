@@ -15,17 +15,15 @@ const forAcceptPart = (onDelete: ()=>void, onAccept: ()=>void) => {
       renderer: (value: RowData) => {
         return (
             <div className="controls">
-              <div className="btnWrapper">
                 <Button
                     variant="outlined"
                     color="secondary"
                     onClick={onDelete}
                     value={value.id}
+                    style={{marginRight: 10}}
                 >
                   Удалить
                 </Button>
-              </div>
-              <div className="btnWrapper">
                 <Button
                     variant="contained"
                     color="primary"
@@ -34,7 +32,6 @@ const forAcceptPart = (onDelete: ()=>void, onAccept: ()=>void) => {
                 >
                   Подтвердить
                 </Button>
-              </div>
             </div>
         );
       },
@@ -76,6 +73,11 @@ export const getScheme = (props: any): Scheme => {
     },
     tableCandidateId: {
       label: props.forAccept ? "Предварительный столик" : 'Назначенный столик',
+      renderer: (value: RowData) =>
+          <div style={{
+            color: value.tableCandidateId ? '' : 'red',
+            fontWeight: value.tableCandidateId ? 'normal' : 'bold'}}
+          >{value.tableCandidateId ? value.tableCandidateId : 'НЕТ'}</div>
     },
     time: {
       label: "Время бронирования",
