@@ -20,6 +20,7 @@ import {AppState, SideMenuType} from "../types";
 import {Kitchen} from "./kitchen/Kitchen";
 import {GuestCards} from "./guestCards/GuestCards";
 import {Orders} from "./orders/Orders";
+import ReservationsRequests from "./reservation/ReservationsRequests";
 
 type Props = {
   currentMenuItem: SideMenuType;
@@ -82,7 +83,7 @@ export class Workspace extends React.PureComponent<Props> {
       case SideMenuType.MENU:
         return <Menu />;
       case SideMenuType.RESERVATIONS_TO_ACCEPT:
-        return <Reservations forAccept={true}/>
+        return <ReservationsRequests />
       case SideMenuType.RESERVATIONS:
         return <Reservations />
       case SideMenuType.WAREHOUSE:

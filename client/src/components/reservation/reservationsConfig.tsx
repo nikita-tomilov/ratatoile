@@ -42,6 +42,30 @@ const forAcceptPart = (onDelete: ()=>void, onAccept: ()=>void) => {
   };
 }
 
+const forAllPart = (onDelete: ()=>void) => {
+  return {
+    controls: {
+      label: "Управление",
+      renderer: (value: RowData) => {
+        return (
+            <div className="controls">
+              <div className="btnWrapper">
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={onDelete}
+                    value={value.id}
+                >
+                  Удалить
+                </Button>
+              </div>
+            </div>
+        );
+      },
+    },
+  };
+}
+
 export const getScheme = (props: any): Scheme => {
   const all = {
     name: {
@@ -63,5 +87,5 @@ export const getScheme = (props: any): Scheme => {
     },
   };
 
-  return props.forAccept ? {...all, ...forAcceptPart(props.onDelete, props.onAccept)} : all;
+  return props.forAccept ? {...all, ...forAcceptPart(props.onDelete, props.onAccept)} : {...all, ...forAllPart(props.onDelete)};
 };
