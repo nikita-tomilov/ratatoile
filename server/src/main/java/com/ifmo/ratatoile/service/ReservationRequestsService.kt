@@ -55,7 +55,7 @@ class ReservationRequestsService(
     if (availableTables.isEmpty()) {
       return null
     }
-    return availableTables.random()
+    return availableTables.sortedBy { it.id }.first()
   }
 
   fun acceptReservationRequest(reservationRqId: Int): TableReservationResponse {

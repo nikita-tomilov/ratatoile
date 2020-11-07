@@ -127,6 +127,21 @@ class ReservationsServiceTest() {
   }
 
   @Test
+  fun `reservation request has relatively fixed assigned table`() {
+    //given
+    val from = System.currentTimeMillis() + Duration.ofDays(1).toMillis()
+    val rq1 = TableReservationRequest(from, from + 100, 12, TableReservationTableType.NORMAL, "", "", "")
+    //when
+    val rp = reservationRequestsService.createReservationRequest(rq1)
+    //then
+    val all1 = reservationRequestsService.getReservationRequests().requests.single()
+    (0..100).forEach { _ ->
+      val all2 = reservationRequestsService.getReservationRequests().requests.single()
+      assertThat(all1.tableCandidateId).isEqualTo(all2.tableCandidateId)
+    }
+  }
+
+  @Test
   fun `get reservations for today works correctly`() {
     //given
     val now = Instant.now()
