@@ -76,7 +76,8 @@ class KitchenQueueService(
   }
 
   fun foodIsServed(guestOrderItemId: Int): KitchenQueueDto {
-    val entries = kitchenQueueRepository.findAll().filter { it.orderItem.id == guestOrderItemId }
+    val entries = kitchenQueueRepository.findAll()
+        .filter {  it.orderItem.id != null && it.orderItem.id == guestOrderItemId }
     kitchenQueueRepository.deleteAll(entries)
     val item = guestOrderItemService.findById(guestOrderItemId)
     guestOrderItemService.updateStatus(item, GuestOrderItemStatus.SERVED)

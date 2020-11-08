@@ -43,8 +43,9 @@ class GuestOrderItemService(
   fun rmDishFromGuest(guestOrderItemId: Int): GuestOrderItemsDto {
     val orderItem = findById(guestOrderItemId)
 
-    val kitchenQueueEntries = kitchenQueueRepository.findAllByOrderItemIn(listOf(orderItem))
-    kitchenQueueEntries.forEach { kitchenQueueRepository.delete(it) }
+    val kitchenQueueEntries = kitchenQueueRepository.findAll()
+        .filter {  it.orderItem.id != null && it.orderItem.id == guestOrderItemId }
+    kitchenQueueRepository.deleteAll(kitchenQueueEntries)
 
     guestOrderItemRepository.delete(orderItem)
     val orderItemsPerGuest = guestOrderItemRepository.findAllByGuestId(orderItem.guestId)
