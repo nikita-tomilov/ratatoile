@@ -42,7 +42,6 @@ export const sideMenuMapForWaiter = {
   [SideMenuType.ALL_TABLES]: "Общий зал",
   [SideMenuType.TABLE]: "Столик",
   [SideMenuType.KITCHEN_WAITER]: "Кухня официант",
-  [SideMenuType.RESERVATIONS_TO_ACCEPT]: "Запросы бронирования",
   [SideMenuType.CARD]: "Карта гостя",
 };
 

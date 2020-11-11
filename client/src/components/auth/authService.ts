@@ -1,7 +1,7 @@
-import { getToken } from "../../api/auth";
-import { IAuthService } from "./types";
+import {getToken} from "../../api/auth";
+import {IAuthService} from "./types";
 import store from "../../store/store";
-import { StateChangeActionType } from "../../store/actions";
+import {StateChangeActionType} from "../../store/actions";
 
 export const tokenStorageName = "token";
 export const lastMenuItem = "lastMenuItem";
@@ -38,6 +38,11 @@ class AuthServiceClass implements IAuthService {
 
   private removeUserToken = (): void => {
     localStorage.removeItem(tokenStorageName);
+
+    store.dispatch({
+      type: StateChangeActionType.SET_TOKEN,
+      payload: null,
+    });
   };
 
   private cleanUserSpecificInfo = async (): Promise<void> => {

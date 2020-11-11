@@ -10,7 +10,6 @@
 }
 
 .container {
-  position: relative;
   overflow: auto;
 
   width: 100%;

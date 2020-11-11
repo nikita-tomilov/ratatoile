@@ -11,6 +11,7 @@
 .dialogBody {
     position: absolute;
     background: #ffffff;
+    top: 20%;
     border: 2px solid black;
     border-radius: 4px;
     z-index: 10;

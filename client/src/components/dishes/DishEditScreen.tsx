@@ -126,7 +126,7 @@ export const DishEditScreen = (props: {
           onChange={setPrice}
           startValue={price}
           validator={(value) => emptyValidator(value) && positiveNumberValidator(value)}
-          validationText={'Цена не может быть отрицательной'}
+          validationText={'Цена не может быть отрицательной или равной 0'}
       />,
       <>
         {
@@ -182,14 +182,16 @@ export const DishEditScreen = (props: {
         </div>
         <div className="part" />
       </div>
-      <div className="tableWrapper large">
-        <div className="itemTitle">Ингредиенты</div>
+      <div className="tableWrapper large" style={{marginTop: 30}}>
+        <div className="headerWrapper">
+          <div style={{fontWeight: 'bold', fontSize: 22}}>Ингредиенты</div>
+          <AddIngredientToDish
+              dishId={props.dishId}
+              onAddFinished={() => setData(null)}
+          />
+        </div>
         <DataTable scheme={scheme} data={data} />
       </div>
-      <AddIngredientToDish
-        dishId={props.dishId}
-        onAddFinished={() => setData(null)}
-      />
     </div>
   ) : <div />;
 };

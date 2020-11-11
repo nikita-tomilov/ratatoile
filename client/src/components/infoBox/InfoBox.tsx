@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, {useCallback, useMemo} from "react";
 import Button from "@material-ui/core/Button";
 import "./InfoBox.css";
 import config from "./tablesInfoMap.json";
@@ -13,7 +13,8 @@ import { TableWithReservations } from "./TableWithReservations";
 const getControls = (
   tableData: TableData,
   onClose: () => void,
-  isManager: boolean
+  isManager: boolean,
+  setTheTable: () => void
 ): JSX.Element | null => {
   return tableData.state === TableState.FREE ? (
     <AddGuests
@@ -24,7 +25,7 @@ const getControls = (
   ) : tableData.state === TableState.SUPPOSED_TO_BE_BUSY ? (
     <StartCatering />
   ) : tableData.state === TableState.BUSY_BY_YOU ? (
-    <GetToTable />
+    <GetToTable setTheTable={setTheTable}/>
   ) : (
     <TableWithReservations
       onClose={onClose}
@@ -35,7 +36,7 @@ const getControls = (
 };
 
 export const InfoBox = (props: InfoBoxProps): JSX.Element => {
-  const { selected, onClose, isManager } = props;
+  const { selected, onClose, isManager, setLastSelectedTable } = props;
   const { state, guiY, guiX, guiH, guiW, id } = selected;
   const tableConfig = useMemo(
     () => (config.info as SimpleObjectType)[state.toLowerCase()],
@@ -48,7 +49,12 @@ export const InfoBox = (props: InfoBoxProps): JSX.Element => {
     [tableConfig, selected]
   );
 
-  const controlsItems = useMemo(() => getControls(selected, onClose, isManager), [
+  const setTheTable = useCallback(() => {
+    if (selected.state === TableState.BUSY_BY_YOU)
+      setLastSelectedTable(selected.id);
+  } , [selected]);
+
+  const controlsItems = useMemo(() => getControls(selected, onClose, isManager, setTheTable), [
     selected,
     onClose,
     isManager,

@@ -7,7 +7,7 @@ import {StateChangeActionType} from "../../store/actions";
 import {Table} from "./Table";
 import {InfoBox} from "../infoBox/InfoBox";
 import {ITablesProps} from "../infoBox/types";
-import {TableData, TableState} from "../../api/types";
+import {TableData} from "../../api/types";
 import {AppState} from "../../types";
 import {AppRole} from "../../api/user";
 
@@ -26,13 +26,9 @@ export const Tables = (props: ITablesProps): JSX.Element => {
   const tableSelectHandler = useCallback(
     (tableId: number) => {
       const selected = tables.find((el) => el.id === tableId);
-      if (selected) {
-        setSelectedTableData(selected);
-        if (selected.state === TableState.BUSY_BY_YOU)
-          setLastSelectedTable(tableId);
-      }
+      if (selected) setSelectedTableData(selected);
     },
-    [tables, setLastSelectedTable]
+    [tables]
   );
 
   const closeInfoBoxHandler = useCallback(() => {
@@ -56,6 +52,7 @@ export const Tables = (props: ITablesProps): JSX.Element => {
               onClose={closeInfoBoxHandler}
               selected={selectedTableData}
               isManager={roles.includes(AppRole.MANAGER)}
+              setLastSelectedTable={setLastSelectedTable}
           />
       )}
     </div>

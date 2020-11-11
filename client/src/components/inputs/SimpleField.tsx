@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import {Grid, TextField} from "@material-ui/core";
 
 export const someDataNotProvided = "Ошибки в заполнении полей. Проверьте, заполнены ли обязательные поля, а так же являются ли значения допустимыми";
-export const emptyValidator = (value: any) => value.length > 0;
+export const emptyValidator = (value: any) => value.toString().length > 0;
 export const positiveNumberValidator = (value: any) => Number(value) !== null && Number(value) > 0;
 
 export type FieldData = {
@@ -69,7 +69,19 @@ export const FormWrapper = (props: {inputs: JSX.Element[], style?: any}):JSX.Ele
 }
 
 export const validatePhoneNumber = (value: string) => {
-    const r = RegExp('^((\\+7|7|8)?[0-9]{10})$');
+    const r = RegExp('^(\\+?[0-9]{9,})$');
     const v = value.match(r);
     return v !== null;
 }
+
+export const validatePercentage = (value: string)=> {
+    const r = RegExp('^[0-9]+$');
+    const v = value.match(r);
+    const toNum = Number(value);
+    console.warn(toNum)
+    return v !== null && toNum !== null && toNum >= 0 && toNum <= 100 && toNum === parseInt(value, 10);
+}
+
+
+export const percentageError: string = 'Скидка по карте должна быть целым числом в пределах 0%-100%';
+export const phoneError: string = 'Номер телефона должен содержать не менее 9 чисел. Так же вомзожно использования знака + в начале';

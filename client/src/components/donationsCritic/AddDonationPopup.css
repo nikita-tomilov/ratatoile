@@ -1,9 +1,7 @@
 .addDonationPopup {
   position: absolute;
-  width: 50%;
-  height: 40%;
+  left: 35%;
   top: 20%;
-  left: 25%;
   border: 1px solid black;
   border-radius: 4px;
   padding: 30px;

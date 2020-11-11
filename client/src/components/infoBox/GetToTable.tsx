@@ -7,11 +7,15 @@ import {SideMenuType} from "../../types";
 
 const GetToTable = (props: {
   setCurrentMenuItem: (menuItem: SideMenuType) => void;
+  setTheTable: () => void;
 }): JSX.Element => {
-  const { setCurrentMenuItem } = props;
+  const { setCurrentMenuItem, setTheTable } = props;
   const switchToTableWindow = useCallback(
-    () => setCurrentMenuItem(SideMenuType.TABLE),
-    [setCurrentMenuItem]
+    () => {
+      setTheTable();
+      setCurrentMenuItem(SideMenuType.TABLE);
+    },
+    [setCurrentMenuItem, setTheTable]
   );
 
   return (

@@ -26,4 +26,5 @@ export type InfoBoxProps = {
   onClose: () => void;
   selected: TableData;
   isManager: boolean;
+  setLastSelectedTable: (id: number | null) => void;
 };

@@ -1,6 +1,12 @@
 import {Dialog} from "../dialog/Dialog";
 import React, {useCallback, useState} from "react";
-import {FormWrapper, SimpleField, someDataNotProvided, validatePhoneNumber} from "../inputs/SimpleField";
+import {
+    FormWrapper, percentageError, phoneError,
+    SimpleField,
+    someDataNotProvided,
+    validatePercentage,
+    validatePhoneNumber
+} from "../inputs/SimpleField";
 import {Button} from "@material-ui/core";
 import {Card, createNewCard, editCard} from "../../api/guestCards";
 
@@ -57,7 +63,7 @@ export const GuestCardDialog = (props: {onCancel: () => void, selected: Card | n
                              id="phone"
                              onChange={setPhone}
                              type='phone'
-                             validationText={'В номере телефона могут присутствовать только цифры и знак + в начале'}
+                             validationText={phoneError}
                              validator={(value) => value.length > 0 && validatePhoneNumber(value)}
                              isRequired={true}
                              startValue={phone}
@@ -77,10 +83,8 @@ export const GuestCardDialog = (props: {onCancel: () => void, selected: Card | n
                              type='number'
                              isRequired={true}
                              startValue={percentage}
-                             validationText={'Скидка по карте должна быть в пределах 0%-100%'}
-                             validator={(value) =>
-                                 value.length > 0 && Number(value) !== null && Number(value) > 0 && Number(value) < 100
-                             }
+                             validationText={percentageError}
+                             validator={validatePercentage}
                 />,
                 <>
                     {

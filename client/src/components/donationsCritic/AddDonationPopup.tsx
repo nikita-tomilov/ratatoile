@@ -48,7 +48,7 @@ export const AddDonationPopup = (props: {
   }, []);
   return (
     <div className="addDonationPopup">
-      <div className="popupTitle">{props.title}</div>
+      <div className="popupTitle" style={{marginBottom: 20}}>{props.title}</div>
       <div className="infoPanel">
         <TextField
           variant="outlined"
@@ -111,7 +111,7 @@ export const AddDonationPopup = (props: {
           </>
         )}
       </div>
-      <div className="controls">
+      <div style={{marginTop: 20}} className="controls">
         <Button
           variant="contained"
           color="primary"
