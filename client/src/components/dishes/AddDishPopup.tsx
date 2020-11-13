@@ -54,14 +54,14 @@ export const AddDishPopup = (props: {
           <SimpleField
               label="Описание блюда"
               type="text"
-              id="name"
+              id="description"
               onChange={setDescription}
           />,
           <SimpleField
               isRequired={true}
               label="Цена"
               type="number"
-              id="name"
+              id="price"
               onChange={setPrice}
               validator={(value) => emptyValidator(value) && positiveNumberValidator(value)}
               validationText={'Цена не может быть отрицательной'}

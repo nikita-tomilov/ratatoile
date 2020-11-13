@@ -114,7 +114,7 @@ export const DishEditScreen = (props: {
       <SimpleField
           label="Описание блюда"
           type="text"
-          id="name"
+          id="description"
           onChange={setDescription}
           startValue={description}
       />,
@@ -122,7 +122,7 @@ export const DishEditScreen = (props: {
           isRequired={true}
           label="Цена"
           type="number"
-          id="name"
+          id="price"
           onChange={setPrice}
           startValue={price}
           validator={(value) => emptyValidator(value) && positiveNumberValidator(value)}
